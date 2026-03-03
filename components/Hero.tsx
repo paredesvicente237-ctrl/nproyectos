@@ -1,111 +1,178 @@
-"use client";
+import Image from "next/image";
+import { siteAssets } from "@/components/siteAssets";
+import { companyInfo } from "@/components/siteData";
 
-import { useEffect, useRef } from "react";
+const impactStats = [
+  { value: "Clientes", detail: "Minería, manufactura, industria y construcción" },
+  { value: "12 mm", detail: "Capacidad de corte láser en acero" },
+  { value: "6 mm", detail: "Corte guillotina y plegado de alta precisión" },
+  { value: "Mig / Tig / Láser", detail: "Procesos de soldadura para soluciones robustas" },
+];
+
+const quickProof = [
+  "Desarrollo y suministro de piezas, partes y soluciones metálicas.",
+  "Apoyo en diseño CAD / INVENTOR y optimización de materiales.",
+  "Personal calificado y certificado para armado y soldadura.",
+];
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (el) el.classList.add("visible");
-  }, []);
-
   return (
-    <section
-      id="inicio"
-      ref={sectionRef}
-      className="reveal relative min-h-screen flex items-center overflow-hidden"
-    >
-      {/* Background */}
-      <div className="absolute inset-0 bg-steel-900">
-        {/* Real photo background */}
-        <img
-          src="https://images.unsplash.com/photo-1504917595217-d4dc5ede4c21?w=1920&q=80"
+    <section id="inicio" className="relative overflow-hidden bg-steel-950 pt-32 sm:pt-36">
+      <div className="absolute inset-0">
+        <Image
+          src={siteAssets.pressBrakeWide}
           alt=""
-          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          fill
+          priority
+          className="object-cover opacity-20"
+          sizes="100vw"
         />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-steel-900/90 via-steel-800/80 to-steel-900/90" />
-        {/* Geometric pattern */}
-        <div className="absolute inset-0 geometric-lines opacity-30" />
-        {/* Diagonal accent */}
-        <div className="absolute -right-32 -top-32 w-[600px] h-[600px] bg-accent/5 rounded-full blur-3xl" />
-        <div className="absolute -left-32 -bottom-32 w-[400px] h-[400px] bg-accent/3 rounded-full blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,17,26,0.95),rgba(8,17,26,0.88)_40%,rgba(8,17,26,0.96))]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,184,244,0.2),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(20,184,166,0.12),transparent_30%)]" />
+        <div className="absolute inset-0 grid-surface opacity-30" />
       </div>
 
-      <div className="relative container-custom section-padding w-full">
-        <div className="max-w-3xl">
-          {/* Tag */}
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/10 rounded-full px-4 py-1.5 mb-6">
-            <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            <span className="text-sm text-industrial-200 font-medium">
-              Precisión Industrial
-            </span>
-          </div>
+      <div className="relative container-custom section-padding">
+        <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+          <div>
+            <span className="eyebrow-dark">Maestranza, fabricación y proyectos en acero</span>
+            <h1 className="mt-6 max-w-4xl font-heading text-5xl font-bold leading-[0.96] text-white sm:text-6xl lg:text-7xl">
+              Soluciones metálicas con ingeniería, fabricación y plazos que sí
+              responden.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-industrial-200 sm:text-xl">
+              {companyInfo.shortName} desarrolla y fabrica piezas, partes y
+              proyectos en aceros para clientes que necesitan ejecución seria,
+              soporte técnico y una relación consistente entre precio, calidad y
+              entrega.
+            </p>
 
-          {/* Heading */}
-          <h1 className="font-heading font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-6">
-            Corte y Plegado{" "}
-            <span className="text-accent">de Acero</span>{" "}
-            con Precisión Absoluta
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-lg sm:text-xl text-industrial-300 max-w-2xl mb-10 leading-relaxed">
-            Transformamos láminas de acero en piezas exactas para tu industria.
-            Corte láser, plasma y plegado CNC con la más alta tecnología y
-            cumplimiento garantizado.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="#contacto"
-              className="inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white font-heading font-semibold px-8 py-4 rounded-lg transition-all hover:shadow-lg hover:shadow-accent/25 text-lg"
-            >
-              Solicitar Cotización
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <a href={companyInfo.whatsappHref} className="btn-primary">
+                Cotizar por WhatsApp
+              </a>
+              <a
+                href="#contacto"
+                className="btn-secondary border-white/15 text-white hover:border-accent hover:text-accent"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </a>
-            <a
-              href="#servicios"
-              className="inline-flex items-center justify-center gap-2 border border-white/20 text-white hover:bg-white/10 font-heading font-semibold px-8 py-4 rounded-lg transition-all text-lg"
-            >
-              Nuestros Servicios
-            </a>
+                Solicitar propuesta por correo
+              </a>
+            </div>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              <a href={companyInfo.phoneHref} className="dark-chip">
+                <span className="text-xs uppercase tracking-[0.2em] text-industrial-400">
+                  Teléfono
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-white">
+                  {companyInfo.phoneDisplay}
+                </span>
+              </a>
+              <a href={companyInfo.emailHref} className="dark-chip">
+                <span className="text-xs uppercase tracking-[0.2em] text-industrial-400">
+                  Correo
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-white">
+                  ventasnproyectosltda
+                </span>
+              </a>
+              <a href="#contacto" className="dark-chip">
+                <span className="text-xs uppercase tracking-[0.2em] text-industrial-400">
+                  Ubicación
+                </span>
+                <span className="mt-1 block text-sm font-semibold text-white">
+                  Av. Yungay 743
+                </span>
+              </a>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {impactStats.map((item) => (
+                <div
+                  key={item.value}
+                  className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
+                >
+                  <p className="font-heading text-3xl font-bold text-accent">
+                    {item.value}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-industrial-200">
+                    {item.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Stats bar */}
-          <div className="mt-16 grid grid-cols-3 gap-6 max-w-lg">
-            {[
-              { value: "15+", label: "Años de Experiencia" },
-              { value: "500+", label: "Proyectos Realizados" },
-              { value: "99%", label: "Clientes Satisfechos" },
-            ].map((stat) => (
-              <div key={stat.label}>
-                <div className="font-heading font-bold text-2xl sm:text-3xl text-accent">
-                  {stat.value}
+          <div className="space-y-5">
+            <div className="dark-panel overflow-hidden">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-[1.6rem]">
+                <Image
+                  src={siteAssets.foldedProfile}
+                  alt="Plegado industrial de piezas metálicas"
+                  className="h-full w-full object-cover"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                />
+              </div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-industrial-400">
+                    Cobertura
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-industrial-200">
+                    Suministro de piezas, desarrollo y fabricación para
+                    requerimientos industriales y especiales.
+                  </p>
                 </div>
-                <div className="text-xs sm:text-sm text-industrial-400 mt-1">
-                  {stat.label}
+                <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
+                  <p className="text-xs uppercase tracking-[0.2em] text-industrial-400">
+                    Entrega
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-industrial-200">
+                    Producción planificada para cumplir especificaciones y plazos
+                    competitivos.
+                  </p>
                 </div>
               </div>
-            ))}
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-[1.05fr_0.95fr]">
+              <div className="dark-panel p-5">
+                <p className="text-xs uppercase tracking-[0.22em] text-industrial-400">
+                  Lo que espera tu operación
+                </p>
+                <div className="mt-4 space-y-4">
+                  {quickProof.map((item) => (
+                    <div key={item} className="flex gap-3">
+                      <span className="mt-1.5 h-2.5 w-2.5 rounded-full bg-accent" />
+                      <p className="text-sm leading-6 text-industrial-200">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-2">
+                <div className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.45rem]">
+                  <Image
+                    src={siteAssets.weldingWork}
+                    alt="Proceso de soldadura sobre estructura metálica"
+                    className="h-full w-full object-cover"
+                    sizes="(max-width: 1024px) 100vw, 30vw"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-steel-950 via-steel-950/50 to-transparent p-5">
+                    <p className="font-heading text-2xl font-semibold text-white">
+                      Fabricación integral
+                    </p>
+                    <p className="mt-2 text-sm leading-6 text-industrial-200">
+                      Armado, soldadura y terminación para soluciones listas para
+                      instalación.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
     </section>
   );
 }

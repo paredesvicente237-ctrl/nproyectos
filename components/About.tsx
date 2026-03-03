@@ -1,156 +1,117 @@
-"use client";
+import Image from "next/image";
+import { siteAssets } from "@/components/siteAssets";
 
-import { useEffect, useRef, useState } from "react";
+const sectors = ["Minería", "Manufactura", "Industria", "Construcción"];
 
-function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const animated = useRef(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && !animated.current) {
-          animated.current = true;
-          const duration = 2000;
-          const steps = 60;
-          const increment = target / steps;
-          let current = 0;
-          const interval = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-              setCount(target);
-              clearInterval(interval);
-            } else {
-              setCount(Math.floor(current));
-            }
-          }, duration / steps);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    const el = ref.current;
-    if (el) observer.observe(el);
-    return () => observer.disconnect();
-  }, [target]);
-
-  return (
-    <div ref={ref} className="font-heading font-bold text-4xl sm:text-5xl text-accent">
-      {count}
-      {suffix}
-    </div>
-  );
-}
-
-const stats = [
-  { value: 15, suffix: "+", label: "Años de Experiencia" },
-  { value: 500, suffix: "+", label: "Proyectos Realizados" },
-  { value: 50, suffix: "+", label: "Clientes Activos" },
-  { value: 99, suffix: "%", label: "Tasa de Satisfacción" },
+const foundations = [
+  {
+    title: "Misión",
+    text: "Desarrollar y suministrar elementos, piezas y partes para la elaboración de equipos y soluciones para la industria.",
+  },
+  {
+    title: "Visión",
+    text: "Establecer relaciones estratégicas y comerciales sólidas con nuestros clientes, aportando calidad y plazos competitivos.",
+  },
 ];
 
-const values = [
-  {
-    title: "Precisión",
-    description: "Cada corte y pliegue cumple con las tolerancias más exigentes del mercado.",
-  },
-  {
-    title: "Cumplimiento",
-    description: "Entregamos en tiempo y forma, respetando cada compromiso adquirido.",
-  },
-  {
-    title: "Innovación",
-    description: "Maquinaria de última generación y procesos en mejora continua.",
-  },
+const differentiators = [
+  "Equipo profesional con experiencia real en maestranza y fabricación.",
+  "Capacidad para trabajar desde el plano, el modelo o el requerimiento funcional.",
+  "Enfoque en factibilidad técnica, optimización de materiales y entrega responsable.",
 ];
 
 export default function About() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("visible");
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    const el = sectionRef.current;
-    if (el) {
-      el.querySelectorAll(".reveal, .reveal-left, .reveal-right").forEach((child) =>
-        observer.observe(child)
-      );
-    }
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section id="nosotros" ref={sectionRef} className="section-padding bg-white relative">
+    <section id="nosotros" className="section-padding">
       <div className="container-custom">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left - Text */}
-          <div className="reveal-left">
-            <span className="text-accent font-heading font-semibold text-sm tracking-widest uppercase">
-              Sobre Nosotros
-            </span>
-            <h2 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl text-steel-900 mt-3 mb-6">
-              Más de 15 Años Transformando Acero
+        <div className="grid gap-10 xl:grid-cols-[1.05fr_0.95fr]">
+          <div className="panel p-7 sm:p-10">
+            <span className="eyebrow">Quiénes somos</span>
+            <h2 className="mt-5 max-w-3xl font-heading text-4xl font-bold leading-tight text-steel-950 sm:text-5xl">
+              Una maestranza enfocada en fabricar soluciones que funcionan en
+              terreno.
             </h2>
-            <p className="text-industrial-500 text-lg leading-relaxed mb-6">
-              En <strong className="text-steel-900">NProyectos</strong> nos especializamos
-              en el corte y plegado de láminas de acero con tecnología de punta. Desde
-              nuestros inicios, hemos trabajado con industrias de construcción, manufactura y
-              diseño, entregando piezas que cumplen los estándares más altos de calidad.
+            <p className="mt-6 text-lg leading-8 text-industrial-500">
+              N Proyectos está compuesto por un grupo de profesionales con amplia
+              experiencia en servicios de maestranza. El alcance de sus
+              proyectos cubre clientes de distintos sectores productivos,
+              entregando productos y servicios con una relación equilibrada entre
+              precio, calidad y plazo.
             </p>
-            <p className="text-industrial-500 text-lg leading-relaxed mb-8">
-              Nuestro equipo combina experiencia técnica con un compromiso inquebrantable de
-              servicio, garantizando resultados que superan expectativas.
+            <p className="mt-5 text-lg leading-8 text-industrial-500">
+              El foco no es solo fabricar, sino acompañar cada requerimiento con
+              criterio técnico, orden de producción y una ejecución capaz de
+              sostener exigencias industriales reales.
             </p>
 
-            {/* Values */}
-            <div className="space-y-4">
-              {values.map((value) => (
-                <div key={value.title} className="flex gap-4">
-                  <div className="w-2 h-2 bg-accent rounded-full mt-2.5 shrink-0" />
-                  <div>
-                    <h4 className="font-heading font-semibold text-steel-900">
-                      {value.title}
-                    </h4>
-                    <p className="text-industrial-400 text-sm">{value.description}</p>
-                  </div>
+            <div className="mt-8 flex flex-wrap gap-3">
+              {sectors.map((sector) => (
+                <span key={sector} className="soft-chip">
+                  {sector}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-10 grid gap-5 md:grid-cols-2">
+              {foundations.map((item) => (
+                <div
+                  key={item.title}
+                  className="rounded-3xl border border-industrial-200 bg-industrial-50 p-6"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+                    {item.title}
+                  </p>
+                  <p className="mt-4 text-base leading-7 text-industrial-500">
+                    {item.text}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right - Stats + Image placeholder */}
-          <div className="reveal-right">
-            {/* Image */}
-            <div className="relative rounded-2xl overflow-hidden mb-8">
-              <img
-                src="https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=800&q=80"
-                alt="Taller de corte y plegado de acero"
-                className="aspect-[4/3] w-full object-cover"
-              />
-              {/* Accent corner */}
-              <div className="absolute top-0 right-0 w-24 h-24 bg-accent/10" />
-              <div className="absolute bottom-0 left-0 w-16 h-16 bg-accent/10" />
+          <div className="space-y-5">
+            <div className="panel overflow-hidden p-3">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-[1.6rem]">
+                <Image
+                  src={siteAssets.pressMachine}
+                  alt="Detalle de maquinaria para plegado y fabricación"
+                  className="h-full w-full object-cover"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                />
+              </div>
             </div>
 
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-6">
-              {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="bg-industrial-50 rounded-xl p-6 text-center"
-                >
-                  <AnimatedCounter target={stat.value} suffix={stat.suffix} />
-                  <p className="text-industrial-400 text-sm mt-2">{stat.label}</p>
-                </div>
-              ))}
+            <div className="panel p-7">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
+                Qué espera el cliente
+              </p>
+              <div className="mt-5 space-y-4">
+                {differentiators.map((item) => (
+                  <div key={item} className="flex gap-3">
+                    <span className="mt-1.5 h-2.5 w-2.5 rounded-full bg-accent" />
+                    <p className="text-base leading-7 text-industrial-500">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div className="panel p-6">
+                <p className="font-heading text-4xl font-bold text-steel-950">CAD</p>
+                <p className="mt-3 text-sm leading-6 text-industrial-500">
+                  Desarrollo técnico y soporte para preparar piezas con criterio
+                  de fabricación.
+                </p>
+              </div>
+              <div className="panel p-6">
+                <p className="font-heading text-4xl font-bold text-steel-950">
+                  Inventor
+                </p>
+                <p className="mt-3 text-sm leading-6 text-industrial-500">
+                  Diseño, revisión y optimización para reducir desperdicio y
+                  mejorar montaje.
+                </p>
+              </div>
             </div>
           </div>
         </div>

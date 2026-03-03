@@ -1,30 +1,33 @@
 import type { Metadata } from "next";
-import { Outfit, DM_Sans } from "next/font/google";
+import { Rajdhani, Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
+const rajdhani = Rajdhani({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  weight: ["500", "600", "700"],
+  variable: "--font-rajdhani",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
+const sourceSans = Source_Sans_3({
   subsets: ["latin"],
-  variable: "--font-dm-sans",
+  variable: "--font-source-sans",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "NProyectos | Corte y Plegado de Láminas de Acero",
+  title: "N Proyectos Ltda | Servicios y Proyectos en Aceros",
   description:
-    "Servicio profesional de corte láser, corte plasma y plegado CNC de láminas de acero. Precisión, calidad y cumplimiento garantizado.",
+    "Servicios y proyectos en aceros para minería, manufactura, industria y construcción. Corte, plegado, armado, soldadura y apoyo técnico para fabricación industrial.",
   keywords: [
+    "maestranza",
+    "fabricación en acero",
     "corte láser",
-    "corte plasma",
-    "plegado CNC",
-    "láminas de acero",
-    "metalurgia",
-    "NProyectos",
+    "corte guillotina",
+    "plegado",
+    "soldadura",
+    "proyectos en acero",
+    "N Proyectos Ltda",
   ],
 };
 
@@ -34,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${outfit.variable} ${dmSans.variable}`}>
+    <html lang="es" className={`${rajdhani.variable} ${sourceSans.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );

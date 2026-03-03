@@ -1,114 +1,141 @@
 "use client";
 
-import { useState, useEffect } from "react";
-
-const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Proceso", href: "#proceso" },
-  { label: "Proyectos", href: "#proyectos" },
-  { label: "Contacto", href: "#contacto" },
-];
+import Image from "next/image";
+import { useEffect, useState } from "react";
+import { siteAssets } from "@/components/siteAssets";
+import { companyInfo, navLinks } from "@/components/siteData";
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm py-3"
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "border-b border-white/10 bg-steel-950/92 py-3 shadow-2xl backdrop-blur-xl"
           : "bg-transparent py-5"
       }`}
     >
-      <div className="container-custom flex items-center justify-between">
-        {/* Logo */}
-        <a href="#inicio" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center font-heading font-bold text-white text-lg group-hover:scale-105 transition-transform">
-            N
-          </div>
-          <span
-            className={`font-heading font-bold text-xl transition-colors ${
-              scrolled ? "text-steel-900" : "text-white"
-            }`}
+      <div className="container-custom px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-4">
+          <a
+            href="#inicio"
+            className="flex items-center gap-3 rounded-2xl border border-white/15 bg-white/95 px-3 py-2 shadow-xl shadow-steel-950/10"
+            aria-label={`Ir al inicio de ${companyInfo.shortName}`}
           >
-            NProyectos
-          </span>
-        </a>
+            <Image
+              src={siteAssets.logo}
+              alt={`Logo ${companyInfo.shortName}`}
+              priority
+              className="h-9 w-auto object-contain sm:h-11"
+            />
+          </a>
 
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          <div className="hidden xl:flex items-center gap-7">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className={`text-sm font-semibold tracking-[0.18em] uppercase transition-colors ${
+                  isScrolled
+                    ? "text-industrial-200 hover:text-white"
+                    : "text-white/80 hover:text-white"
+                }`}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="hidden md:flex items-center gap-3">
             <a
-              key={link.href}
-              href={link.href}
-              className={`text-sm font-medium transition-colors ${
-                scrolled
-                  ? "text-steel-700 hover:text-accent"
-                  : "text-white/80 hover:text-white"
+              href={companyInfo.phoneHref}
+              className={`rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+                isScrolled
+                  ? "border-white/10 text-white hover:border-accent hover:text-accent"
+                  : "border-white/25 text-white hover:border-white hover:bg-white/10"
               }`}
             >
-              {link.label}
+              {companyInfo.phoneDisplay}
             </a>
-          ))}
-          <a
-            href="#contacto"
-            className="bg-accent hover:bg-accent-hover text-white font-heading font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors"
+            <a href={companyInfo.whatsappHref} className="btn-primary">
+              WhatsApp
+            </a>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsOpen((current) => !current)}
+            className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl border transition-colors md:hidden ${
+              isScrolled
+                ? "border-white/10 bg-white/10 text-white"
+                : "border-white/25 bg-white/10 text-white"
+            }`}
+            aria-expanded={isOpen}
+            aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
           >
-            Cotizar
-          </a>
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {isOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.8}
+                  d="M6 6l12 12M6 18L18 6"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={1.8}
+                  d="M4 7h16M4 12h16M4 17h16"
+                />
+              )}
+            </svg>
+          </button>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className={`md:hidden p-2 transition-colors ${
-            scrolled ? "text-steel-900" : "text-white"
+        <div
+          className={`overflow-hidden transition-all duration-300 md:hidden ${
+            isOpen ? "max-h-[32rem] pt-4 opacity-100" : "max-h-0 opacity-0"
           }`}
-          aria-label="Abrir menú"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            {mobileOpen ? (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            ) : (
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden transition-all duration-300 overflow-hidden ${
-          mobileOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <div className="container-custom py-4 flex flex-col gap-4 bg-white/95 backdrop-blur-md shadow-lg rounded-b-2xl mx-4">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="text-steel-700 hover:text-accent transition-colors font-medium px-4"
-            >
-              {link.label}
-            </a>
-          ))}
-          <a
-            href="#contacto"
-            onClick={() => setMobileOpen(false)}
-            className="bg-accent hover:bg-accent-hover text-white font-heading font-semibold text-sm px-6 py-2.5 rounded-lg transition-colors text-center mx-4"
-          >
-            Cotizar
-          </a>
+          <div className="rounded-3xl border border-white/10 bg-steel-900/95 p-5 shadow-2xl backdrop-blur-xl">
+            <div className="flex flex-col gap-3">
+              {navLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-2xl border border-white/5 px-4 py-3 text-sm font-semibold uppercase tracking-[0.18em] text-industrial-100 transition-colors hover:border-accent/50 hover:text-white"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <div className="mt-5 grid gap-3 sm:grid-cols-2">
+              <a href={companyInfo.phoneHref} className="btn-secondary text-center">
+                Llamar ahora
+              </a>
+              <a href={companyInfo.whatsappHref} className="btn-primary text-center">
+                Escribir por WhatsApp
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
