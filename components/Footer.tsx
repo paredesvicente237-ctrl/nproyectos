@@ -1,65 +1,46 @@
 import Image from "next/image";
 import { siteAssets } from "@/components/siteAssets";
-import { companyInfo, navLinks } from "@/components/siteData";
+import { companyInfo } from "@/components/siteData";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-steel-950 text-industrial-300">
-      <div className="container-custom section-padding pb-10">
-        <div className="grid gap-10 xl:grid-cols-[1.05fr_0.95fr]">
-          <div>
-            <div className="inline-flex items-center rounded-2xl border border-white/10 bg-white/95 px-3 py-2 shadow-lg">
+    <footer className="bg-slate-950">
+      <div className="container-custom px-5 py-12 sm:px-8 lg:px-10">
+        {/* Top row: logo left, contact right */}
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-4">
+            <div className="inline-block overflow-hidden rounded-lg bg-white p-1.5">
               <Image
                 src={siteAssets.logo}
                 alt={`Logo ${companyInfo.shortName}`}
-                className="h-10 w-auto object-contain"
+                className="h-9 w-auto object-contain"
               />
             </div>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-industrial-300">
-              {companyInfo.legalName} desarrolla soluciones en acero para
-              fabricación, proyectos, control acústico y requerimientos
-              industriales que necesitan ejecución seria y soporte técnico.
+            <p className="text-sm text-slate-500">
+              Soluciones en acero para fabricación y proyectos industriales.
             </p>
           </div>
 
-          <div className="grid gap-8 sm:grid-cols-2">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
-                Navegación
-              </p>
-              <div className="mt-5 flex flex-col gap-3">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="text-sm font-semibold uppercase tracking-[0.18em] text-industrial-300 transition-colors hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent">
-                Contacto
-              </p>
-              <div className="mt-5 flex flex-col gap-3 text-sm leading-7">
-                <a href={companyInfo.phoneHref} className="hover:text-white">
-                  {companyInfo.phoneDisplay}
-                </a>
-                <a href={companyInfo.emailHref} className="break-all hover:text-white">
-                  {companyInfo.email}
-                </a>
-                <p>{companyInfo.address}</p>
-              </div>
-            </div>
+          <div className="flex flex-col gap-1 text-sm text-slate-500 sm:items-end">
+            <a href={companyInfo.phoneHref} className="hover:text-white">{companyInfo.phoneDisplay}</a>
+            <a href={companyInfo.emailHref} className="hover:text-white">{companyInfo.email}</a>
+            <span>{companyInfo.address}</span>
           </div>
         </div>
 
-        <div className="mt-10 border-t border-white/10 pt-6 text-sm text-industrial-400">
+        {/* Bottom bar */}
+        <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+          <p>&copy; {new Date().getFullYear()} {companyInfo.legalName}. Todos los derechos reservados.</p>
           <p>
-            {companyInfo.legalName} | {companyInfo.phoneDisplay} |{" "}
-            {companyInfo.email} | {companyInfo.address}
+            Creado por{" "}
+            <a
+              href="https://viselix.cl"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-slate-400 transition-colors hover:text-white"
+            >
+              VISELIX
+            </a>
           </p>
         </div>
       </div>

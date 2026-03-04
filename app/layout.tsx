@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
-import { Rajdhani, Source_Sans_3 } from "next/font/google";
+import { Outfit, DM_Sans } from "next/font/google";
 import "./globals.css";
 
-const rajdhani = Rajdhani({
+const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-rajdhani",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-outfit",
   display: "swap",
 });
 
-const sourceSans = Source_Sans_3({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-source-sans",
+  weight: ["400", "500", "600"],
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
@@ -37,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${rajdhani.variable} ${sourceSans.variable}`}>
+    <html lang="es" className={`${outfit.variable} ${dmSans.variable}`}>
       <body className="antialiased">{children}</body>
     </html>
   );

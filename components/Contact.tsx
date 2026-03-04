@@ -11,29 +11,6 @@ const services = [
   "Múltiples requerimientos",
 ];
 
-const contactCards = [
-  {
-    label: "Teléfono",
-    value: companyInfo.phoneDisplay,
-    href: companyInfo.phoneHref,
-  },
-  {
-    label: "Correo",
-    value: companyInfo.email,
-    href: companyInfo.emailHref,
-  },
-  {
-    label: "Dirección",
-    value: companyInfo.address,
-    href: "#contacto",
-  },
-  {
-    label: "Canal directo",
-    value: "Atención rápida por WhatsApp",
-    href: companyInfo.whatsappHref,
-  },
-];
-
 type FormState = {
   name: string;
   company: string;
@@ -65,15 +42,12 @@ export default function Contact() {
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (!form.name || !form.email || !form.message) {
       setFeedback("Completa nombre, correo y el detalle del requerimiento.");
       return;
     }
 
-    const subject = `Solicitud de cotización - ${
-      form.service || "Proyecto en acero"
-    }`;
+    const subject = `Solicitud de cotización - ${form.service || "Proyecto en acero"}`;
     const body = [
       `Nombre: ${form.name}`,
       `Empresa: ${form.company || "No indicada"}`,
@@ -85,177 +59,160 @@ export default function Contact() {
       form.message,
     ].join("\n");
 
-    const mailtoUrl = `${companyInfo.emailHref}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-
-    setFeedback(
-      "Se abrirá tu cliente de correo con la información prellenada para enviar la solicitud."
-    );
+    const mailtoUrl = `${companyInfo.emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setFeedback("Se abrirá tu cliente de correo con la información prellenada.");
     window.location.href = mailtoUrl;
   };
 
   return (
-    <section id="contacto" className="section-padding">
-      <div className="container-custom grid gap-8 xl:grid-cols-[1.02fr_0.98fr]">
-        <div className="dark-panel p-7 sm:p-10">
-          <span className="eyebrow-dark">Contacto y cotizaciones</span>
-          <h2 className="mt-5 font-heading text-4xl font-bold leading-tight text-white sm:text-5xl">
-            Envía tu solicitud con los datos del proyecto y cotiza con contexto
-            técnico.
+    <section id="contacto" className="section-padding bg-white">
+      <div className="container-custom">
+        <div className="text-center">
+          <span className="eyebrow mx-auto justify-center">Contacto</span>
+          <h2 className="mt-4 text-4xl font-extrabold sm:text-5xl">
+            Cotiza tu proyecto
           </h2>
-          <p className="mt-6 text-lg leading-8 text-industrial-200">
-            El formulario prepara un correo con la información completa del
-            requerimiento para que puedas enviarlo de inmediato. Si prefieres una
-            respuesta más rápida, también queda disponible el acceso directo a
-            WhatsApp.
+          <p className="mx-auto mt-4 max-w-xl text-lg text-slate-500">
+            Envía los datos de tu requerimiento y te contactamos con una
+            propuesta técnica.
           </p>
-
-          <form onSubmit={onSubmit} className="mt-8 space-y-5">
-            <div className="grid gap-5 md:grid-cols-2">
-              <div>
-                <label htmlFor="name" className="form-label-dark">
-                  Nombre y cargo
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  value={form.name}
-                  onChange={onChange}
-                  className="form-input-dark"
-                  placeholder="Nombre completo"
-                />
-              </div>
-              <div>
-                <label htmlFor="company" className="form-label-dark">
-                  Empresa
-                </label>
-                <input
-                  id="company"
-                  name="company"
-                  value={form.company}
-                  onChange={onChange}
-                  className="form-input-dark"
-                  placeholder="Razón social o empresa"
-                />
-              </div>
-            </div>
-
-            <div className="grid gap-5 md:grid-cols-2">
-              <div>
-                <label htmlFor="email" className="form-label-dark">
-                  Correo
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={onChange}
-                  className="form-input-dark"
-                  placeholder="correo@empresa.cl"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="form-label-dark">
-                  Teléfono
-                </label>
-                <input
-                  id="phone"
-                  name="phone"
-                  value={form.phone}
-                  onChange={onChange}
-                  className="form-input-dark"
-                  placeholder="+56 9 ..."
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="service" className="form-label-dark">
-                Tipo de requerimiento
-              </label>
-              <select
-                id="service"
-                name="service"
-                value={form.service}
-                onChange={onChange}
-                className="form-input-dark"
-              >
-                <option value="">Selecciona un área</option>
-                {services.map((item) => (
-                  <option key={item} value={item}>
-                    {item}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor="message" className="form-label-dark">
-                Detalle del proyecto
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                rows={6}
-                value={form.message}
-                onChange={onChange}
-                className="form-input-dark resize-none"
-                placeholder="Describe piezas, cantidades, material, espesores, plazos o cualquier dato técnico relevante."
-              />
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <button type="submit" className="btn-primary">
-                Preparar correo de cotización
-              </button>
-              <a
-                href={companyInfo.whatsappHref}
-                className="btn-secondary border-white/15 text-white hover:border-accent hover:text-accent"
-              >
-                Escribir por WhatsApp
-              </a>
-            </div>
-
-            {feedback ? (
-              <p className="text-sm leading-6 text-industrial-300">{feedback}</p>
-            ) : null}
-          </form>
         </div>
 
-        <div className="space-y-6">
-          <div className="panel p-7 sm:p-8">
-            <span className="eyebrow">Información directa</span>
-            <div className="mt-6 space-y-4">
-              {contactCards.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="block rounded-3xl border border-industrial-200 bg-industrial-50 p-5 transition-colors hover:border-accent/50 hover:bg-white"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-                    {item.label}
-                  </p>
-                  <p className="mt-3 text-base font-semibold text-steel-950">
-                    {item.value}
-                  </p>
-                </a>
-              ))}
-            </div>
-          </div>
+        <div className="mx-auto mt-14 max-w-5xl">
+          <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+            {/* Form */}
+            <div className="rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 sm:p-10">
+              <form onSubmit={onSubmit} className="space-y-5">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="name" className="form-label">Nombre *</label>
+                    <input
+                      id="name" name="name" value={form.name}
+                      onChange={onChange} className="form-input"
+                      placeholder="Nombre completo"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="company" className="form-label">Empresa</label>
+                    <input
+                      id="company" name="company" value={form.company}
+                      onChange={onChange} className="form-input"
+                      placeholder="Razón social"
+                    />
+                  </div>
+                </div>
 
-          <div className="panel overflow-hidden p-3">
-            <div className="overflow-hidden rounded-[1.6rem]">
-              <iframe
-                src={companyInfo.mapsEmbed}
-                title={`Mapa de ${companyInfo.shortName}`}
-                width="100%"
-                height="360"
-                style={{ border: 0 }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="email" className="form-label">Correo *</label>
+                    <input
+                      id="email" name="email" type="email" value={form.email}
+                      onChange={onChange} className="form-input"
+                      placeholder="correo@empresa.cl"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="form-label">Teléfono</label>
+                    <input
+                      id="phone" name="phone" value={form.phone}
+                      onChange={onChange} className="form-input"
+                      placeholder="+56 9 ..."
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="service" className="form-label">Tipo de requerimiento</label>
+                  <select
+                    id="service" name="service" value={form.service}
+                    onChange={onChange} className="form-input"
+                  >
+                    <option value="">Selecciona un área</option>
+                    {services.map((item) => (
+                      <option key={item} value={item}>{item}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="form-label">Detalle del proyecto *</label>
+                  <textarea
+                    id="message" name="message" rows={4} value={form.message}
+                    onChange={onChange} className="form-input resize-none"
+                    placeholder="Describe piezas, cantidades, material, espesores, plazos..."
+                  />
+                </div>
+
+                <button type="submit" className="btn-primary w-full !py-4 !text-base">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                  </svg>
+                  Enviar Cotización
+                </button>
+
+                {feedback && (
+                  <p className="text-center text-sm text-slate-500">{feedback}</p>
+                )}
+              </form>
+            </div>
+
+            {/* Contact info sidebar */}
+            <div className="flex flex-col gap-5">
+              <a
+                href={companyInfo.phoneHref}
+                className="group card flex items-start gap-4"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-navy-600 transition-colors group-hover:bg-navy-600 group-hover:text-white">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Teléfono</p>
+                  <p className="mt-1 text-base font-semibold text-slate-900">{companyInfo.phoneDisplay}</p>
+                </div>
+              </a>
+
+              <a
+                href={companyInfo.emailHref}
+                className="group card flex items-start gap-4"
+              >
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-navy-600 transition-colors group-hover:bg-navy-600 group-hover:text-white">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Correo</p>
+                  <p className="mt-1 text-sm font-semibold text-slate-900 break-all">{companyInfo.email}</p>
+                </div>
+              </a>
+
+              <div className="card flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-navy-50 text-navy-600">
+                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Dirección</p>
+                  <p className="mt-1 text-base font-semibold text-slate-900">{companyInfo.address}</p>
+                </div>
+              </div>
+
+              {/* Map */}
+              <div className="flex-1 overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
+                <iframe
+                  src={companyInfo.mapsEmbed}
+                  title={`Mapa de ${companyInfo.shortName}`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0, minHeight: "220px" }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                />
+              </div>
             </div>
           </div>
         </div>

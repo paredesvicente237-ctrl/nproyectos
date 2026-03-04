@@ -2,98 +2,78 @@ import Image from "next/image";
 import { siteAssets } from "@/components/siteAssets";
 
 const equipment = [
-  "Corte láser 12 mm",
-  "Corte guillotina 6 mm",
-  "Plegadoras 6 mm",
-  "Curvado de tubos",
-  "Soldadura Mig / Tig",
-  "Soldadura láser",
+  { name: "Corte Láser", spec: "12 mm" },
+  { name: "Corte Guillotina", spec: "6 mm" },
+  { name: "Plegadoras", spec: "6 mm" },
+  { name: "Curvado de Tubos", spec: "" },
+  { name: "Soldadura MIG/TIG", spec: "" },
+  { name: "Soldadura Láser", spec: "" },
 ];
 
 const materials = [
-  "Acero carbono",
-  "Acero inoxidable",
-  "Galvanizado",
-  "Diamantado",
-  "Perforado",
-  "Bronce",
-  "Aluminio",
-  "Cobre",
+  "Acero carbono", "Acero inoxidable", "Galvanizado", "Diamantado",
+  "Perforado", "Bronce", "Aluminio", "Cobre",
 ];
 
 export default function Equipment() {
   return (
-    <section id="equipamiento" className="section-padding">
-      <div className="container-custom grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="panel p-7 sm:p-10">
-          <span className="eyebrow">Nuestro equipamiento</span>
-          <h2 className="mt-5 font-heading text-4xl font-bold leading-tight text-steel-950 sm:text-5xl">
-            Capacidad instalada para proyectos de fabricación, corte y
-            soldadura.
-          </h2>
-          <p className="mt-6 text-lg leading-8 text-industrial-500">
-            La operación se respalda con equipamiento apto para trabajos en
-            aceros, más personal calificado y certificado con experiencia en
-            armado y soldadura.
-          </p>
-
-          <div className="mt-8 grid gap-3 sm:grid-cols-2">
-            {equipment.map((item) => (
-              <div
-                key={item}
-                className="rounded-2xl border border-industrial-200 bg-industrial-50 px-4 py-4 text-sm font-semibold text-steel-950"
-              >
-                {item}
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-8 rounded-3xl border border-industrial-200 bg-white p-6">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
-              Materiales de trabajo
+    <section id="equipamiento" className="section-padding bg-white">
+      <div className="container-custom">
+        <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
+          {/* Info side */}
+          <div>
+            <span className="eyebrow">Equipamiento</span>
+            <h2 className="mt-4 text-4xl font-extrabold sm:text-5xl">
+              Capacidad instalada
+            </h2>
+            <p className="mt-4 text-lg text-slate-500">
+              Personal calificado y certificado con amplia experiencia en
+              trabajos de armado y soldadura.
             </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              {materials.map((item) => (
-                <span key={item} className="soft-chip">
-                  {item}
-                </span>
+
+            <div className="mt-10 grid gap-3 sm:grid-cols-2">
+              {equipment.map((item) => (
+                <div
+                  key={item.name}
+                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 px-5 py-4"
+                >
+                  <span className="text-sm font-medium text-slate-700">
+                    {item.name}
+                  </span>
+                  {item.spec && (
+                    <span className="rounded-lg bg-navy-50 px-3 py-1 text-sm font-bold text-navy-600">
+                      {item.spec}
+                    </span>
+                  )}
+                </div>
               ))}
             </div>
-          </div>
-        </div>
 
-        <div className="grid gap-5">
-          <div className="panel overflow-hidden p-3">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-[1.6rem]">
-              <Image
-                src={siteAssets.pressBrakeWide}
-                alt="Maquinaria de plegado industrial"
-                className="h-full w-full object-cover"
-                sizes="(max-width: 1280px) 100vw, 40vw"
-              />
+            <div className="mt-8 rounded-2xl bg-slate-50 p-6">
+              <p className="text-sm font-bold text-slate-900">
+                Materiales de trabajo
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {materials.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-600"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <div className="panel overflow-hidden p-3">
-              <div className="relative aspect-square overflow-hidden rounded-[1.6rem]">
-                <Image
-                  src={siteAssets.bracketProduct}
-                  alt="Pieza fabricada en acero"
-                  className="h-full w-full object-cover"
-                  sizes="(max-width: 1280px) 100vw, 20vw"
-                />
-              </div>
-            </div>
-            <div className="panel overflow-hidden p-3">
-              <div className="relative aspect-square overflow-hidden rounded-[1.6rem]">
-                <Image
-                  src={siteAssets.cadProject}
-                  alt="Diseño de proyecto industrial"
-                  className="h-full w-full object-cover"
-                  sizes="(max-width: 1280px) 100vw, 20vw"
-                />
-              </div>
-            </div>
+
+          {/* Single image */}
+          <div className="overflow-hidden rounded-3xl shadow-lg">
+            <Image
+              src={siteAssets.goodGuillotine}
+              alt="Guillotina de corte industrial"
+              className="aspect-[16/10] w-full object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
           </div>
         </div>
       </div>

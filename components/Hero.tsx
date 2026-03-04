@@ -1,173 +1,69 @@
 import Image from "next/image";
-import { siteAssets } from "@/components/siteAssets";
-import { companyInfo } from "@/components/siteData";
-
-const impactStats = [
-  { value: "Clientes", detail: "Minería, manufactura, industria y construcción" },
-  { value: "12 mm", detail: "Capacidad de corte láser en acero" },
-  { value: "6 mm", detail: "Corte guillotina y plegado de alta precisión" },
-  { value: "Mig / Tig / Láser", detail: "Procesos de soldadura para soluciones robustas" },
-];
-
-const quickProof = [
-  "Desarrollo y suministro de piezas, partes y soluciones metálicas.",
-  "Apoyo en diseño CAD / INVENTOR y optimización de materiales.",
-  "Personal calificado y certificado para armado y soldadura.",
-];
+import { stock } from "@/components/stockImages";
 
 export default function Hero() {
   return (
-    <section id="inicio" className="relative overflow-hidden bg-steel-950 pt-32 sm:pt-36">
-      <div className="absolute inset-0">
-        <Image
-          src={siteAssets.pressBrakeWide}
-          alt=""
-          fill
-          priority
-          className="object-cover opacity-20"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(8,17,26,0.95),rgba(8,17,26,0.88)_40%,rgba(8,17,26,0.96))]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,184,244,0.2),transparent_35%),radial-gradient(circle_at_bottom_left,rgba(20,184,166,0.12),transparent_30%)]" />
-        <div className="absolute inset-0 grid-surface opacity-30" />
-      </div>
+    <section id="inicio" className="relative min-h-screen overflow-hidden">
+      {/* Background image */}
+      <Image
+        src={stock.heroWelding}
+        alt=""
+        fill
+        priority
+        className="object-cover"
+        sizes="100vw"
+      />
 
-      <div className="relative container-custom section-padding">
-        <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
-          <div>
-            <span className="eyebrow-dark">Maestranza, fabricación y proyectos en acero</span>
-            <h1 className="mt-6 max-w-4xl font-heading text-5xl font-bold leading-[0.96] text-white sm:text-6xl lg:text-7xl">
-              Soluciones metálicas con ingeniería, fabricación y plazos que sí
-              responden.
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/80 to-slate-900/60" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-slate-950/30" />
+
+      {/* Content */}
+      <div className="relative flex min-h-screen items-center">
+        <div className="container-custom px-5 sm:px-8 lg:px-10">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/10 px-5 py-2.5 backdrop-blur-md">
+              <span className="h-2 w-2 rounded-full bg-navy-400 animate-pulse" />
+              <span className="text-sm font-medium text-white/90">
+                Maestranza & Fabricación Industrial
+              </span>
+            </div>
+
+            <h1 className="mt-8 text-5xl font-extrabold leading-[1.08] text-white sm:text-6xl lg:text-7xl">
+              Soluciones en acero con{" "}
+              <span className="text-navy-400">precisión industrial</span>
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-8 text-industrial-200 sm:text-xl">
-              {companyInfo.shortName} desarrolla y fabrica piezas, partes y
-              proyectos en aceros para clientes que necesitan ejecución seria,
-              soporte técnico y una relación consistente entre precio, calidad y
-              entrega.
+
+            <p className="mt-7 max-w-xl text-lg leading-relaxed text-slate-300">
+              Fabricamos piezas, estructuras y proyectos para minería,
+              manufactura e industria. Ejecución profesional, soporte técnico
+              y plazos que se cumplen.
             </p>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={companyInfo.whatsappHref} className="btn-primary">
-                Cotizar por WhatsApp
+            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+              <a href="#contacto" className="btn-primary !bg-navy-500 !py-4 !px-8 !text-base !shadow-xl !shadow-navy-500/30">
+                Solicitar Cotización
               </a>
-              <a
-                href="#contacto"
-                className="btn-secondary border-white/15 text-white hover:border-accent hover:text-accent"
-              >
-                Solicitar propuesta por correo
+              <a href="#especialidades" className="btn-white !py-4 !px-8 !text-base">
+                Ver Servicios
               </a>
             </div>
 
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              <a href={companyInfo.phoneHref} className="dark-chip">
-                <span className="text-xs uppercase tracking-[0.2em] text-industrial-400">
-                  Teléfono
-                </span>
-                <span className="mt-1 block text-sm font-semibold text-white">
-                  {companyInfo.phoneDisplay}
-                </span>
-              </a>
-              <a href={companyInfo.emailHref} className="dark-chip">
-                <span className="text-xs uppercase tracking-[0.2em] text-industrial-400">
-                  Correo
-                </span>
-                <span className="mt-1 block text-sm font-semibold text-white">
-                  ventasnproyectosltda
-                </span>
-              </a>
-              <a href="#contacto" className="dark-chip">
-                <span className="text-xs uppercase tracking-[0.2em] text-industrial-400">
-                  Ubicación
-                </span>
-                <span className="mt-1 block text-sm font-semibold text-white">
-                  Av. Yungay 743
-                </span>
-              </a>
-            </div>
-
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              {impactStats.map((item) => (
-                <div
-                  key={item.value}
-                  className="rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm"
-                >
-                  <p className="font-heading text-3xl font-bold text-accent">
-                    {item.value}
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-industrial-200">
-                    {item.detail}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="space-y-5">
-            <div className="dark-panel overflow-hidden">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-[1.6rem]">
-                <Image
-                  src={siteAssets.foldedProfile}
-                  alt="Plegado industrial de piezas metálicas"
-                  className="h-full w-full object-cover"
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                />
+            {/* Trust indicators */}
+            <div className="mt-14 flex flex-wrap items-center gap-8 border-t border-white/10 pt-8">
+              <div>
+                <p className="text-3xl font-bold text-white">12mm</p>
+                <p className="mt-0.5 text-sm text-slate-400">Corte Láser</p>
               </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-industrial-400">
-                    Cobertura
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-industrial-200">
-                    Suministro de piezas, desarrollo y fabricación para
-                    requerimientos industriales y especiales.
-                  </p>
-                </div>
-                <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
-                  <p className="text-xs uppercase tracking-[0.2em] text-industrial-400">
-                    Entrega
-                  </p>
-                  <p className="mt-2 text-sm leading-6 text-industrial-200">
-                    Producción planificada para cumplir especificaciones y plazos
-                    competitivos.
-                  </p>
-                </div>
+              <div className="h-10 w-px bg-white/10" />
+              <div>
+                <p className="text-3xl font-bold text-white">MIG/TIG</p>
+                <p className="mt-0.5 text-sm text-slate-400">Soldadura</p>
               </div>
-            </div>
-
-            <div className="grid gap-5 sm:grid-cols-[1.05fr_0.95fr]">
-              <div className="dark-panel p-5">
-                <p className="text-xs uppercase tracking-[0.22em] text-industrial-400">
-                  Lo que espera tu operación
-                </p>
-                <div className="mt-4 space-y-4">
-                  {quickProof.map((item) => (
-                    <div key={item} className="flex gap-3">
-                      <span className="mt-1.5 h-2.5 w-2.5 rounded-full bg-accent" />
-                      <p className="text-sm leading-6 text-industrial-200">{item}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.04] p-2">
-                <div className="relative h-full min-h-[18rem] overflow-hidden rounded-[1.45rem]">
-                  <Image
-                    src={siteAssets.weldingWork}
-                    alt="Proceso de soldadura sobre estructura metálica"
-                    className="h-full w-full object-cover"
-                    sizes="(max-width: 1024px) 100vw, 30vw"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-steel-950 via-steel-950/50 to-transparent p-5">
-                    <p className="font-heading text-2xl font-semibold text-white">
-                      Fabricación integral
-                    </p>
-                    <p className="mt-2 text-sm leading-6 text-industrial-200">
-                      Armado, soldadura y terminación para soluciones listas para
-                      instalación.
-                    </p>
-                  </div>
-                </div>
+              <div className="h-10 w-px bg-white/10" />
+              <div>
+                <p className="text-3xl font-bold text-white">CAD</p>
+                <p className="mt-0.5 text-sm text-slate-400">Ingeniería</p>
               </div>
             </div>
           </div>
