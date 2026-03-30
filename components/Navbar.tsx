@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
 import { companyInfo, navLinks } from "@/components/siteData";
@@ -27,8 +28,8 @@ export default function Navbar() {
       <div className="container-custom px-5 sm:px-8 lg:px-10">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <a
-            href="#inicio"
+          <Link
+            href="/"
             className="flex items-center gap-3"
             aria-label={`Ir al inicio de ${companyInfo.shortName}`}
           >
@@ -40,23 +41,26 @@ export default function Navbar() {
                 className="h-9 w-auto object-contain sm:h-11"
               />
             </div>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <div className="hidden items-center gap-8 xl:flex">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  isScrolled
-                    ? "text-slate-600 hover:text-navy-600"
-                    : "text-white/90 hover:text-white"
-                }`}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const cls = `text-sm font-medium transition-colors ${
+                isScrolled
+                  ? "text-slate-600 hover:text-navy-600"
+                  : "text-white/90 hover:text-white"
+              }`;
+              return link.href.startsWith("/") ? (
+                <Link key={link.href} href={link.href} className={cls}>
+                  {link.label}
+                </Link>
+              ) : (
+                <a key={link.href} href={link.href} className={cls}>
+                  {link.label}
+                </a>
+              );
+            })}
           </div>
 
           {/* Spacer for alignment when no CTA */}
@@ -92,16 +96,29 @@ export default function Navbar() {
         >
           <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xl">
             <div className="flex flex-col gap-1">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-xl px-4 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-navy-50 hover:text-navy-600"
-                >
-                  {link.label}
-                </a>
-              ))}
+              {navLinks.map((link) => {
+                const cls =
+                  "rounded-xl px-4 py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-navy-50 hover:text-navy-600";
+                return link.href.startsWith("/") ? (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cls}
+                  >
+                    {link.label}
+                  </Link>
+                ) : (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cls}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
               <a href={companyInfo.phoneHref} className="btn-outline justify-center">

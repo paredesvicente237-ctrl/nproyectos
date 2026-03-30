@@ -20,5 +20,6 @@ export const navLinks = [
   { label: "Proceso", href: "#proceso" },
   { label: "Equipamiento", href: "#equipamiento" },
   { label: "Trabajos", href: "#trabajos" },
+  { label: "Productos", href: "/productos" },
   { label: "Contacto", href: "#contacto" },
 ];

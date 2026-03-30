@@ -55,8 +55,9 @@ export default function About() {
             <p className="mt-6 text-lg leading-relaxed text-slate-500">
               Nproyectos está compuesto por un equipo de profesionales con amplia
               experiencia en el rubro de servicios metalmecánicos. El alcance
-              de nuestros proyectos abarca clientes de sectores mineros,
-              industria y manufactura, ofreciendo productos y servicios.
+              de nuestros proyectos abarca clientes de sectores como minería,
+              fabricación de piezas, industria y construcción, ofreciendo
+              productos y servicios según requerimientos.
             </p>
 
             {/* Values grid */}
