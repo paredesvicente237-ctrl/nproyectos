@@ -27,7 +27,7 @@ const values = [
       </svg>
     ),
     title: "Plazos competitivos",
-    text: "Producción planificada con foco en cumplimiento.",
+    text: "Producción planificada.",
   },
   {
     icon: (
