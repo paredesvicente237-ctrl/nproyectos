@@ -2,9 +2,9 @@ import Image from "next/image";
 import { siteAssets } from "@/components/siteAssets";
 
 const equipment = [
-  { name: "Corte Láser", spec: "12 mm" },
-  { name: "Corte Guillotina", spec: "6 mm" },
-  { name: "Plegadoras", spec: "6 mm" },
+  { name: "Corte Láser", spec: "" },
+  { name: "Corte Guillotina", spec: "" },
+  { name: "Plegadoras", spec: "" },
   { name: "Curvado de Tubos", spec: "" },
   { name: "Soldadura MIG/TIG", spec: "" },
   { name: "Soldadura Láser", spec: "" },

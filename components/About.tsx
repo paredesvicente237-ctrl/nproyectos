@@ -17,8 +17,8 @@ const values = [
         <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085" />
       </svg>
     ),
-    title: "Trabajo desde plano o modelo",
-    text: "Desde diseño técnico hasta el requerimiento funcional.",
+    title: "Trabajo desde diseños, planos y prototipos",
+    text: "Desde el diseño técnico hasta el requerimiento funcional.",
   },
   {
     icon: (
@@ -47,17 +47,17 @@ export default function About() {
         <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
           {/* Text side */}
           <div>
-            <span className="eyebrow">Quiénes Somos</span>
+            <span className="eyebrow">Metalmecánica</span>
             <h2 className="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl">
               Maestranza enfocada en{" "}
-              <span className="text-navy-600">soluciones que funcionan</span>
+              <span className="text-navy-600">soluciones a tus proyectos</span>
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-500">
-              Nproyectos está compuesto por un grupo de profesionales de amplia
-              experiencia en el rubro de los servicios de maestranza. El alcance
-              de nuestros proyectos abarca clientes de sectores como minería,
-              manufactura, industria y construcción, ofreciendo productos y
-              servicios de la mejor relación precio/calidad/plazo.
+              Nproyectos está compuesto por un equipo de profesionales con amplia
+              experiencia en el rubro de los servicios metalmecánicos. El alcance
+              de nuestros proyectos abarca clientes de sectores de minería,
+              fabricación de piezas, industria y construcción, ofreciendo
+              productos y servicios según requerimientos.
             </p>
 
             {/* Values grid */}

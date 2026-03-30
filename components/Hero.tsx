@@ -30,14 +30,14 @@ export default function Hero() {
             </div>
 
             <h1 className="mt-8 text-5xl font-extrabold leading-[1.08] text-white sm:text-6xl lg:text-7xl">
-              Soluciones en acero con{" "}
-              <span className="text-navy-400">precisión industrial</span>
+              Servicios y{" "}
+              <span className="text-navy-400">soluciones a tus proyectos</span>
             </h1>
 
             <p className="mt-7 max-w-xl text-lg leading-relaxed text-slate-300">
               Fabricamos piezas, estructuras y proyectos para minería,
-              manufactura e industria. Ejecución profesional, soporte técnico
-              y plazos que se cumplen.
+              manufactura e industria. Ejecución profesional y plazos que se
+              cumplen.
             </p>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -52,17 +52,16 @@ export default function Hero() {
             {/* Trust indicators */}
             <div className="mt-14 flex flex-wrap items-center gap-8 border-t border-white/10 pt-8">
               <div>
-                <p className="text-3xl font-bold text-white">12mm</p>
-                <p className="mt-0.5 text-sm text-slate-400">Corte Láser</p>
+                <p className="text-2xl font-bold text-white">Corte Láser</p>
               </div>
               <div className="h-10 w-px bg-white/10" />
               <div>
-                <p className="text-3xl font-bold text-white">MIG/TIG</p>
+                <p className="text-2xl font-bold text-white">MIG/TIG</p>
                 <p className="mt-0.5 text-sm text-slate-400">Soldadura</p>
               </div>
               <div className="h-10 w-px bg-white/10" />
               <div>
-                <p className="text-3xl font-bold text-white">CAD</p>
+                <p className="text-2xl font-bold text-white">CAD</p>
                 <p className="mt-0.5 text-sm text-slate-400">Ingeniería</p>
               </div>
             </div>

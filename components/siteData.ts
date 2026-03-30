@@ -4,8 +4,8 @@ export const companyInfo = {
   tagline: "Servicios y Proyectos en Aceros",
   phoneDisplay: "+56 9 50107432",
   phoneHref: "tel:+56950107432",
-  email: "ventasnproyectosltda@gmail.com",
-  emailHref: "mailto:ventasnproyectosltda@gmail.com",
+  email: "nproyectosltda@gmail.com",
+  emailHref: "mailto:nproyectosltda@gmail.com",
   address: "Av. Yungay 743, La Granja",
   whatsappHref:
     "https://wa.me/56950107432?text=Hola%2C%20quiero%20cotizar%20un%20proyecto%20con%20N%20Proyectos%20Ltda.",

@@ -1,7 +1,7 @@
 import About from "@/components/About";
 import Contact from "@/components/Contact";
 import Equipment from "@/components/Equipment";
-import FeaturedProduct from "@/components/FeaturedProduct";
+
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
@@ -19,7 +19,7 @@ export default function Home() {
         <Services />
         <Process />
         <Equipment />
-        <FeaturedProduct />
+
         <Contact />
       </main>
       <Footer />
