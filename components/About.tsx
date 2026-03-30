@@ -49,15 +49,14 @@ export default function About() {
           <div>
             <span className="eyebrow">Metalmecánica</span>
             <h2 className="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl">
-              Maestranza enfocada en{" "}
+              Metalmecánica enfocada en{" "}
               <span className="text-navy-600">soluciones a tus proyectos</span>
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-slate-500">
               Nproyectos está compuesto por un equipo de profesionales con amplia
-              experiencia en el rubro de los servicios metalmecánicos. El alcance
-              de nuestros proyectos abarca clientes de sectores de minería,
-              fabricación de piezas, industria y construcción, ofreciendo
-              productos y servicios según requerimientos.
+              experiencia en el rubro de servicios metalmecánicos. El alcance
+              de nuestros proyectos abarca clientes de sectores mineros,
+              industria y manufactura, ofreciendo productos y servicios.
             </p>
 
             {/* Values grid */}
