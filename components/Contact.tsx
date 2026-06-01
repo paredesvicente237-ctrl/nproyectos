@@ -33,6 +33,8 @@ export default function Contact() {
   const [form, setForm] = useState<FormState>(initialState);
   const [feedback, setFeedback] = useState("");
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -40,28 +42,35 @@ export default function Contact() {
     setForm((current) => ({ ...current, [name]: value }));
   };
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!form.name || !form.email || !form.message) {
       setFeedback("Completa nombre, correo y el detalle del requerimiento.");
       return;
     }
 
-    const subject = `Solicitud de cotización - ${form.service || "Proyecto en acero"}`;
-    const body = [
-      `Nombre: ${form.name}`,
-      `Empresa: ${form.company || "No indicada"}`,
-      `Correo: ${form.email}`,
-      `Teléfono: ${form.phone || "No indicado"}`,
-      `Servicio: ${form.service || "No especificado"}`,
-      "",
-      "Detalle del requerimiento:",
-      form.message,
-    ].join("\n");
+    setIsSubmitting(true);
+    setFeedback("Enviando cotización...");
 
-    const mailtoUrl = `${companyInfo.emailHref}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setFeedback("Se abrirá tu cliente de correo con la información prellenada.");
-    window.location.href = mailtoUrl;
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      if (response.ok) {
+        setFeedback("¡Gracias! Hemos recibido tu requerimiento y te contactaremos pronto.");
+        setForm(initialState);
+      } else {
+        const errorData = await response.json();
+        setFeedback(errorData.error?.message || "Hubo un error al enviar el formulario. Inténtalo más tarde.");
+      }
+    } catch (error) {
+      setFeedback("Error de conexión. Por favor, revisa tu internet o intenta más tarde.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -90,6 +99,7 @@ export default function Contact() {
                       id="name" name="name" value={form.name}
                       onChange={onChange} className="form-input"
                       placeholder="Nombre completo"
+                      disabled={isSubmitting}
                     />
                   </div>
                   <div>
@@ -98,6 +108,7 @@ export default function Contact() {
                       id="company" name="company" value={form.company}
                       onChange={onChange} className="form-input"
                       placeholder="Razón social"
+                      disabled={isSubmitting}
                     />
                   </div>
                 </div>
@@ -109,6 +120,7 @@ export default function Contact() {
                       id="email" name="email" type="email" value={form.email}
                       onChange={onChange} className="form-input"
                       placeholder="correo@empresa.cl"
+                      disabled={isSubmitting}
                     />
                   </div>
                   <div>
@@ -117,6 +129,7 @@ export default function Contact() {
                       id="phone" name="phone" value={form.phone}
                       onChange={onChange} className="form-input"
                       placeholder="+56 9 ..."
+                      disabled={isSubmitting}
                     />
                   </div>
                 </div>
@@ -126,6 +139,7 @@ export default function Contact() {
                   <select
                     id="service" name="service" value={form.service}
                     onChange={onChange} className="form-input"
+                    disabled={isSubmitting}
                   >
                     <option value="">Selecciona un área</option>
                     {services.map((item) => (
@@ -140,14 +154,23 @@ export default function Contact() {
                     id="message" name="message" rows={4} value={form.message}
                     onChange={onChange} className="form-input resize-none"
                     placeholder="Describe piezas, cantidades, material, espesores, plazos..."
+                    disabled={isSubmitting}
                   />
                 </div>
 
-                <button type="submit" className="btn-primary w-full !py-4 !text-base">
-                  <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                <button 
+                  type="submit" 
+                  className="btn-primary w-full !py-4 !text-base disabled:opacity-50"
+                  disabled={isSubmitting}
+                >
+                  <svg className={`h-5 w-5 ${isSubmitting ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+                    {isSubmitting ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    )}
                   </svg>
-                  Enviar Cotización
+                  {isSubmitting ? "Enviando..." : "Enviar Cotización"}
                 </button>
 
                 {feedback && (
