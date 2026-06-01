@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Servicios y proyectos en aceros para minería, manufactura, industria y construcción. Corte, plegado, armado, soldadura y apoyo técnico para fabricación industrial.",
   keywords: [
-    "maestranza",
+    "metalmecánica",
     "fabricación en acero",
     "corte láser",
     "corte guillotina",

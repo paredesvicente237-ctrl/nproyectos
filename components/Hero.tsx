@@ -25,7 +25,7 @@ export default function Hero() {
             <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/10 px-5 py-2.5 backdrop-blur-md">
               <span className="h-2 w-2 rounded-full bg-navy-400 animate-pulse" />
               <span className="text-sm font-medium text-white/90">
-                Maestranza & Fabricación Industrial
+                Metalmecánica & Fabricación Industrial
               </span>
             </div>
 
