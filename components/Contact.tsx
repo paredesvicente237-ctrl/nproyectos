@@ -60,7 +60,7 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        setFeedback("¡Gracias! Hemos recibido tu requerimiento y te contactaremos pronto.");
+        setFeedback("success");
         setForm(initialState);
       } else {
         const errorData = await response.json();
@@ -89,8 +89,30 @@ export default function Contact() {
 
         <div className="mx-auto mt-14 max-w-5xl">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-            {/* Form */}
-            <div className="rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 sm:p-10">
+            {/* Form Container */}
+            <div className="relative overflow-hidden rounded-3xl border border-slate-100 bg-white p-8 shadow-xl shadow-slate-200/50 sm:p-10">
+              
+              {/* Success Message Overlay */}
+              {feedback === "success" && (
+                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/95 p-8 text-center animate-in fade-in zoom-in duration-500">
+                  <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-600 shadow-lg shadow-green-100/50 animate-bounce">
+                    <svg className="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900">¡Mensaje Enviado!</h3>
+                  <p className="mt-2 text-lg text-slate-600">
+                    Gracias por contactarnos. Hemos recibido tu requerimiento y te contactaremos a la brevedad.
+                  </p>
+                  <button 
+                    onClick={() => setFeedback("")}
+                    className="mt-8 text-sm font-semibold text-navy-600 hover:text-navy-700 underline underline-offset-4"
+                  >
+                    Enviar otro mensaje
+                  </button>
+                </div>
+              )}
+
               <form onSubmit={onSubmit} className="space-y-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
