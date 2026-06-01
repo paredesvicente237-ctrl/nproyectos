@@ -16,7 +16,7 @@ export async function POST(request: Request) {
 
     const { data, error } = await resend.emails.send({
       from: "N Proyectos <onboarding@resend.dev>", // Cambiar a dominio verificado si existe
-      to: ["nproyectosltda@gmail.com"],
+      to: ["sebaceronu@gmail.com"],
       subject: `Nuevo requerimiento: ${service || "General"}`,
       replyTo: email,
       text: `
