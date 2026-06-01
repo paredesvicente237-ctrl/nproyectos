@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       from: "N Proyectos <onboarding@resend.dev>", // Cambiar a dominio verificado si existe
       to: ["nproyectosltda@gmail.com"],
       subject: `Nuevo requerimiento: ${service || "General"}`,
-      reply_to: email,
+      replyTo: email,
       text: `
         Nombre: ${name}
         Empresa: ${company || "No indicada"}
