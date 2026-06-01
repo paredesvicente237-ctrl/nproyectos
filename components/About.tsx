@@ -79,7 +79,7 @@ export default function About() {
               ))}
             </div>
 
-            <a href="#contacto" className="btn-outline mt-10">
+            <a href="/#contacto" className="btn-outline mt-10">
               Contáctanos
             </a>
           </div>

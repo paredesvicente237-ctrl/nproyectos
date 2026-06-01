@@ -14,10 +14,10 @@ export const companyInfo = {
 };
 
 export const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Quiénes Somos", href: "#nosotros" },
-  { label: "Especialidades", href: "#especialidades" },
-  { label: "Equipamiento", href: "#equipamiento" },
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Quiénes Somos", href: "/#nosotros" },
+  { label: "Especialidades", href: "/#especialidades" },
+  { label: "Equipamiento", href: "/#equipamiento" },
   { label: "Productos", href: "/productos" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Contacto", href: "/#contacto" },
 ];

@@ -41,10 +41,10 @@ export default function Hero() {
             </p>
 
             <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <a href="#contacto" className="btn-primary !bg-navy-500 !py-4 !px-8 !text-base !shadow-xl !shadow-navy-500/30">
+              <a href="/#contacto" className="btn-primary !bg-navy-500 !py-4 !px-8 !text-base !shadow-xl !shadow-navy-500/30">
                 Solicitar Cotización
               </a>
-              <a href="#especialidades" className="btn-white !py-4 !px-8 !text-base">
+              <a href="/#especialidades" className="btn-white !py-4 !px-8 !text-base">
                 Ver Servicios
               </a>
             </div>
