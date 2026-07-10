@@ -196,7 +196,12 @@ export default function CotizadorPage() {
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-300 print:text-slate-500">N Proyectos Ltda.</p>
             <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">Cotizador técnico</h1>
           </div>
-          <Link href="/" className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10 print:hidden">Volver al sitio</Link>
+          <div className="flex gap-2 print:hidden">
+            <Link href="/" className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10">Volver al sitio</Link>
+            <form action="/api/auth/logout" method="post">
+              <button className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-navy-800 hover:bg-blue-50">Cerrar sesión</button>
+            </form>
+          </div>
         </div>
       </header>
 
