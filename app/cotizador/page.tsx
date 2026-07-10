@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
 
 type Mode = "con" | "sin";
@@ -145,12 +145,22 @@ const fieldNames = { largo: "Largo", ancho: "Ancho", alto: "Alto" };
 
 export default function CotizadorPage() {
   const [section, setSection] = useState<Section>("campanas");
-  const [client, setClient] = useState({ nombre: "", proyecto: "", telefono: "", email: "" });
+  const [currentUser, setCurrentUser] = useState("Cargando…");
   const [campanaRows, setCampanaRows] = useState(() => initialMeasureRows(campanas));
   const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
   const [unitRows, setUnitRows] = useState(initialUnitRows);
   const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
   const [preparingPdf, setPreparingPdf] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Sesión no válida");
+        return response.json() as Promise<{ user: string }>;
+      })
+      .then(({ user }) => setCurrentUser(user))
+      .catch(() => window.location.assign("/acceso"));
+  }, []);
 
   const quoteLines = useMemo(() => {
     const measured = [
@@ -189,7 +199,6 @@ export default function CotizadorPage() {
     setCampanaRows(initialMeasureRows(campanas));
     setGuillotinaRows(initialMeasureRows(guillotinas));
     setUnitRows(initialUnitRows());
-    setClient({ nombre: "", proyecto: "", telefono: "", email: "" });
     setQuoteNumber(null);
   };
 
@@ -248,13 +257,9 @@ export default function CotizadorPage() {
 
       <div className="mx-auto grid max-w-7xl gap-6 px-5 py-8 lg:grid-cols-[1fr_380px] print:block print:px-0">
         <div className="space-y-6 print:hidden">
-          <section className="rounded-2xl border-2 border-slate-400 bg-white p-5 shadow-md">
-            <div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-600 text-sm font-bold text-white">1</span><h2 className="text-lg font-bold">Datos del cliente</h2></div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {([['nombre', 'Nombre o empresa'], ['proyecto', 'Proyecto'], ['telefono', 'Teléfono'], ['email', 'Correo']] as const).map(([key, label]) => (
-                <label key={key} className="text-sm font-bold text-slate-950">{label}<input className="form-input mt-2 border-slate-400 bg-slate-50 text-slate-950 placeholder:text-slate-600" value={client[key]} onChange={(event) => setClient({ ...client, [key]: event.target.value })} /></label>
-              ))}
-            </div>
+          <section className="flex items-center justify-between gap-4 rounded-2xl border-2 border-slate-400 bg-white p-5 shadow-md">
+            <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">1</span><div><p className="text-xs font-extrabold uppercase tracking-wider text-slate-600">Usuario conectado</p><h2 className="mt-0.5 text-xl font-extrabold text-slate-950">{currentUser}</h2></div></div>
+            <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-extrabold text-emerald-800">Sesión activa</span>
           </section>
 
           <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white shadow-md">
@@ -290,14 +295,14 @@ export default function CotizadorPage() {
         </div>
 
         <aside className="lg:sticky lg:top-6 lg:self-start print:static">
-          <section className="overflow-hidden rounded-2xl border-2 border-navy-950 bg-navy-950 text-white shadow-2xl print:rounded-none print:bg-white print:text-slate-900 print:shadow-none">
-            <div className="border-b border-white/10 p-5 print:border-slate-300 print:px-0"><p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300 print:text-slate-500">Resumen</p><div className="mt-1 flex items-center justify-between gap-3"><h2 className="text-xl font-bold">Cotización</h2><strong className="rounded-lg bg-white px-3 py-1.5 text-sm text-navy-950 print:border print:border-slate-400">N.º {quoteNumber === null ? "Pendiente" : String(quoteNumber).padStart(6, "0")}</strong></div><div className="mt-3 hidden text-sm print:block"><p>Cliente: {client.nombre || '—'}</p><p>Proyecto: {client.proyecto || '—'}</p><p>Teléfono: {client.telefono || '—'} · Correo: {client.email || '—'}</p></div></div>
-            <div className="max-h-[52vh] divide-y divide-white/10 overflow-y-auto print:max-h-none print:divide-slate-200">
-              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm text-slate-300 print:text-slate-500">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-wider text-blue-300 print:text-slate-500">{line.category}</p><p className="mt-1 text-sm font-bold">{line.name}</p><p className="mt-1 text-xs text-slate-300 print:text-slate-500">{line.detail}{line.detail && ' · '}{line.mode === 'con' ? 'Con material' : 'Sin material'} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm">{money(line.total)}</strong></div></div>)}
+          <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white text-slate-950 shadow-2xl print:rounded-none print:shadow-none">
+            <div className="border-b-2 border-slate-300 p-5 print:px-0"><p className="text-xs font-extrabold uppercase tracking-[0.2em] text-navy-700">Resumen</p><div className="mt-1 flex items-center justify-between gap-3"><h2 className="text-xl font-extrabold text-slate-950">Cotización</h2><strong className="rounded-lg border-2 border-navy-800 bg-navy-50 px-3 py-1.5 text-sm text-navy-950">N.º {quoteNumber === null ? "Pendiente" : String(quoteNumber).padStart(6, "0")}</strong></div><p className="mt-3 text-sm font-bold text-slate-700">Usuario: {currentUser}</p></div>
+            <div className="max-h-[52vh] divide-y divide-slate-300 overflow-y-auto print:max-h-none">
+              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.mode === 'con' ? 'Con material' : 'Sin material'} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950">{money(line.total)}</strong></div></div>)}
             </div>
-            <div className="border-t border-white/10 bg-navy-900 p-5 print:border-slate-300 print:bg-white print:px-0">
-              <div className="space-y-2 text-sm"><div className="flex justify-between"><span className="text-slate-300 print:text-slate-600">Subtotal neto</span><strong>{money(subtotal)}</strong></div><div className="flex justify-between"><span className="text-slate-300 print:text-slate-600">IVA 19%</span><strong>{money(iva)}</strong></div><div className="mt-3 flex justify-between border-t border-white/10 pt-3 text-lg print:border-slate-300"><span className="font-bold">Total</span><strong>{money(subtotal + iva)}</strong></div></div>
-              <div className="mt-5 grid gap-2 print:hidden"><button onClick={printQuote} disabled={preparingPdf} className="rounded-xl bg-white px-4 py-3 text-sm font-bold text-navy-800 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60">{preparingPdf ? "Generando folio…" : quoteNumber === null ? "Generar folio e imprimir PDF" : "Imprimir / Guardar PDF"}</button><button onClick={reset} className="rounded-xl border border-white/20 px-4 py-3 text-sm font-bold hover:bg-white/10">Limpiar cotización</button></div>
+            <div className="border-t-2 border-slate-300 bg-slate-50 p-5 print:bg-white print:px-0">
+              <div className="space-y-2 text-sm"><div className="flex justify-between"><span className="font-semibold text-slate-700">Subtotal neto</span><strong className="text-slate-950">{money(subtotal)}</strong></div><div className="flex justify-between"><span className="font-semibold text-slate-700">IVA 19%</span><strong className="text-slate-950">{money(iva)}</strong></div><div className="mt-3 flex justify-between border-t-2 border-slate-400 pt-3 text-lg"><span className="font-extrabold text-slate-950">Total</span><strong className="text-slate-950">{money(subtotal + iva)}</strong></div></div>
+              <div className="mt-5 grid gap-2 print:hidden"><button onClick={printQuote} disabled={preparingPdf} className="rounded-xl bg-navy-900 px-4 py-3 text-sm font-bold text-white hover:bg-navy-800 disabled:cursor-wait disabled:opacity-60">{preparingPdf ? "Generando folio…" : quoteNumber === null ? "Generar folio e imprimir PDF" : "Imprimir / Guardar PDF"}</button><button onClick={reset} className="rounded-xl border-2 border-slate-400 bg-white px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-100">Limpiar cotización</button></div>
             </div>
           </section>
           <p className="mt-3 px-2 text-xs leading-relaxed text-slate-500 print:mt-6 print:px-0">Valores calculados desde la planilla comercial proporcionada. Cotización referencial sujeta a validación técnica y comercial de N Proyectos Ltda.</p>

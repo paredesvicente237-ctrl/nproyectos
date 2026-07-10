@@ -26,16 +26,27 @@ function safeEqual(left: string, right: string) {
   return difference === 0;
 }
 
-export async function createSession(secret: string) {
+export async function createSession(secret: string, username: string) {
   const expiresAt = Math.floor(Date.now() / 1000) + SESSION_DURATION_SECONDS;
-  return `${expiresAt}.${await signature(String(expiresAt), secret)}`;
+  const payload = `${expiresAt}.${encodeURIComponent(username)}`;
+  return `${payload}.${await signature(payload, secret)}`;
+}
+
+export async function getSessionUser(value: string | undefined, secret: string | undefined) {
+  if (!value || !secret) return null;
+  const [expiresAt, encodedUsername, suppliedSignature] = value.split(".");
+  if (!expiresAt || !encodedUsername || !suppliedSignature || Number(expiresAt) <= Math.floor(Date.now() / 1000)) return null;
+  const payload = `${expiresAt}.${encodedUsername}`;
+  if (!safeEqual(suppliedSignature, await signature(payload, secret))) return null;
+  try {
+    return decodeURIComponent(encodedUsername);
+  } catch {
+    return null;
+  }
 }
 
 export async function verifySession(value: string | undefined, secret: string | undefined) {
-  if (!value || !secret) return false;
-  const [expiresAt, suppliedSignature] = value.split(".");
-  if (!expiresAt || !suppliedSignature || Number(expiresAt) <= Math.floor(Date.now() / 1000)) return false;
-  return safeEqual(suppliedSignature, await signature(expiresAt, secret));
+  return (await getSessionUser(value, secret)) !== null;
 }
 
 export const sessionMaxAge = SESSION_DURATION_SECONDS;
