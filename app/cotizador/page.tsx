@@ -39,7 +39,7 @@ const campanas: MeasureProduct[] = [
   },
   {
     id: "conica-mediterranea",
-    name: "Campana cónica + mediterránea",
+    name: "Campana mediterránea",
     fields: ["largo", "ancho", "alto"],
     modes: ["con"],
     calculate: ({ largo, ancho, alto }) => {
@@ -379,7 +379,6 @@ export default function CotizadorPage() {
               <div className="mt-5 grid gap-2 print:hidden"><button onClick={printQuote} disabled={preparingPdf} className="rounded-xl bg-navy-900 px-4 py-3 text-sm font-bold text-white hover:bg-navy-800 disabled:cursor-wait disabled:opacity-60">{preparingPdf ? "Generando folio…" : quoteNumber === null ? "Generar folio e imprimir PDF" : "Imprimir / Guardar PDF"}</button><button onClick={reset} className="rounded-xl border-2 border-slate-400 bg-white px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-100">Limpiar cotización</button></div>
             </div>
           </section>
-          <p className="mt-3 px-2 text-xs leading-relaxed text-slate-500 print:mt-6 print:px-0">Valores calculados desde la planilla comercial proporcionada. Cotización referencial sujeta a validación técnica y comercial de N Proyectos Ltda.</p>
         </aside>
       </div>
     </main>
