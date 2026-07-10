@@ -189,12 +189,12 @@ export default function CotizadorPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-100 text-slate-900">
-      <header className="bg-navy-800 px-5 py-6 text-white print:bg-white print:px-0 print:text-slate-900">
+    <main className="min-h-screen bg-slate-200 text-slate-950">
+      <header className="border-b-4 border-amber-400 bg-navy-950 px-5 py-6 text-white shadow-xl print:bg-white print:px-0 print:text-slate-900">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-300 print:text-slate-500">N Proyectos Ltda.</p>
-            <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">Cotizador técnico</h1>
+            <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-amber-300 print:text-slate-700">N Proyectos Ltda.</p>
+            <h1 className="mt-1 text-2xl font-extrabold text-white sm:text-3xl">Cotizador Varvacoa</h1>
           </div>
           <div className="flex gap-2 print:hidden">
             <Link href="/" className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10">Volver al sitio</Link>
@@ -207,19 +207,19 @@ export default function CotizadorPage() {
 
       <div className="mx-auto grid max-w-7xl gap-6 px-5 py-8 lg:grid-cols-[1fr_380px] print:block print:px-0">
         <div className="space-y-6 print:hidden">
-          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <section className="rounded-2xl border-2 border-slate-400 bg-white p-5 shadow-md">
             <div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-600 text-sm font-bold text-white">1</span><h2 className="text-lg font-bold">Datos del cliente</h2></div>
             <div className="grid gap-4 sm:grid-cols-2">
               {([['nombre', 'Nombre o empresa'], ['proyecto', 'Proyecto'], ['telefono', 'Teléfono'], ['email', 'Correo']] as const).map(([key, label]) => (
-                <label key={key} className="text-sm font-semibold text-slate-700">{label}<input className="form-input mt-2" value={client[key]} onChange={(event) => setClient({ ...client, [key]: event.target.value })} /></label>
+                <label key={key} className="text-sm font-bold text-slate-950">{label}<input className="form-input mt-2 border-slate-400 bg-slate-50 text-slate-950 placeholder:text-slate-600" value={client[key]} onChange={(event) => setClient({ ...client, [key]: event.target.value })} /></label>
               ))}
             </div>
           </section>
 
-          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-600 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-bold">Agregar productos</h2><p className="text-sm text-slate-500">Valores netos según la planilla entregada.</p></div></div>
+          <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white shadow-md">
+            <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
-                {([['campanas','Campanas'],['guillotinas','Guillotinas y quincho'],['piezas','Piezas y accesorios']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-bold ${section === id ? 'bg-navy-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>{label}</button>)}
+                {([['campanas','Campanas'],['guillotinas','Guillotinas y quincho'],['piezas','Piezas y accesorios']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
               </div>
             </div>
 
@@ -228,12 +228,12 @@ export default function CotizadorPage() {
                 const group = section as "campanas" | "guillotinas";
                 const row = group === "campanas" ? campanaRows[product.id] : guillotinaRows[product.id];
                 const unitPrice = product.calculate(row, row.mode);
-                return <div key={product.id} className={`p-5 transition-colors ${row.selected ? 'bg-blue-50/60' : ''}`}>
+                return <div key={product.id} className={`p-5 transition-colors ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'}`}>
                   <div className="flex items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasured(group, product.id, { selected: e.target.checked })} /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><h3 className="font-bold">{product.name}</h3>{product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}</div><strong className="text-navy-700">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong></div>
                     <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
-                      {product.fields.map((field) => <label key={field} className="text-xs font-bold text-slate-500">{fieldNames[field]} (mm)<input type="number" min="0" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-800 outline-none focus:border-navy-500" value={row[field] || ''} onChange={(e) => updateMeasured(group, product.id, { [field]: Number(e.target.value) })} /></label>)}
-                      <label className="text-xs font-bold text-slate-500">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" value={row.quantity} onChange={(e) => updateMeasured(group, product.id, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
-                      <label className="text-xs font-bold text-slate-500">Modalidad<select className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2" value={row.mode} onChange={(e) => updateMeasured(group, product.id, { mode: e.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
+                      {product.fields.map((field) => <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm)<input type="number" min="0" className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" value={row[field] || ''} onChange={(e) => updateMeasured(group, product.id, { [field]: Number(e.target.value) })} /></label>)}
+                      <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasured(group, product.id, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
+                      <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasured(group, product.id, { mode: e.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
                     </div>
                   </div></div>
                 </div>;
@@ -242,14 +242,14 @@ export default function CotizadorPage() {
               {section === "piezas" && piezas.map(([id, name, withMaterial, withoutMaterial]) => {
                 const row = unitRows[id];
                 const price = row.mode === "con" ? withMaterial : withoutMaterial;
-                return <div key={id} className={`flex flex-col gap-4 p-5 sm:flex-row sm:items-center ${row.selected ? 'bg-blue-50/60' : ''}`}><div className="flex min-w-0 flex-1 items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, selected: e.target.checked } })} /><div><h3 className="font-bold">{name}</h3><p className="text-sm text-slate-500">Unidad: {money(price)}</p></div></div><div className="flex items-end gap-3"><label className="text-xs font-bold text-slate-500">Modalidad<select className="mt-1 rounded-lg border border-slate-200 bg-white px-3 py-2" value={row.mode} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, mode: e.target.value as Mode } })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label><label className="w-20 text-xs font-bold text-slate-500">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" value={row.quantity} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, quantity: Math.max(1, Number(e.target.value)) } })} /></label><strong className="min-w-24 pb-2 text-right text-navy-700">{row.selected ? money(price * row.quantity) : '—'}</strong></div></div>;
+                return <div key={id} className={`flex flex-col gap-4 p-5 sm:flex-row sm:items-center ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'}`}><div className="flex min-w-0 flex-1 items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-800" checked={row.selected} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, selected: e.target.checked } })} /><div><h3 className="font-extrabold text-slate-950">{name}</h3><p className="text-sm font-semibold text-slate-700">Unidad: {money(price)}</p></div></div><div className="flex items-end gap-3"><label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, mode: e.target.value as Mode } })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label><label className="w-20 text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, quantity: Math.max(1, Number(e.target.value)) } })} /></label><strong className="min-w-24 pb-2 text-right text-navy-950">{row.selected ? money(price * row.quantity) : '—'}</strong></div></div>;
               })}
             </div>
           </section>
         </div>
 
         <aside className="lg:sticky lg:top-6 lg:self-start print:static">
-          <section className="overflow-hidden rounded-2xl bg-navy-800 text-white shadow-xl print:rounded-none print:bg-white print:text-slate-900 print:shadow-none">
+          <section className="overflow-hidden rounded-2xl border-2 border-navy-950 bg-navy-950 text-white shadow-2xl print:rounded-none print:bg-white print:text-slate-900 print:shadow-none">
             <div className="border-b border-white/10 p-5 print:border-slate-300 print:px-0"><p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300 print:text-slate-500">Resumen</p><h2 className="mt-1 text-xl font-bold">Cotización</h2><div className="mt-3 hidden text-sm print:block"><p>Cliente: {client.nombre || '—'}</p><p>Proyecto: {client.proyecto || '—'}</p><p>Teléfono: {client.telefono || '—'} · Correo: {client.email || '—'}</p></div></div>
             <div className="max-h-[52vh] divide-y divide-white/10 overflow-y-auto print:max-h-none print:divide-slate-200">
               {quoteLines.length === 0 ? <p className="p-6 text-center text-sm text-slate-300 print:text-slate-500">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-wider text-blue-300 print:text-slate-500">{line.category}</p><p className="mt-1 text-sm font-bold">{line.name}</p><p className="mt-1 text-xs text-slate-300 print:text-slate-500">{line.detail}{line.detail && ' · '}{line.mode === 'con' ? 'Con material' : 'Sin material'} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm">{money(line.total)}</strong></div></div>)}
