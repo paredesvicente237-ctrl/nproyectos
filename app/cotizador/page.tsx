@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
 
 type Mode = "con" | "sin";
-type Section = "campanas" | "guillotinas" | "piezas";
+type Section = "parrillas" | "campanas" | "guillotinas" | "piezas";
 
 type MeasureProduct = {
   id: string;
@@ -112,6 +112,60 @@ const guillotinas: MeasureProduct[] = [
   },
 ];
 
+const parrillas: MeasureProduct[] = [
+  {
+    id: "estructura-inox",
+    name: "Estructura inox",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => 150000 + (mode === "con" ? (largo * ancho * 2 * 8) / 1_000_000 * 15000 : 0),
+  },
+  {
+    id: "estructura-acero",
+    name: "Estructura acero",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => 150000 + (mode === "con" ? (largo * ancho * 2 * 8) / 1_000_000 * 9000 : 0),
+  },
+  {
+    id: "modulo-barra-inox",
+    name: "Módulo barra inox Ø8",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => largo * 50 + 50000 + (mode === "con" ? ((largo + 500) * ancho) / 100000 * 7000 : 0),
+  },
+  {
+    id: "modulo-v-inox",
+    name: "Módulo V 1,5 inox",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => largo * 50 + 50000 + (mode === "con" ? ((largo + 500) * ancho) / 100000 * 6000 : 0),
+  },
+  {
+    id: "separador-parrilla",
+    name: "Separador",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => 7000 + (mode === "con" ? ((ancho + 20) * (largo + 20) * 3 * 8) / 1_000_000 * 3000 : 0),
+  },
+  {
+    id: "frontal-va-inox",
+    name: "Frontal VA 2 mm inox",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => mode === "con" ? ((ancho + 50) * largo * 2 * 8) / 1_000_000 * 15700 : 20000,
+  },
+  {
+    id: "frontal-va-acero",
+    name: "Frontal VA 3 mm acero",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => mode === "con" ? ((ancho + 50) * largo * 3 * 8) / 1_000_000 * 7000 : 20000,
+  },
+  {
+    id: "bandeja-grasa-inox",
+    name: "Bandeja grasa inox",
+    fields: ["largo", "ancho"],
+    calculate: ({ largo, ancho }, mode) => 12000 + (mode === "con" ? ((ancho + 50) * (largo + 60) * 3 * 8) / 1_000_000 * 18000 : 0),
+  },
+  { id: "pata-falsa-inox", name: "Pata falsa inox", fields: [], calculate: (_values, mode) => mode === "con" ? 22000 : 12000 },
+  { id: "pata-falsa-fierro", name: "Pata falsa fierro", fields: [], calculate: (_values, mode) => mode === "con" ? 18000 : 12000 },
+  { id: "manilla-parrilla", name: "Manilla", fields: [], calculate: (_values, mode) => mode === "con" ? 10000 : 5000 },
+];
+
 const piezas = [
   ["alzador-inox", "Alzador 350 mm, 9 piezas — acero inox.", 27000, 21400],
   ["alzador-carbono", "Alzador 350 mm, 9 piezas — acero carbono", 12800, 11200],
@@ -144,10 +198,11 @@ const money = (value: number) =>
 const fieldNames = { largo: "Largo", ancho: "Ancho", alto: "Alto" };
 
 export default function CotizadorPage() {
-  const [section, setSection] = useState<Section>("campanas");
+  const [section, setSection] = useState<Section>("parrillas");
   const [currentUser, setCurrentUser] = useState("Cargando…");
   const [campanaRows, setCampanaRows] = useState(() => initialMeasureRows(campanas));
   const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
+  const [parrillaRows, setParrillaRows] = useState(() => initialMeasureRows(parrillas));
   const [unitRows, setUnitRows] = useState(initialUnitRows);
   const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
   const [preparingPdf, setPreparingPdf] = useState(false);
@@ -164,6 +219,7 @@ export default function CotizadorPage() {
 
   const quoteLines = useMemo(() => {
     const measured = [
+      ...parrillas.map((product) => ({ product, row: parrillaRows[product.id], category: "Parrillas" })),
       ...campanas.map((product) => ({ product, row: campanaRows[product.id], category: "Campanas" })),
       ...guillotinas.map((product) => ({ product, row: guillotinaRows[product.id], category: "Guillotinas y quincho" })),
     ]
@@ -185,19 +241,20 @@ export default function CotizadorPage() {
         return { id, category: "Piezas y accesorios", name, detail: "Precio unitario", mode: row.mode, quantity: row.quantity, total: (row.mode === "con" ? withMaterial : withoutMaterial) * row.quantity };
       });
     return [...measured, ...units];
-  }, [campanaRows, guillotinaRows, unitRows]);
+  }, [campanaRows, guillotinaRows, parrillaRows, unitRows]);
 
   const subtotal = quoteLines.reduce((sum, line) => sum + line.total, 0);
   const iva = subtotal * 0.19;
 
-  const updateMeasured = (group: "campanas" | "guillotinas", id: string, patch: Partial<MeasureRow>) => {
-    const setter = group === "campanas" ? setCampanaRows : setGuillotinaRows;
+  const updateMeasured = (group: "parrillas" | "campanas" | "guillotinas", id: string, patch: Partial<MeasureRow>) => {
+    const setter = group === "parrillas" ? setParrillaRows : group === "campanas" ? setCampanaRows : setGuillotinaRows;
     setter((current) => ({ ...current, [id]: { ...current[id], ...patch } }));
   };
 
   const reset = () => {
     setCampanaRows(initialMeasureRows(campanas));
     setGuillotinaRows(initialMeasureRows(guillotinas));
+    setParrillaRows(initialMeasureRows(parrillas));
     setUnitRows(initialUnitRows());
     setQuoteNumber(null);
   };
@@ -265,14 +322,14 @@ export default function CotizadorPage() {
           <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white shadow-md">
             <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
-                {([['campanas','Campanas'],['guillotinas','Guillotinas y quincho'],['piezas','Piezas y accesorios']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
+                {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Guillotinas y quincho'],['piezas','Piezas y accesorios']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
               </div>
             </div>
 
             <div className="divide-y divide-slate-100">
-              {(section === "campanas" ? campanas : section === "guillotinas" ? guillotinas : []).map((product) => {
-                const group = section as "campanas" | "guillotinas";
-                const row = group === "campanas" ? campanaRows[product.id] : guillotinaRows[product.id];
+              {(section === "parrillas" ? parrillas : section === "campanas" ? campanas : section === "guillotinas" ? guillotinas : []).map((product) => {
+                const group = section as "parrillas" | "campanas" | "guillotinas";
+                const row = group === "parrillas" ? parrillaRows[product.id] : group === "campanas" ? campanaRows[product.id] : guillotinaRows[product.id];
                 const unitPrice = product.calculate(row, row.mode);
                 return <div key={product.id} className={`p-5 transition-colors ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'}`}>
                   <div className="flex items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasured(group, product.id, { selected: e.target.checked })} /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><h3 className="font-bold">{product.name}</h3>{product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}</div><strong className="text-navy-700">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong></div>

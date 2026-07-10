@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function AccesoPage() {
-  const router = useRouter();
   const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -27,8 +25,7 @@ export default function AccesoPage() {
         setError(result.error || "No fue posible iniciar sesión.");
         return;
       }
-      router.replace("/cotizador");
-      router.refresh();
+      window.location.replace("/cotizador");
     } catch {
       setError("No fue posible conectar con el servidor.");
     } finally {
@@ -49,7 +46,7 @@ export default function AccesoPage() {
           <label className="block text-sm font-semibold text-slate-700">Usuario<input autoComplete="username" required className="form-input mt-2" value={usuario} onChange={(event) => setUsuario(event.target.value)} /></label>
           <label className="block text-sm font-semibold text-slate-700">Contraseña<input type="password" autoComplete="current-password" required className="form-input mt-2" value={password} onChange={(event) => setPassword(event.target.value)} /></label>
           {error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
-          <button disabled={loading} className="btn-primary mt-2 w-full disabled:cursor-wait disabled:opacity-60">{loading ? "Ingresando…" : "Ingresar"}</button>
+          <button type="submit" disabled={loading} className="btn-primary mt-2 w-full disabled:cursor-wait disabled:opacity-60">{loading ? "Ingresando…" : "Ingresar"}</button>
         </form>
 
         <Link href="/" className="mt-6 block text-center text-sm font-semibold text-slate-500 hover:text-navy-600">← Volver al sitio</Link>
