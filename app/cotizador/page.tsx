@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
 
 type Mode = "con" | "sin";
-type Section = "parrillas" | "campanas" | "guillotinas" | "piezas";
+type Section = "parrillas" | "campanas" | "guillotinas";
 type MeasureGroup = "parrillas" | "campanas" | "guillotinas";
 
 type MeasureProduct = {
@@ -15,19 +15,19 @@ type MeasureProduct = {
   note?: string;
   fields: ("largo" | "ancho" | "alto")[];
   fixedMeasures?: Partial<Measures>;
+  modes?: Mode[];
   calculate: (values: Measures, mode: Mode) => number;
 };
 
 type Measures = { largo: number; ancho: number; alto: number };
 type MeasureRow = Measures & { quantity: number; mode: Mode; selected: boolean };
-type UnitRow = { quantity: number; mode: Mode; selected: boolean };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
 
 const campanas: MeasureProduct[] = [
   {
     id: "conico-exterior",
-    name: "Cónico exterior",
+    name: "Campana cónica exterior",
     note: "No incluye chimenea",
     fields: ["largo", "ancho", "alto"],
     calculate: ({ largo, ancho, alto }, mode) => {
@@ -39,7 +39,7 @@ const campanas: MeasureProduct[] = [
   },
   {
     id: "conico",
-    name: "Cónico",
+    name: "Campana cónica",
     note: "No incluye chimenea",
     fields: ["largo", "ancho", "alto"],
     calculate: ({ largo, ancho, alto }, mode) => {
@@ -51,7 +51,7 @@ const campanas: MeasureProduct[] = [
   },
   {
     id: "mediterraneo",
-    name: "Mediterráneo",
+    name: "Campana mediterránea",
     fields: ["largo", "ancho", "alto"],
     calculate: ({ largo, ancho, alto }, mode) => {
       const material =
@@ -67,7 +67,16 @@ const campanas: MeasureProduct[] = [
     fields: ["largo", "alto"],
     calculate: ({ largo, alto }, mode) => {
       const material = ((largo * alto * 1.2 * 8) / 1_000_000) * 1.2;
-      return mode === "con" ? material * 3000 : (material / 9.6) * 2 * 10500 * 0.67;
+      return mode === "con" ? material * 2800 : (material / 9.6) * 2 * 10500 * 0.67;
+    },
+  },
+  {
+    id: "faldon-c",
+    name: "Faldón C",
+    fields: ["largo", "alto"],
+    calculate: ({ largo, alto }, mode) => {
+      const material = ((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 + 20;
+      return mode === "con" ? material * 2800 : (material / 9.6) * 2 * 10500 * 0.67;
     },
   },
   {
@@ -75,9 +84,16 @@ const campanas: MeasureProduct[] = [
     name: "Chimenea",
     fields: ["largo", "ancho", "alto"],
     calculate: ({ largo, ancho, alto }, mode) => {
-      const material = ((((largo + ancho) * alto * 1.2 * 8) / 1_000_000) * 2) * 1.67;
+      const material = ((((largo + ancho) * alto * 1.2 * 8) / 1_000_000) * 2) * 1.67 + 10;
       return mode === "con" ? material * 2000 : (material / 9.6) * 2 * 10500 * 0.67;
     },
+  },
+  {
+    id: "porta-ventilador",
+    name: "Porta ventilador",
+    fields: ["largo", "ancho"],
+    modes: ["con"],
+    calculate: ({ largo, ancho }) => (((largo + 200) * ancho * 1.2 * 8) / 1_000_000) * 3500,
   },
 ];
 
@@ -98,7 +114,7 @@ const guillotinas: MeasureProduct[] = [
     id: "puerta-quincho",
     name: "Puerta quincho",
     fields: [],
-    calculate: () => 15000,
+    calculate: (_values, mode) => mode === "con" ? 15000 : 10000,
   },
   {
     id: "estructura-quincho-guillotina",
@@ -172,31 +188,8 @@ const parrillas: MeasureProduct[] = [
   { id: "manilla-parrilla", name: "Manilla", fields: [], calculate: (_values, mode) => mode === "con" ? 10000 : 5000 },
 ];
 
-const piezas = [
-  ["alzador-inox", "Alzador 350 mm, 9 piezas — acero inox.", 27000, 21400],
-  ["alzador-carbono", "Alzador 350 mm, 9 piezas — acero carbono", 12800, 11200],
-  ["bandeja-aza-soldada", "Bandeja parrillera, asa soldada", 58200, 44700],
-  ["bandeja-aza-unida", "Bandeja parrillera, asa unida", 57000, 40385],
-  ["bandeja-pq-abierta", "Bandeja PQ abierta", 60000, 43385],
-  ["bandeja-pq-cerrada", "Bandeja PQ cerrada", 67200, 50585],
-  ["bandeja-dos-quemadores", "Bandeja dos quemadores", 57200, 33200],
-  ["bandeja-un-tercio", "Bandeja 1/3", 60600, 43600],
-  ["bandeja-dos-tercios", "Bandeja 2/3", 74160, 45360],
-  ["bandeja-tres-tercios", "Bandeja 3/3", 98400, 53400],
-  ["frontal-acero", "Frontal VA 110×20/1480 — acero carbono 3 mm", 19500, 15386],
-  ["frontal-inox-1480", "Frontal VA 110×20/1480 — inox. 2 mm", 42000, 31714],
-  ["frontal-inox-980", "Frontal VA 110×20/980 — inox. 2 mm", 25565, 19304],
-  ["angulo-inox", "Ángulo 15×15/1000 — inox. 1,5 mm", 2350, 1270],
-  ["lamina-extractor", "Lámina extractor tubular", 17500, 15580],
-  ["nicho", "Nicho acero carbono 3 mm + soldadura y pulido", 140000, 80000],
-  ["separador", "Separador estándar 200×550 — acero carbono 3 mm", 16000, 10000],
-] as const;
-
 const initialMeasureRows = (products: MeasureProduct[]) =>
-  Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: "con", selected: false }])) as Record<string, MeasureRow>;
-
-const initialUnitRows = () =>
-  Object.fromEntries(piezas.map(([id]) => [id, { quantity: 1, mode: "con", selected: false }])) as Record<string, UnitRow>;
+  Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", selected: false }])) as Record<string, MeasureRow>;
 
 const money = (value: number) =>
   new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 }).format(Math.round(value));
@@ -210,7 +203,6 @@ export default function CotizadorPage() {
   const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
   const [parrillaRows, setParrillaRows] = useState(() => initialMeasureRows(parrillas));
   const [measureVariants, setMeasureVariants] = useState<Record<string, MeasureRow[]>>({});
-  const [unitRows, setUnitRows] = useState(initialUnitRows);
   const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
   const [preparingPdf, setPreparingPdf] = useState(false);
 
@@ -228,7 +220,7 @@ export default function CotizadorPage() {
     const measured = [
       ...parrillas.flatMap((product) => [parrillaRows[product.id], ...(measureVariants[`parrillas:${product.id}`] || [])].map((row, variantIndex) => ({ product, row, variantIndex, category: "Parrillas" }))),
       ...campanas.flatMap((product) => [campanaRows[product.id], ...(measureVariants[`campanas:${product.id}`] || [])].map((row, variantIndex) => ({ product, row, variantIndex, category: "Campanas" }))),
-      ...guillotinas.flatMap((product) => [guillotinaRows[product.id], ...(measureVariants[`guillotinas:${product.id}`] || [])].map((row, variantIndex) => ({ product, row, variantIndex, category: "Guillotinas y quincho" }))),
+      ...guillotinas.flatMap((product) => [guillotinaRows[product.id], ...(measureVariants[`guillotinas:${product.id}`] || [])].map((row, variantIndex) => ({ product, row, variantIndex, category: "Mueble guillotina" }))),
     ]
       .filter(({ row }) => row.selected)
       .map(({ product, row, variantIndex, category }) => ({
@@ -241,14 +233,8 @@ export default function CotizadorPage() {
         total: product.calculate(row, row.mode) * row.quantity,
       }));
 
-    const units = piezas
-      .filter(([id]) => unitRows[id].selected)
-      .map(([id, name, withMaterial, withoutMaterial]) => {
-        const row = unitRows[id];
-        return { id, category: "Piezas y accesorios", name, detail: "Precio unitario", mode: row.mode, quantity: row.quantity, total: (row.mode === "con" ? withMaterial : withoutMaterial) * row.quantity };
-      });
-    return [...measured, ...units];
-  }, [campanaRows, guillotinaRows, measureVariants, parrillaRows, unitRows]);
+    return measured;
+  }, [campanaRows, guillotinaRows, measureVariants, parrillaRows]);
 
   const subtotal = quoteLines.reduce((sum, line) => sum + line.total, 0);
   const iva = subtotal * 0.19;
@@ -272,7 +258,7 @@ export default function CotizadorPage() {
 
   const addMeasureVariant = (group: MeasureGroup, product: MeasureProduct) => {
     const key = `${group}:${product.id}`;
-    const newRow: MeasureRow = { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: "con", selected: true };
+    const newRow: MeasureRow = { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", selected: true };
     setMeasureVariants((current) => ({ ...current, [key]: [...(current[key] || []), newRow] }));
   };
 
@@ -289,7 +275,6 @@ export default function CotizadorPage() {
     setGuillotinaRows(initialMeasureRows(guillotinas));
     setParrillaRows(initialMeasureRows(parrillas));
     setMeasureVariants({});
-    setUnitRows(initialUnitRows());
     setQuoteNumber(null);
   };
 
@@ -356,7 +341,7 @@ export default function CotizadorPage() {
           <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white shadow-md">
             <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
-                {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Guillotinas y quincho'],['piezas','Piezas y accesorios']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
+                {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
               </div>
             </div>
 
@@ -376,19 +361,13 @@ export default function CotizadorPage() {
                             return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
                           })}
                           <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
-                          <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
+                          <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}>{(product.modes ?? (["con", "sin"] as Mode[])).map((mode) => <option key={mode} value={mode}>{mode === "con" ? "Con material" : "Sin material"}</option>)}</select></label>
                         </div>
                       </div></div>
                     </div>;
                   })}
                   {product.fields.length > 0 && <div className="border-t border-slate-200 px-4 py-3 sm:px-5"><button type="button" onClick={() => addMeasureVariant(group, product)} className="w-full rounded-lg border-2 border-dashed border-navy-400 px-3 py-2 text-xs font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50 sm:w-auto">+ Agregar otra medida</button></div>}
                 </div>;
-              })}
-
-              {section === "piezas" && piezas.map(([id, name, withMaterial, withoutMaterial]) => {
-                const row = unitRows[id];
-                const price = row.mode === "con" ? withMaterial : withoutMaterial;
-                return <div key={id} className={`border-t-8 border-slate-300 p-4 first:border-t-0 sm:p-5 ${row.selected ? 'border-l-4 border-l-amber-500 bg-amber-50' : 'bg-white'}`}><div className="flex min-w-0 items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-800" checked={row.selected} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, selected: e.target.checked } })} /><div className="min-w-0 flex-1"><h3 className="break-words font-extrabold text-slate-950">{name}</h3><p className="text-sm font-semibold text-slate-700">Unidad: {money(price)}</p><div className="mt-4 grid grid-cols-2 gap-3"><label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-2 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, mode: e.target.value as Mode } })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label><label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-2 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, quantity: Math.max(1, Number(e.target.value)) } })} /></label><strong className="col-span-2 rounded-lg bg-slate-100 px-3 py-2 text-right text-navy-950">{row.selected ? money(price * row.quantity) : '—'}</strong></div></div></div></div>;
               })}
             </div>
           </section>
