@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useMemo, useState } from "react";
+import { siteAssets } from "@/components/siteAssets";
 
 type Mode = "con" | "sin";
 type Section = "campanas" | "guillotinas" | "piezas";
@@ -191,10 +193,21 @@ export default function CotizadorPage() {
   return (
     <main className="min-h-screen bg-slate-200 text-slate-950">
       <header className="border-b-4 border-amber-400 bg-navy-950 px-5 py-6 text-white shadow-xl print:bg-white print:px-0 print:text-slate-900">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-amber-300 print:text-slate-700">N Proyectos Ltda.</p>
-            <h1 className="mt-1 text-2xl font-extrabold text-white sm:text-3xl">Cotizador Varvacoa</h1>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-5">
+          <div className="flex min-w-0 items-center gap-4 sm:gap-6">
+            <div className="flex shrink-0 items-center gap-3 sm:gap-4">
+              <div className="flex h-14 items-center rounded-xl bg-white px-3 py-2 shadow-md print:border print:border-slate-300 print:shadow-none">
+                <Image src={siteAssets.logo} alt="Logo N Proyectos" priority className="h-9 w-auto object-contain sm:h-10" />
+              </div>
+              <span className="h-10 w-px bg-white/30 print:bg-slate-400" aria-hidden="true" />
+              <div className="flex h-14 items-center rounded-xl border-2 border-amber-300 bg-amber-400 px-4 shadow-md print:border-slate-900 print:bg-white print:shadow-none">
+                <span className="text-lg font-black tracking-[0.16em] text-navy-950 sm:text-xl">VARVACOA</span>
+              </div>
+            </div>
+            <div className="hidden border-l border-white/20 pl-6 md:block print:block print:border-slate-300">
+              <p className="text-xs font-extrabold uppercase tracking-[0.22em] text-amber-300 print:text-slate-700">Cotización técnica</p>
+              <h1 className="mt-1 text-2xl font-extrabold text-white print:text-slate-950 sm:text-3xl">Cotizador Varvacoa</h1>
+            </div>
           </div>
           <div className="flex gap-2 print:hidden">
             <Link href="/" className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10">Volver al sitio</Link>
