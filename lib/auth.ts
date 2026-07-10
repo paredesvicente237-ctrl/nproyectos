@@ -1,5 +1,5 @@
 export const AUTH_COOKIE = "nproyectos_cotizador_session";
-const SESSION_DURATION_SECONDS = 60 * 60 * 8;
+const SESSION_DURATION_SECONDS = 60 * 30;
 
 function bytesToHex(bytes: ArrayBuffer) {
   return Array.from(new Uint8Array(bytes), (byte) => byte.toString(16).padStart(2, "0")).join("");
@@ -26,27 +26,33 @@ function safeEqual(left: string, right: string) {
   return difference === 0;
 }
 
-export async function createSession(secret: string, username: string) {
+export type SessionData = { user: string; sessionId: string; expiresAt: number };
+
+export async function createSession(secret: string, username: string, sessionId: string) {
   const expiresAt = Math.floor(Date.now() / 1000) + SESSION_DURATION_SECONDS;
-  const payload = `${expiresAt}.${encodeURIComponent(username)}`;
+  const payload = `${expiresAt}.${encodeURIComponent(username)}.${sessionId}`;
   return `${payload}.${await signature(payload, secret)}`;
 }
 
-export async function getSessionUser(value: string | undefined, secret: string | undefined) {
+export async function getSession(value: string | undefined, secret: string | undefined): Promise<SessionData | null> {
   if (!value || !secret) return null;
-  const [expiresAt, encodedUsername, suppliedSignature] = value.split(".");
-  if (!expiresAt || !encodedUsername || !suppliedSignature || Number(expiresAt) <= Math.floor(Date.now() / 1000)) return null;
-  const payload = `${expiresAt}.${encodedUsername}`;
+  const [expiresAt, encodedUsername, sessionId, suppliedSignature] = value.split(".");
+  if (!expiresAt || !encodedUsername || !sessionId || !suppliedSignature || Number(expiresAt) <= Math.floor(Date.now() / 1000)) return null;
+  const payload = `${expiresAt}.${encodedUsername}.${sessionId}`;
   if (!safeEqual(suppliedSignature, await signature(payload, secret))) return null;
   try {
-    return decodeURIComponent(encodedUsername);
+    return { user: decodeURIComponent(encodedUsername), sessionId, expiresAt: Number(expiresAt) };
   } catch {
     return null;
   }
 }
 
+export async function getSessionUser(value: string | undefined, secret: string | undefined) {
+  return (await getSession(value, secret))?.user ?? null;
+}
+
 export async function verifySession(value: string | undefined, secret: string | undefined) {
-  return (await getSessionUser(value, secret)) !== null;
+  return (await getSession(value, secret)) !== null;
 }
 
 export const sessionMaxAge = SESSION_DURATION_SECONDS;

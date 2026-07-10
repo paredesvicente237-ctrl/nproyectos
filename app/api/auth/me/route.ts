@@ -1,14 +1,15 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { AUTH_COOKIE, getSessionUser } from "@/lib/auth";
+import { AUTH_COOKIE, getSession } from "@/lib/auth";
+import { isActiveSession } from "@/lib/activeSession";
 
 export async function GET() {
   const cookieStore = await cookies();
-  const user = await getSessionUser(
+  const session = await getSession(
     cookieStore.get(AUTH_COOKIE)?.value,
     process.env.COTIZADOR_SESSION_SECRET
   );
 
-  if (!user) return NextResponse.json({ error: "Sesión no autorizada." }, { status: 401 });
-  return NextResponse.json({ user });
+  if (!session || !(await isActiveSession(session))) return NextResponse.json({ error: "Sesión no autorizada." }, { status: 401 });
+  return NextResponse.json({ user: session.user });
 }
