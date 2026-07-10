@@ -28,64 +28,59 @@ const campanas: MeasureProduct[] = [
   {
     id: "conico-exterior",
     name: "Campana cónica exterior",
-    note: "No incluye chimenea",
     fields: ["largo", "ancho", "alto"],
-    calculate: ({ largo, ancho, alto }, mode) => {
+    modes: ["con"],
+    calculate: ({ largo, ancho, alto }) => {
       const material =
         (((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2) +
         (((ancho * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2);
-      return mode === "con" ? material * 8000 : (material / 9.6) * 2 * 10500 * 0.67;
+      return material * 8000;
     },
   },
   {
-    id: "conico",
-    name: "Campana cónica",
-    note: "No incluye chimenea",
+    id: "conica-mediterranea",
+    name: "Campana cónica + mediterránea",
     fields: ["largo", "ancho", "alto"],
-    calculate: ({ largo, ancho, alto }, mode) => {
-      const material =
+    modes: ["con"],
+    calculate: ({ largo, ancho, alto }) => {
+      const materialConica =
         (((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2) +
         (((ancho * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2);
-      return mode === "con" ? material * 5000 : (material / 9.6) * 2 * 10500 * 0.91;
-    },
-  },
-  {
-    id: "mediterraneo",
-    name: "Campana mediterránea",
-    fields: ["largo", "ancho", "alto"],
-    calculate: ({ largo, ancho, alto }, mode) => {
-      const material =
+      const materialMediterranea =
         ((((largo * alto * 1.2 * 8) / 1_000_000) * 2) +
           (((ancho * alto * 1.2 * 8) / 1_000_000) * 2 * 1.3)) *
         1.2;
-      return mode === "con" ? material * 5000 : (material / 9.6) * 2 * 10500 * 0.67;
+      return materialConica * 5000 + materialMediterranea * 5000;
     },
   },
   {
     id: "faldon",
     name: "Faldón",
     fields: ["largo", "alto"],
-    calculate: ({ largo, alto }, mode) => {
+    modes: ["con"],
+    calculate: ({ largo, alto }) => {
       const material = ((largo * alto * 1.2 * 8) / 1_000_000) * 1.2;
-      return mode === "con" ? material * 2800 : (material / 9.6) * 2 * 10500 * 0.67;
+      return material * 2800;
     },
   },
   {
     id: "faldon-c",
     name: "Faldón C",
     fields: ["largo", "alto"],
-    calculate: ({ largo, alto }, mode) => {
+    modes: ["con"],
+    calculate: ({ largo, alto }) => {
       const material = ((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 + 20;
-      return mode === "con" ? material * 2800 : (material / 9.6) * 2 * 10500 * 0.67;
+      return material * 2800;
     },
   },
   {
     id: "chimenea",
     name: "Chimenea",
     fields: ["largo", "ancho", "alto"],
-    calculate: ({ largo, ancho, alto }, mode) => {
+    modes: ["con"],
+    calculate: ({ largo, ancho, alto }) => {
       const material = ((((largo + ancho) * alto * 1.2 * 8) / 1_000_000) * 2) * 1.67 + 10;
-      return mode === "con" ? material * 2000 : (material / 9.6) * 2 * 10500 * 0.67;
+      return material * 2000;
     },
   },
   {
@@ -361,7 +356,7 @@ export default function CotizadorPage() {
                             return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
                           })}
                           <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
-                          <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}>{(product.modes ?? (["con", "sin"] as Mode[])).map((mode) => <option key={mode} value={mode}>{mode === "con" ? "Con material" : "Sin material"}</option>)}</select></label>
+                          {(product.modes?.length ?? 2) > 1 && <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}>{(product.modes ?? (["con", "sin"] as Mode[])).map((mode) => <option key={mode} value={mode}>{mode === "con" ? "Con material" : "Sin material"}</option>)}</select></label>}
                         </div>
                       </div></div>
                     </div>;
