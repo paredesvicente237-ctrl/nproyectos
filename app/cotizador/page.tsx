@@ -21,7 +21,7 @@ type MeasureProduct = {
 
 type Measures = { largo: number; ancho: number; alto: number };
 type MeasureRow = Measures & { quantity: number; mode: Mode; selected: boolean };
-type CustomRow = { id: number; description: string; measures: string; price: number; quantity: number };
+type CustomRow = { id: number; description: string; price: number; quantity: number };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
 
@@ -200,7 +200,7 @@ export default function CotizadorPage() {
   const [parrillaRows, setParrillaRows] = useState(() => initialMeasureRows(parrillas));
   const [measureVariants, setMeasureVariants] = useState<Record<string, MeasureRow[]>>({});
   const [customRows, setCustomRows] = useState<CustomRow[]>([
-    { id: 1, description: "", measures: "", price: 0, quantity: 1 },
+    { id: 1, description: "", price: 0, quantity: 1 },
   ]);
   const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
   const [preparingPdf, setPreparingPdf] = useState(false);
@@ -239,9 +239,9 @@ export default function CotizadorPage() {
         id: `custom-${row.id}`,
         category: "Personalizado",
         name: row.description.trim() || "Trabajo personalizado",
-        detail: row.measures.trim() || "Medidas por definir",
+        detail: "",
         mode: "con" as Mode,
-        modeText: "Precio estimado",
+        modeText: "Precio",
         quantity: row.quantity,
         total: row.price * row.quantity,
       }));
@@ -288,7 +288,7 @@ export default function CotizadorPage() {
   };
 
   const addCustomRow = () => {
-    setCustomRows((current) => [...current, { id: Date.now(), description: "", measures: "", price: 0, quantity: 1 }]);
+    setCustomRows((current) => [...current, { id: Date.now(), description: "", price: 0, quantity: 1 }]);
   };
 
   const reset = () => {
@@ -296,7 +296,7 @@ export default function CotizadorPage() {
     setGuillotinaRows(initialMeasureRows(guillotinas));
     setParrillaRows(initialMeasureRows(parrillas));
     setMeasureVariants({});
-    setCustomRows([{ id: 1, description: "", measures: "", price: 0, quantity: 1 }]);
+    setCustomRows([{ id: 1, description: "", price: 0, quantity: 1 }]);
     setQuoteNumber(null);
   };
 
@@ -393,16 +393,14 @@ export default function CotizadorPage() {
               })}
 
               {section === "personalizado" && <div className="bg-slate-200">
-                <div className="bg-white p-4 sm:p-5"><h3 className="text-lg font-extrabold text-slate-950">Trabajos personalizados</h3><p className="mt-1 text-sm font-medium text-slate-700">Describe el pedido, anota todas sus medidas y asigna un precio estimado neto.</p></div>
                 {customRows.map((row, index) => <div key={row.id} className="border-t-8 border-slate-300 bg-white p-4 sm:p-5">
                   <div className="flex items-center justify-between gap-3"><h4 className="font-extrabold text-slate-950">Pedido personalizado {index + 1}</h4>{customRows.length > 1 && <button type="button" onClick={() => setCustomRows((current) => current.filter((item) => item.id !== row.id))} className="rounded-lg border border-red-300 px-2 py-1 text-xs font-bold text-red-700 hover:bg-red-50">Quitar</button>}</div>
                   <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                    <label className="text-xs font-extrabold text-slate-800 sm:col-span-2">Descripción del pedido<textarea rows={3} className="mt-1 w-full resize-y rounded-xl border-2 border-slate-400 bg-white px-3 py-2 text-sm font-medium text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" placeholder="Ej.: Fabricación de mueble especial en acero inoxidable…" value={row.description} onChange={(event) => updateCustomRow(row.id, { description: event.target.value })} /></label>
-                    <label className="text-xs font-extrabold text-slate-800 sm:col-span-2">Medidas<input className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-medium text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" placeholder="Ej.: 1200 × 600 × 900 mm" value={row.measures} onChange={(event) => updateCustomRow(row.id, { measures: event.target.value })} /></label>
-                    <label className="text-xs font-extrabold text-slate-800">Precio estimado neto<input type="number" min="0" className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" placeholder="0" value={row.price || ""} onChange={(event) => updateCustomRow(row.id, { price: Math.max(0, Number(event.target.value)) })} /></label>
+                    <label className="text-xs font-extrabold text-slate-800 sm:col-span-2">Descripción<textarea rows={5} className="mt-1 w-full resize-y rounded-xl border-2 border-slate-400 bg-white px-3 py-2 text-sm font-medium text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" placeholder="Escribe aquí el pedido completo, sus medidas, materiales y detalles…" value={row.description} onChange={(event) => updateCustomRow(row.id, { description: event.target.value })} /></label>
+                    <label className="text-xs font-extrabold text-slate-800">Precio<input type="number" min="0" className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" placeholder="0" value={row.price || ""} onChange={(event) => updateCustomRow(row.id, { price: Math.max(0, Number(event.target.value)) })} /></label>
                     <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" value={row.quantity} onChange={(event) => updateCustomRow(row.id, { quantity: Math.max(1, Number(event.target.value)) })} /></label>
                   </div>
-                  {row.price > 0 && <div className="mt-4 flex justify-between rounded-xl bg-navy-50 px-4 py-3 text-sm"><span className="font-bold text-slate-700">Total estimado</span><strong className="text-navy-950">{money(row.price * row.quantity)}</strong></div>}
+                  {row.price > 0 && <div className="mt-4 flex justify-between rounded-xl bg-navy-50 px-4 py-3 text-sm"><span className="font-bold text-slate-700">Total</span><strong className="text-navy-950">{money(row.price * row.quantity)}</strong></div>}
                 </div>)}
                 <div className="border-t border-slate-300 bg-white p-4 sm:p-5"><button type="button" onClick={addCustomRow} className="w-full rounded-xl border-2 border-dashed border-navy-400 px-4 py-3 text-sm font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50 sm:w-auto">+ Agregar otro trabajo personalizado</button></div>
               </div>}
