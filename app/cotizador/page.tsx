@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
 
 type Mode = "con" | "sin";
-type Section = "parrillas" | "campanas" | "guillotinas";
+type Section = "parrillas" | "campanas" | "guillotinas" | "personalizado";
 type MeasureGroup = "parrillas" | "campanas" | "guillotinas";
 
 type MeasureProduct = {
@@ -21,6 +21,7 @@ type MeasureProduct = {
 
 type Measures = { largo: number; ancho: number; alto: number };
 type MeasureRow = Measures & { quantity: number; mode: Mode; selected: boolean };
+type CustomRow = { id: number; description: string; measures: string; price: number; quantity: number };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
 
@@ -198,6 +199,9 @@ export default function CotizadorPage() {
   const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
   const [parrillaRows, setParrillaRows] = useState(() => initialMeasureRows(parrillas));
   const [measureVariants, setMeasureVariants] = useState<Record<string, MeasureRow[]>>({});
+  const [customRows, setCustomRows] = useState<CustomRow[]>([
+    { id: 1, description: "", measures: "", price: 0, quantity: 1 },
+  ]);
   const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
   const [preparingPdf, setPreparingPdf] = useState(false);
 
@@ -224,12 +228,26 @@ export default function CotizadorPage() {
         name: `${product.name}${variantIndex > 0 ? ` · Medida ${variantIndex + 1}` : ""}`,
         detail: product.fields.map((field) => `${fieldNames[field]} ${row[field]} mm`).join(" · "),
         mode: row.mode,
+        modeText: row.mode === "con" ? "Con material" : "Sin material",
         quantity: row.quantity,
         total: product.calculate(row, row.mode) * row.quantity,
       }));
 
-    return measured;
-  }, [campanaRows, guillotinaRows, measureVariants, parrillaRows]);
+    const custom = customRows
+      .filter((row) => row.price > 0)
+      .map((row) => ({
+        id: `custom-${row.id}`,
+        category: "Personalizado",
+        name: row.description.trim() || "Trabajo personalizado",
+        detail: row.measures.trim() || "Medidas por definir",
+        mode: "con" as Mode,
+        modeText: "Precio estimado",
+        quantity: row.quantity,
+        total: row.price * row.quantity,
+      }));
+
+    return [...measured, ...custom];
+  }, [campanaRows, customRows, guillotinaRows, measureVariants, parrillaRows]);
 
   const subtotal = quoteLines.reduce((sum, line) => sum + line.total, 0);
   const iva = subtotal * 0.19;
@@ -265,11 +283,20 @@ export default function CotizadorPage() {
     }));
   };
 
+  const updateCustomRow = (id: number, patch: Partial<CustomRow>) => {
+    setCustomRows((current) => current.map((row) => row.id === id ? { ...row, ...patch } : row));
+  };
+
+  const addCustomRow = () => {
+    setCustomRows((current) => [...current, { id: Date.now(), description: "", measures: "", price: 0, quantity: 1 }]);
+  };
+
   const reset = () => {
     setCampanaRows(initialMeasureRows(campanas));
     setGuillotinaRows(initialMeasureRows(guillotinas));
     setParrillaRows(initialMeasureRows(parrillas));
     setMeasureVariants({});
+    setCustomRows([{ id: 1, description: "", measures: "", price: 0, quantity: 1 }]);
     setQuoteNumber(null);
   };
 
@@ -336,7 +363,7 @@ export default function CotizadorPage() {
           <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white shadow-md">
             <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
-                {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
+                {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina'],['personalizado','Personalizado']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
               </div>
             </div>
 
@@ -364,6 +391,21 @@ export default function CotizadorPage() {
                   {product.fields.length > 0 && <div className="border-t border-slate-200 px-4 py-3 sm:px-5"><button type="button" onClick={() => addMeasureVariant(group, product)} className="w-full rounded-lg border-2 border-dashed border-navy-400 px-3 py-2 text-xs font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50 sm:w-auto">+ Agregar otra medida</button></div>}
                 </div>;
               })}
+
+              {section === "personalizado" && <div className="bg-slate-200">
+                <div className="bg-white p-4 sm:p-5"><h3 className="text-lg font-extrabold text-slate-950">Trabajos personalizados</h3><p className="mt-1 text-sm font-medium text-slate-700">Describe el pedido, anota todas sus medidas y asigna un precio estimado neto.</p></div>
+                {customRows.map((row, index) => <div key={row.id} className="border-t-8 border-slate-300 bg-white p-4 sm:p-5">
+                  <div className="flex items-center justify-between gap-3"><h4 className="font-extrabold text-slate-950">Pedido personalizado {index + 1}</h4>{customRows.length > 1 && <button type="button" onClick={() => setCustomRows((current) => current.filter((item) => item.id !== row.id))} className="rounded-lg border border-red-300 px-2 py-1 text-xs font-bold text-red-700 hover:bg-red-50">Quitar</button>}</div>
+                  <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                    <label className="text-xs font-extrabold text-slate-800 sm:col-span-2">Descripción del pedido<textarea rows={3} className="mt-1 w-full resize-y rounded-xl border-2 border-slate-400 bg-white px-3 py-2 text-sm font-medium text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" placeholder="Ej.: Fabricación de mueble especial en acero inoxidable…" value={row.description} onChange={(event) => updateCustomRow(row.id, { description: event.target.value })} /></label>
+                    <label className="text-xs font-extrabold text-slate-800 sm:col-span-2">Medidas<input className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-medium text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" placeholder="Ej.: 1200 × 600 × 900 mm" value={row.measures} onChange={(event) => updateCustomRow(row.id, { measures: event.target.value })} /></label>
+                    <label className="text-xs font-extrabold text-slate-800">Precio estimado neto<input type="number" min="0" className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" placeholder="0" value={row.price || ""} onChange={(event) => updateCustomRow(row.id, { price: Math.max(0, Number(event.target.value)) })} /></label>
+                    <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" value={row.quantity} onChange={(event) => updateCustomRow(row.id, { quantity: Math.max(1, Number(event.target.value)) })} /></label>
+                  </div>
+                  {row.price > 0 && <div className="mt-4 flex justify-between rounded-xl bg-navy-50 px-4 py-3 text-sm"><span className="font-bold text-slate-700">Total estimado</span><strong className="text-navy-950">{money(row.price * row.quantity)}</strong></div>}
+                </div>)}
+                <div className="border-t border-slate-300 bg-white p-4 sm:p-5"><button type="button" onClick={addCustomRow} className="w-full rounded-xl border-2 border-dashed border-navy-400 px-4 py-3 text-sm font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50 sm:w-auto">+ Agregar otro trabajo personalizado</button></div>
+              </div>}
             </div>
           </section>
         </div>
@@ -372,7 +414,7 @@ export default function CotizadorPage() {
           <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white text-slate-950 shadow-2xl print:rounded-none print:shadow-none">
             <div className="border-b-2 border-slate-300 p-5 print:px-0"><p className="text-xs font-extrabold uppercase tracking-[0.2em] text-navy-700">Resumen</p><div className="mt-1 flex items-center justify-between gap-3"><h2 className="text-xl font-extrabold text-slate-950">Cotización</h2><strong className="rounded-lg border-2 border-navy-800 bg-navy-50 px-3 py-1.5 text-sm text-navy-950">N.º {quoteNumber === null ? "Pendiente" : String(quoteNumber).padStart(6, "0")}</strong></div><p className="mt-3 text-sm font-bold text-slate-700">Usuario: {currentUser}</p></div>
             <div className="max-h-[52vh] divide-y divide-slate-300 overflow-y-auto print:max-h-none">
-              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.mode === 'con' ? 'Con material' : 'Sin material'} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950">{money(line.total)}</strong></div></div>)}
+              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.modeText} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950">{money(line.total)}</strong></div></div>)}
             </div>
             <div className="border-t-2 border-slate-300 bg-slate-50 p-5 print:bg-white print:px-0">
               <div className="space-y-2 text-sm"><div className="flex justify-between"><span className="font-semibold text-slate-700">Subtotal neto</span><strong className="text-slate-950">{money(subtotal)}</strong></div><div className="flex justify-between"><span className="font-semibold text-slate-700">IVA 19%</span><strong className="text-slate-950">{money(iva)}</strong></div><div className="mt-3 flex justify-between border-t-2 border-slate-400 pt-3 text-lg"><span className="font-extrabold text-slate-950">Total</span><strong className="text-slate-950">{money(subtotal + iva)}</strong></div></div>
