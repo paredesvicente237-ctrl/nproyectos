@@ -19,5 +19,6 @@ export const navLinks = [
   { label: "Especialidades", href: "/#especialidades" },
   { label: "Equipamiento", href: "/#equipamiento" },
   { label: "Productos", href: "/productos" },
+  { label: "Cotizador", href: "/cotizador" },
   { label: "Contacto", href: "/#contacto" },
 ];

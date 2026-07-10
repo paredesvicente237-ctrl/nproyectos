@@ -1,345 +1,261 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState } from "react";
 
-type Option = "con" | "sin" | "ninguno";
+type Mode = "con" | "sin";
+type Section = "campanas" | "guillotinas" | "piezas";
 
-type Item = {
+type MeasureProduct = {
+  id: string;
   name: string;
-  base: number;
-  m2: number;
-  noMaterial: number;
+  note?: string;
+  fields: ("largo" | "ancho" | "alto")[];
+  calculate: (values: Measures, mode: Mode) => number;
 };
 
-type Category = {
-  name: string;
-  measure2: string;
-  items: Item[];
-};
+type Measures = { largo: number; ancho: number; alto: number };
+type MeasureRow = Measures & { quantity: number; mode: Mode; selected: boolean };
+type UnitRow = { quantity: number; mode: Mode; selected: boolean };
 
-type RowState = {
-  largo: number;
-  medida2: number;
-  option: Option;
-};
+const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
 
-const categories: Category[] = [
+const campanas: MeasureProduct[] = [
   {
-    name: "Parrillas",
-    measure2: "Ancho MM",
-    items: [
-      { name: "Estructura Inox", base: 220000, m2: 155000, noMaterial: 115000 },
-      { name: "Estructura acero", base: 160000, m2: 110000, noMaterial: 80000 },
-      { name: "Módulo barra inox Ø8", base: 90000, m2: 60000, noMaterial: 45000 },
-      { name: "Módulo v 1,5 inox", base: 85000, m2: 55000, noMaterial: 40000 },
-      { name: "Frontal va 2 mm inox", base: 120000, m2: 70000, noMaterial: 50000 },
-      { name: "Frontal va 3 mm acero", base: 95000, m2: 50000, noMaterial: 38000 },
-      { name: "Bandeja grasa inox", base: 70000, m2: 45000, noMaterial: 32000 },
-      { name: "Pata falsa inox", base: 60000, m2: 40000, noMaterial: 30000 },
-      { name: "Pata falsa fierro", base: 45000, m2: 30000, noMaterial: 22000 },
-      { name: "Manilla", base: 25000, m2: 0, noMaterial: 18000 },
-    ],
+    id: "conico-exterior",
+    name: "Cónico exterior",
+    note: "No incluye chimenea",
+    fields: ["largo", "ancho", "alto"],
+    calculate: ({ largo, ancho, alto }, mode) => {
+      const material =
+        (((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2) +
+        (((ancho * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2);
+      return mode === "con" ? material * 8000 : (material / 9.6) * 2 * 10500 * 0.67;
+    },
   },
   {
-    name: "Puerta guillotina",
-    measure2: "Alto MM",
-    items: [
-      { name: "Puerta guillotina", base: 260000, m2: 85000, noMaterial: 62000 },
-      { name: "Mueble guillotina", base: 180000, m2: 65000, noMaterial: 48000 },
-      { name: "Puerta quincho", base: 150000, m2: 52000, noMaterial: 39000 },
-      { name: "Estructura P. quincho guillotina", base: 145000, m2: 50000, noMaterial: 36000 },
-      { name: "Estructura P. quincho", base: 120000, m2: 44000, noMaterial: 32000 },
-    ],
+    id: "conico",
+    name: "Cónico",
+    note: "No incluye chimenea",
+    fields: ["largo", "ancho", "alto"],
+    calculate: ({ largo, ancho, alto }, mode) => {
+      const material =
+        (((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2) +
+        (((ancho * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2);
+      return mode === "con" ? material * 5000 : (material / 9.6) * 2 * 10500 * 0.91;
+    },
+  },
+  {
+    id: "mediterraneo",
+    name: "Mediterráneo",
+    fields: ["largo", "ancho", "alto"],
+    calculate: ({ largo, ancho, alto }, mode) => {
+      const material =
+        ((((largo * alto * 1.2 * 8) / 1_000_000) * 2) +
+          (((ancho * alto * 1.2 * 8) / 1_000_000) * 2 * 1.3)) *
+        1.2;
+      return mode === "con" ? material * 5000 : (material / 9.6) * 2 * 10500 * 0.67;
+    },
+  },
+  {
+    id: "faldon",
+    name: "Faldón",
+    fields: ["largo", "alto"],
+    calculate: ({ largo, alto }, mode) => {
+      const material = ((largo * alto * 1.2 * 8) / 1_000_000) * 1.2;
+      return mode === "con" ? material * 3000 : (material / 9.6) * 2 * 10500 * 0.67;
+    },
+  },
+  {
+    id: "chimenea",
+    name: "Chimenea",
+    fields: ["largo", "ancho", "alto"],
+    calculate: ({ largo, ancho, alto }, mode) => {
+      const material = ((((largo + ancho) * alto * 1.2 * 8) / 1_000_000) * 2) * 1.67;
+      return mode === "con" ? material * 2000 : (material / 9.6) * 2 * 10500 * 0.67;
+    },
   },
 ];
 
-function clp(value: number) {
-  return new Intl.NumberFormat("es-CL", {
-    style: "currency",
-    currency: "CLP",
-    maximumFractionDigits: 0,
-  }).format(Math.round(value || 0));
-}
+const guillotinas: MeasureProduct[] = [
+  {
+    id: "puerta-guillotina",
+    name: "Puerta guillotina",
+    fields: ["largo", "alto"],
+    calculate: ({ largo, alto }, mode) => 300000 + (mode === "con" ? (largo * alto) / 100000 * 8000 : 0),
+  },
+  {
+    id: "mueble-guillotina",
+    name: "Mueble guillotina",
+    fields: ["largo", "alto"],
+    calculate: ({ largo, alto }, mode) => 150000 + (mode === "con" ? (largo * alto) / 100000 * 7000 : 0),
+  },
+  {
+    id: "puerta-quincho",
+    name: "Puerta quincho",
+    fields: [],
+    calculate: () => 15000,
+  },
+  {
+    id: "estructura-quincho-guillotina",
+    name: "Estructura puerta quincho guillotina",
+    fields: ["largo", "alto"],
+    calculate: ({ largo, alto }, mode) => 60000 + (mode === "con" ? (largo * alto) / 100000 * 3500 : 0),
+  },
+  {
+    id: "estructura-quincho",
+    name: "Estructura puerta quincho",
+    fields: ["largo", "alto"],
+    calculate: ({ largo, alto }, mode) => 65000 + (mode === "con" ? (largo * alto) / 100000 * 4000 : 0),
+  },
+];
 
-function rowKey(categoryIndex: number, itemIndex: number) {
-  return `${categoryIndex}-${itemIndex}`;
-}
+const piezas = [
+  ["alzador-inox", "Alzador 350 mm, 9 piezas — acero inox.", 27000, 21400],
+  ["alzador-carbono", "Alzador 350 mm, 9 piezas — acero carbono", 12800, 11200],
+  ["bandeja-aza-soldada", "Bandeja parrillera, asa soldada", 58200, 44700],
+  ["bandeja-aza-unida", "Bandeja parrillera, asa unida", 57000, 40385],
+  ["bandeja-pq-abierta", "Bandeja PQ abierta", 60000, 43385],
+  ["bandeja-pq-cerrada", "Bandeja PQ cerrada", 67200, 50585],
+  ["bandeja-dos-quemadores", "Bandeja dos quemadores", 57200, 33200],
+  ["bandeja-un-tercio", "Bandeja 1/3", 60600, 43600],
+  ["bandeja-dos-tercios", "Bandeja 2/3", 74160, 45360],
+  ["bandeja-tres-tercios", "Bandeja 3/3", 98400, 53400],
+  ["frontal-acero", "Frontal VA 110×20/1480 — acero carbono 3 mm", 19500, 15386],
+  ["frontal-inox-1480", "Frontal VA 110×20/1480 — inox. 2 mm", 42000, 31714],
+  ["frontal-inox-980", "Frontal VA 110×20/980 — inox. 2 mm", 25565, 19304],
+  ["angulo-inox", "Ángulo 15×15/1000 — inox. 1,5 mm", 2350, 1270],
+  ["lamina-extractor", "Lámina extractor tubular", 17500, 15580],
+  ["nicho", "Nicho acero carbono 3 mm + soldadura y pulido", 140000, 80000],
+  ["separador", "Separador estándar 200×550 — acero carbono 3 mm", 16000, 10000],
+] as const;
 
-function calculateValue(item: Item, row: RowState) {
-  if (row.option === "ninguno") return 0;
+const initialMeasureRows = (products: MeasureProduct[]) =>
+  Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, quantity: 1, mode: "con", selected: false }])) as Record<string, MeasureRow>;
 
-  const largo = Number(row.largo || 0);
-  const medida2 = Number(row.medida2 || 0);
-  const areaM2 = largo > 0 && medida2 > 0 ? (largo * medida2) / 1000000 : 0;
+const initialUnitRows = () =>
+  Object.fromEntries(piezas.map(([id]) => [id, { quantity: 1, mode: "con", selected: false }])) as Record<string, UnitRow>;
 
-  if (row.option === "con") return item.base + areaM2 * item.m2;
-  if (row.option === "sin") return item.base * 0.55 + areaM2 * item.noMaterial;
+const money = (value: number) =>
+  new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 }).format(Math.round(value));
 
-  return 0;
-}
+const fieldNames = { largo: "Largo", ancho: "Ancho", alto: "Alto" };
 
 export default function CotizadorPage() {
-  const today = new Date().toISOString().slice(0, 10);
+  const [section, setSection] = useState<Section>("campanas");
+  const [client, setClient] = useState({ nombre: "", proyecto: "", telefono: "", email: "" });
+  const [campanaRows, setCampanaRows] = useState(() => initialMeasureRows(campanas));
+  const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
+  const [unitRows, setUnitRows] = useState(initialUnitRows);
 
-  const [client, setClient] = useState({
-    cliente: "",
-    proyecto: "",
-    telefono: "",
-    fecha: today,
-  });
+  const quoteLines = useMemo(() => {
+    const measured = [
+      ...campanas.map((product) => ({ product, row: campanaRows[product.id], category: "Campanas" })),
+      ...guillotinas.map((product) => ({ product, row: guillotinaRows[product.id], category: "Guillotinas y quincho" })),
+    ]
+      .filter(({ row }) => row.selected)
+      .map(({ product, row, category }) => ({
+        id: product.id,
+        category,
+        name: product.name,
+        detail: product.fields.map((field) => `${fieldNames[field]} ${row[field]} mm`).join(" · "),
+        mode: row.mode,
+        quantity: row.quantity,
+        total: product.calculate(row, row.mode) * row.quantity,
+      }));
 
-  const [rows, setRows] = useState<Record<string, RowState>>(() => {
-    const initial: Record<string, RowState> = {};
-
-    categories.forEach((category, categoryIndex) => {
-      category.items.forEach((item, itemIndex) => {
-        initial[rowKey(categoryIndex, itemIndex)] = {
-          largo: 0,
-          medida2: 0,
-          option: "ninguno",
-        };
+    const units = piezas
+      .filter(([id]) => unitRows[id].selected)
+      .map(([id, name, withMaterial, withoutMaterial]) => {
+        const row = unitRows[id];
+        return { id, category: "Piezas y accesorios", name, detail: "Precio unitario", mode: row.mode, quantity: row.quantity, total: (row.mode === "con" ? withMaterial : withoutMaterial) * row.quantity };
       });
-    });
+    return [...measured, ...units];
+  }, [campanaRows, guillotinaRows, unitRows]);
 
-    return initial;
-  });
-
-  const selectedRows = useMemo(() => {
-    return categories.flatMap((category, categoryIndex) =>
-      category.items
-        .map((item, itemIndex) => {
-          const key = rowKey(categoryIndex, itemIndex);
-          const row = rows[key];
-          const value = calculateValue(item, row);
-
-          return {
-            key,
-            category: category.name,
-            item: item.name,
-            measure2: category.measure2,
-            largo: row.largo,
-            medida2: row.medida2,
-            option: row.option,
-            value,
-          };
-        })
-        .filter((row) => row.value > 0)
-    );
-  }, [rows]);
-
-  const subtotal = selectedRows.reduce((sum, row) => sum + row.value, 0);
+  const subtotal = quoteLines.reduce((sum, line) => sum + line.total, 0);
   const iva = subtotal * 0.19;
-  const total = subtotal + iva;
 
-  function updateRow(key: string, patch: Partial<RowState>) {
-    setRows((prev) => ({
-      ...prev,
-      [key]: { ...prev[key], ...patch },
-    }));
-  }
+  const updateMeasured = (group: "campanas" | "guillotinas", id: string, patch: Partial<MeasureRow>) => {
+    const setter = group === "campanas" ? setCampanaRows : setGuillotinaRows;
+    setter((current) => ({ ...current, [id]: { ...current[id], ...patch } }));
+  };
 
-  function clearAll() {
-    const cleared: Record<string, RowState> = {};
-
-    categories.forEach((category, categoryIndex) => {
-      category.items.forEach((item, itemIndex) => {
-        cleared[rowKey(categoryIndex, itemIndex)] = {
-          largo: 0,
-          medida2: 0,
-          option: "ninguno",
-        };
-      });
-    });
-
-    setRows(cleared);
-    setClient({ cliente: "", proyecto: "", telefono: "", fecha: today });
-  }
-
-  function printQuote() {
-    if (selectedRows.length === 0) {
-      alert("Selecciona al menos un producto.");
-      return;
-    }
-
-    window.print();
-  }
+  const reset = () => {
+    setCampanaRows(initialMeasureRows(campanas));
+    setGuillotinaRows(initialMeasureRows(guillotinas));
+    setUnitRows(initialUnitRows());
+    setClient({ nombre: "", proyecto: "", telefono: "", email: "" });
+  };
 
   return (
-    <main className="min-h-screen bg-neutral-100 px-4 py-6 text-neutral-900">
-      <div className="mx-auto max-w-7xl">
-        <section className="mb-5 rounded-2xl bg-neutral-950 p-6 text-white shadow-xl">
-          <p className="mb-1 text-xs uppercase tracking-[0.2em] text-neutral-400">
-            Cotizador tipo planilla técnica
-          </p>
-          <h1 className="text-3xl font-black md:text-4xl">Cotizador de Productos</h1>
-          <p className="mt-2 max-w-2xl text-neutral-300">
-            Ingresa medidas en milímetros, selecciona con material, sin material o ninguno, y el sistema calculará el valor automáticamente.
-          </p>
-        </section>
-
-        <section className="mb-5 rounded-2xl border border-neutral-300 bg-white p-5 shadow-sm print:hidden">
-          <h2 className="mb-4 text-xl font-black">Datos de cotización</h2>
-          <div className="grid gap-3 md:grid-cols-4">
-            <label className="text-sm font-bold text-neutral-700">
-              Cliente
-              <input
-                className="mt-2 w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3 py-2 outline-none focus:border-blue-600"
-                value={client.cliente}
-                onChange={(event) => setClient({ ...client, cliente: event.target.value })}
-                placeholder="Nombre cliente"
-              />
-            </label>
-
-            <label className="text-sm font-bold text-neutral-700">
-              Proyecto
-              <input
-                className="mt-2 w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3 py-2 outline-none focus:border-blue-600"
-                value={client.proyecto}
-                onChange={(event) => setClient({ ...client, proyecto: event.target.value })}
-                placeholder="Nombre proyecto"
-              />
-            </label>
-
-            <label className="text-sm font-bold text-neutral-700">
-              Teléfono
-              <input
-                className="mt-2 w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3 py-2 outline-none focus:border-blue-600"
-                value={client.telefono}
-                onChange={(event) => setClient({ ...client, telefono: event.target.value })}
-                placeholder="+56 9..."
-              />
-            </label>
-
-            <label className="text-sm font-bold text-neutral-700">
-              Fecha
-              <input
-                type="date"
-                className="mt-2 w-full rounded-xl border border-neutral-300 bg-neutral-50 px-3 py-2 outline-none focus:border-blue-600"
-                value={client.fecha}
-                onChange={(event) => setClient({ ...client, fecha: event.target.value })}
-              />
-            </label>
+    <main className="min-h-screen bg-slate-100 text-slate-900">
+      <header className="bg-navy-800 px-5 py-6 text-white print:bg-white print:px-0 print:text-slate-900">
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-300 print:text-slate-500">N Proyectos Ltda.</p>
+            <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">Cotizador técnico</h1>
           </div>
-        </section>
+          <Link href="/" className="rounded-xl border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10 print:hidden">Volver al sitio</Link>
+        </div>
+      </header>
 
-        <section className="hidden print:block">
-          <h2 className="text-xl font-black">Cotización técnica</h2>
-          <p>Cliente: {client.cliente || "Sin cliente"}</p>
-          <p>Proyecto: {client.proyecto || "-"}</p>
-          <p>Teléfono: {client.telefono || "-"}</p>
-          <p>Fecha: {client.fecha}</p>
-        </section>
-
-        {categories.map((category, categoryIndex) => (
-          <section key={category.name} className="mb-5 rounded-2xl border border-neutral-300 bg-white p-5 shadow-sm">
-            <h2 className="mb-2 text-xl font-black">{category.name}</h2>
-            <p className="mb-4 text-sm text-neutral-500 print:hidden">
-              Selecciona una opción por fila. Las fórmulas actuales son de ejemplo y se pueden reemplazar por las fórmulas reales.
-            </p>
-
-            <div className="overflow-x-auto rounded-xl border border-neutral-300">
-              <table className="w-full min-w-[1050px] border-collapse bg-white text-sm">
-                <thead>
-                  <tr className="bg-neutral-200 text-xs uppercase">
-                    <th className="border border-neutral-300 px-3 py-2 text-left">Ítem</th>
-                    <th className="border border-neutral-300 px-3 py-2">Largo MM</th>
-                    <th className="border border-neutral-300 px-3 py-2">{category.measure2}</th>
-                    <th className="border border-neutral-300 px-3 py-2">Con Material</th>
-                    <th className="border border-neutral-300 px-3 py-2">Sin Material</th>
-                    <th className="border border-neutral-300 px-3 py-2">Ninguno</th>
-                    <th className="border border-neutral-300 px-3 py-2 text-right">Valor</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  <tr className="bg-neutral-950 text-white">
-                    <td className="border border-neutral-700 px-3 py-2 font-black uppercase" colSpan={7}>
-                      {category.name}
-                    </td>
-                  </tr>
-
-                  {category.items.map((item, itemIndex) => {
-                    const key = rowKey(categoryIndex, itemIndex);
-                    const row = rows[key];
-                    const value = calculateValue(item, row);
-                    const active = value > 0;
-
-                    return (
-                      <tr key={key} className={active ? "bg-blue-50" : "bg-white"}>
-                        <td className="border border-neutral-300 px-3 py-2 text-left font-bold text-neutral-700">
-                          {item.name}
-                        </td>
-
-                        <td className="border border-neutral-300 px-3 py-2 text-center">
-                          <input
-                            type="number"
-                            min={0}
-                            className="w-28 rounded-lg border border-neutral-300 bg-neutral-50 px-2 py-1 text-right print:border-0 print:bg-white"
-                            value={row.largo || ""}
-                            onChange={(event) => updateRow(key, { largo: Number(event.target.value || 0) })}
-                            placeholder="0"
-                          />
-                        </td>
-
-                        <td className="border border-neutral-300 px-3 py-2 text-center">
-                          <input
-                            type="number"
-                            min={0}
-                            className="w-28 rounded-lg border border-neutral-300 bg-neutral-50 px-2 py-1 text-right print:border-0 print:bg-white"
-                            value={row.medida2 || ""}
-                            onChange={(event) => updateRow(key, { medida2: Number(event.target.value || 0) })}
-                            placeholder="0"
-                          />
-                        </td>
-
-                        {(["con", "sin", "ninguno"] as Option[]).map((option) => (
-                          <td key={option} className="border border-neutral-300 px-3 py-2 text-center">
-                            <input
-                              type="radio"
-                              name={`option-${key}`}
-                              checked={row.option === option}
-                              onChange={() => updateRow(key, { option })}
-                              className="scale-125"
-                            />
-                          </td>
-                        ))}
-
-                        <td className="border border-neutral-300 px-3 py-2 text-right font-black">
-                          {clp(value)}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+      <div className="mx-auto grid max-w-7xl gap-6 px-5 py-8 lg:grid-cols-[1fr_380px] print:block print:px-0">
+        <div className="space-y-6 print:hidden">
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-600 text-sm font-bold text-white">1</span><h2 className="text-lg font-bold">Datos del cliente</h2></div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {([['nombre', 'Nombre o empresa'], ['proyecto', 'Proyecto'], ['telefono', 'Teléfono'], ['email', 'Correo']] as const).map(([key, label]) => (
+                <label key={key} className="text-sm font-semibold text-slate-700">{label}<input className="form-input mt-2" value={client[key]} onChange={(event) => setClient({ ...client, [key]: event.target.value })} /></label>
+              ))}
             </div>
           </section>
-        ))}
 
-        <section className="sticky bottom-0 z-20 mb-5 flex flex-col gap-3 rounded-2xl border border-neutral-300 bg-white p-4 shadow-xl md:flex-row md:items-center md:justify-end print:static print:shadow-none">
-          <div className="flex min-w-40 justify-between rounded-xl border border-neutral-300 bg-neutral-50 px-4 py-3">
-            <span>Subtotal</span>
-            <strong>{clp(subtotal)}</strong>
-          </div>
+          <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div className="border-b border-slate-200 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-600 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-bold">Agregar productos</h2><p className="text-sm text-slate-500">Valores netos según la planilla entregada.</p></div></div>
+              <div className="flex gap-2 overflow-x-auto">
+                {([['campanas','Campanas'],['guillotinas','Guillotinas y quincho'],['piezas','Piezas y accesorios']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl px-4 py-2.5 text-sm font-bold ${section === id ? 'bg-navy-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>{label}</button>)}
+              </div>
+            </div>
 
-          <div className="flex min-w-40 justify-between rounded-xl border border-neutral-300 bg-neutral-50 px-4 py-3">
-            <span>IVA 19%</span>
-            <strong>{clp(iva)}</strong>
-          </div>
+            <div className="divide-y divide-slate-100">
+              {(section === "campanas" ? campanas : section === "guillotinas" ? guillotinas : []).map((product) => {
+                const group = section as "campanas" | "guillotinas";
+                const row = group === "campanas" ? campanaRows[product.id] : guillotinaRows[product.id];
+                const unitPrice = product.calculate(row, row.mode);
+                return <div key={product.id} className={`p-5 transition-colors ${row.selected ? 'bg-blue-50/60' : ''}`}>
+                  <div className="flex items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasured(group, product.id, { selected: e.target.checked })} /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><h3 className="font-bold">{product.name}</h3>{product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}</div><strong className="text-navy-700">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong></div>
+                    <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                      {product.fields.map((field) => <label key={field} className="text-xs font-bold text-slate-500">{fieldNames[field]} (mm)<input type="number" min="0" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2 text-slate-800 outline-none focus:border-navy-500" value={row[field] || ''} onChange={(e) => updateMeasured(group, product.id, { [field]: Number(e.target.value) })} /></label>)}
+                      <label className="text-xs font-bold text-slate-500">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" value={row.quantity} onChange={(e) => updateMeasured(group, product.id, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
+                      <label className="text-xs font-bold text-slate-500">Modalidad<select className="mt-1 w-full rounded-lg border border-slate-200 bg-white px-3 py-2" value={row.mode} onChange={(e) => updateMeasured(group, product.id, { mode: e.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
+                    </div>
+                  </div></div>
+                </div>;
+              })}
 
-          <div className="flex min-w-44 justify-between rounded-xl bg-neutral-950 px-4 py-3 text-white">
-            <span>Total</span>
-            <strong>{clp(total)}</strong>
-          </div>
+              {section === "piezas" && piezas.map(([id, name, withMaterial, withoutMaterial]) => {
+                const row = unitRows[id];
+                const price = row.mode === "con" ? withMaterial : withoutMaterial;
+                return <div key={id} className={`flex flex-col gap-4 p-5 sm:flex-row sm:items-center ${row.selected ? 'bg-blue-50/60' : ''}`}><div className="flex min-w-0 flex-1 items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, selected: e.target.checked } })} /><div><h3 className="font-bold">{name}</h3><p className="text-sm text-slate-500">Unidad: {money(price)}</p></div></div><div className="flex items-end gap-3"><label className="text-xs font-bold text-slate-500">Modalidad<select className="mt-1 rounded-lg border border-slate-200 bg-white px-3 py-2" value={row.mode} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, mode: e.target.value as Mode } })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label><label className="w-20 text-xs font-bold text-slate-500">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border border-slate-200 px-3 py-2" value={row.quantity} onChange={(e) => setUnitRows({ ...unitRows, [id]: { ...row, quantity: Math.max(1, Number(e.target.value)) } })} /></label><strong className="min-w-24 pb-2 text-right text-navy-700">{row.selected ? money(price * row.quantity) : '—'}</strong></div></div>;
+              })}
+            </div>
+          </section>
+        </div>
 
-          <button onClick={printQuote} className="rounded-xl bg-blue-600 px-5 py-3 font-black text-white print:hidden">
-            Imprimir / Guardar PDF
-          </button>
-
-          <button onClick={clearAll} className="rounded-xl bg-red-600 px-5 py-3 font-black text-white print:hidden">
-            Limpiar
-          </button>
-        </section>
+        <aside className="lg:sticky lg:top-6 lg:self-start print:static">
+          <section className="overflow-hidden rounded-2xl bg-navy-800 text-white shadow-xl print:rounded-none print:bg-white print:text-slate-900 print:shadow-none">
+            <div className="border-b border-white/10 p-5 print:border-slate-300 print:px-0"><p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300 print:text-slate-500">Resumen</p><h2 className="mt-1 text-xl font-bold">Cotización</h2><div className="mt-3 hidden text-sm print:block"><p>Cliente: {client.nombre || '—'}</p><p>Proyecto: {client.proyecto || '—'}</p><p>Teléfono: {client.telefono || '—'} · Correo: {client.email || '—'}</p></div></div>
+            <div className="max-h-[52vh] divide-y divide-white/10 overflow-y-auto print:max-h-none print:divide-slate-200">
+              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm text-slate-300 print:text-slate-500">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-wider text-blue-300 print:text-slate-500">{line.category}</p><p className="mt-1 text-sm font-bold">{line.name}</p><p className="mt-1 text-xs text-slate-300 print:text-slate-500">{line.detail}{line.detail && ' · '}{line.mode === 'con' ? 'Con material' : 'Sin material'} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm">{money(line.total)}</strong></div></div>)}
+            </div>
+            <div className="border-t border-white/10 bg-navy-900 p-5 print:border-slate-300 print:bg-white print:px-0">
+              <div className="space-y-2 text-sm"><div className="flex justify-between"><span className="text-slate-300 print:text-slate-600">Subtotal neto</span><strong>{money(subtotal)}</strong></div><div className="flex justify-between"><span className="text-slate-300 print:text-slate-600">IVA 19%</span><strong>{money(iva)}</strong></div><div className="mt-3 flex justify-between border-t border-white/10 pt-3 text-lg print:border-slate-300"><span className="font-bold">Total</span><strong>{money(subtotal + iva)}</strong></div></div>
+              <div className="mt-5 grid gap-2 print:hidden"><button onClick={() => quoteLines.length ? window.print() : alert('Selecciona al menos un producto.')} className="rounded-xl bg-white px-4 py-3 text-sm font-bold text-navy-800 hover:bg-blue-50">Imprimir / Guardar PDF</button><button onClick={reset} className="rounded-xl border border-white/20 px-4 py-3 text-sm font-bold hover:bg-white/10">Limpiar cotización</button></div>
+            </div>
+          </section>
+          <p className="mt-3 px-2 text-xs leading-relaxed text-slate-500 print:mt-6 print:px-0">Valores calculados desde la planilla comercial proporcionada. Cotización referencial sujeta a validación técnica y comercial de N Proyectos Ltda.</p>
+        </aside>
       </div>
     </main>
   );
