@@ -7,12 +7,14 @@ import { siteAssets } from "@/components/siteAssets";
 
 type Mode = "con" | "sin";
 type Section = "parrillas" | "campanas" | "guillotinas" | "piezas";
+type MeasureGroup = "parrillas" | "campanas" | "guillotinas";
 
 type MeasureProduct = {
   id: string;
   name: string;
   note?: string;
   fields: ("largo" | "ancho" | "alto")[];
+  fixedMeasures?: Partial<Measures>;
   calculate: (values: Measures, mode: Mode) => number;
 };
 
@@ -141,24 +143,28 @@ const parrillas: MeasureProduct[] = [
     id: "separador-parrilla",
     name: "Separador",
     fields: ["largo", "ancho"],
+    fixedMeasures: { ancho: 200 },
     calculate: ({ largo, ancho }, mode) => 7000 + (mode === "con" ? ((ancho + 20) * (largo + 20) * 3 * 8) / 1_000_000 * 3000 : 0),
   },
   {
     id: "frontal-va-inox",
     name: "Frontal VA 2 mm inox",
     fields: ["largo", "ancho"],
+    fixedMeasures: { ancho: 110 },
     calculate: ({ largo, ancho }, mode) => mode === "con" ? ((ancho + 50) * largo * 2 * 8) / 1_000_000 * 15700 : 20000,
   },
   {
     id: "frontal-va-acero",
     name: "Frontal VA 3 mm acero",
     fields: ["largo", "ancho"],
+    fixedMeasures: { ancho: 110 },
     calculate: ({ largo, ancho }, mode) => mode === "con" ? ((ancho + 50) * largo * 3 * 8) / 1_000_000 * 7000 : 20000,
   },
   {
     id: "bandeja-grasa-inox",
     name: "Bandeja grasa inox",
     fields: ["largo", "ancho"],
+    fixedMeasures: { ancho: 40 },
     calculate: ({ largo, ancho }, mode) => 12000 + (mode === "con" ? ((ancho + 50) * (largo + 60) * 3 * 8) / 1_000_000 * 18000 : 0),
   },
   { id: "pata-falsa-inox", name: "Pata falsa inox", fields: [], calculate: (_values, mode) => mode === "con" ? 22000 : 12000 },
@@ -187,7 +193,7 @@ const piezas = [
 ] as const;
 
 const initialMeasureRows = (products: MeasureProduct[]) =>
-  Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, quantity: 1, mode: "con", selected: false }])) as Record<string, MeasureRow>;
+  Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: "con", selected: false }])) as Record<string, MeasureRow>;
 
 const initialUnitRows = () =>
   Object.fromEntries(piezas.map(([id]) => [id, { quantity: 1, mode: "con", selected: false }])) as Record<string, UnitRow>;
@@ -203,6 +209,7 @@ export default function CotizadorPage() {
   const [campanaRows, setCampanaRows] = useState(() => initialMeasureRows(campanas));
   const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
   const [parrillaRows, setParrillaRows] = useState(() => initialMeasureRows(parrillas));
+  const [measureVariants, setMeasureVariants] = useState<Record<string, MeasureRow[]>>({});
   const [unitRows, setUnitRows] = useState(initialUnitRows);
   const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
   const [preparingPdf, setPreparingPdf] = useState(false);
@@ -219,15 +226,15 @@ export default function CotizadorPage() {
 
   const quoteLines = useMemo(() => {
     const measured = [
-      ...parrillas.map((product) => ({ product, row: parrillaRows[product.id], category: "Parrillas" })),
-      ...campanas.map((product) => ({ product, row: campanaRows[product.id], category: "Campanas" })),
-      ...guillotinas.map((product) => ({ product, row: guillotinaRows[product.id], category: "Guillotinas y quincho" })),
+      ...parrillas.flatMap((product) => [parrillaRows[product.id], ...(measureVariants[`parrillas:${product.id}`] || [])].map((row, variantIndex) => ({ product, row, variantIndex, category: "Parrillas" }))),
+      ...campanas.flatMap((product) => [campanaRows[product.id], ...(measureVariants[`campanas:${product.id}`] || [])].map((row, variantIndex) => ({ product, row, variantIndex, category: "Campanas" }))),
+      ...guillotinas.flatMap((product) => [guillotinaRows[product.id], ...(measureVariants[`guillotinas:${product.id}`] || [])].map((row, variantIndex) => ({ product, row, variantIndex, category: "Guillotinas y quincho" }))),
     ]
       .filter(({ row }) => row.selected)
-      .map(({ product, row, category }) => ({
-        id: product.id,
+      .map(({ product, row, variantIndex, category }) => ({
+        id: `${product.id}-${variantIndex}`,
         category,
-        name: product.name,
+        name: `${product.name}${variantIndex > 0 ? ` · Medida ${variantIndex + 1}` : ""}`,
         detail: product.fields.map((field) => `${fieldNames[field]} ${row[field]} mm`).join(" · "),
         mode: row.mode,
         quantity: row.quantity,
@@ -241,20 +248,47 @@ export default function CotizadorPage() {
         return { id, category: "Piezas y accesorios", name, detail: "Precio unitario", mode: row.mode, quantity: row.quantity, total: (row.mode === "con" ? withMaterial : withoutMaterial) * row.quantity };
       });
     return [...measured, ...units];
-  }, [campanaRows, guillotinaRows, parrillaRows, unitRows]);
+  }, [campanaRows, guillotinaRows, measureVariants, parrillaRows, unitRows]);
 
   const subtotal = quoteLines.reduce((sum, line) => sum + line.total, 0);
   const iva = subtotal * 0.19;
 
-  const updateMeasured = (group: "parrillas" | "campanas" | "guillotinas", id: string, patch: Partial<MeasureRow>) => {
+  const updateMeasured = (group: MeasureGroup, id: string, patch: Partial<MeasureRow>) => {
     const setter = group === "parrillas" ? setParrillaRows : group === "campanas" ? setCampanaRows : setGuillotinaRows;
     setter((current) => ({ ...current, [id]: { ...current[id], ...patch } }));
+  };
+
+  const updateMeasureVariant = (group: MeasureGroup, id: string, variantIndex: number, patch: Partial<MeasureRow>) => {
+    if (variantIndex === 0) {
+      updateMeasured(group, id, patch);
+      return;
+    }
+    const key = `${group}:${id}`;
+    setMeasureVariants((current) => ({
+      ...current,
+      [key]: (current[key] || []).map((row, index) => index === variantIndex - 1 ? { ...row, ...patch } : row),
+    }));
+  };
+
+  const addMeasureVariant = (group: MeasureGroup, product: MeasureProduct) => {
+    const key = `${group}:${product.id}`;
+    const newRow: MeasureRow = { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: "con", selected: true };
+    setMeasureVariants((current) => ({ ...current, [key]: [...(current[key] || []), newRow] }));
+  };
+
+  const removeMeasureVariant = (group: MeasureGroup, id: string, variantIndex: number) => {
+    const key = `${group}:${id}`;
+    setMeasureVariants((current) => ({
+      ...current,
+      [key]: (current[key] || []).filter((_, index) => index !== variantIndex - 1),
+    }));
   };
 
   const reset = () => {
     setCampanaRows(initialMeasureRows(campanas));
     setGuillotinaRows(initialMeasureRows(guillotinas));
     setParrillaRows(initialMeasureRows(parrillas));
+    setMeasureVariants({});
     setUnitRows(initialUnitRows());
     setQuoteNumber(null);
   };
@@ -328,17 +362,26 @@ export default function CotizadorPage() {
 
             <div className="divide-y divide-slate-100">
               {(section === "parrillas" ? parrillas : section === "campanas" ? campanas : section === "guillotinas" ? guillotinas : []).map((product) => {
-                const group = section as "parrillas" | "campanas" | "guillotinas";
-                const row = group === "parrillas" ? parrillaRows[product.id] : group === "campanas" ? campanaRows[product.id] : guillotinaRows[product.id];
-                const unitPrice = product.calculate(row, row.mode);
-                return <div key={product.id} className={`p-5 transition-colors ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'}`}>
-                  <div className="flex items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasured(group, product.id, { selected: e.target.checked })} /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><h3 className="font-bold">{product.name}</h3>{product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}</div><strong className="text-navy-700">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong></div>
-                    <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
-                      {product.fields.map((field) => <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm)<input type="number" min="0" className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" value={row[field] || ''} onChange={(e) => updateMeasured(group, product.id, { [field]: Number(e.target.value) })} /></label>)}
-                      <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasured(group, product.id, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
-                      <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasured(group, product.id, { mode: e.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
-                    </div>
-                  </div></div>
+                const group = section as MeasureGroup;
+                const primaryRow = group === "parrillas" ? parrillaRows[product.id] : group === "campanas" ? campanaRows[product.id] : guillotinaRows[product.id];
+                const rows = [primaryRow, ...(measureVariants[`${group}:${product.id}`] || [])];
+                return <div key={product.id} className="bg-white">
+                  {rows.map((row, variantIndex) => {
+                    const unitPrice = product.calculate(row, row.mode);
+                    return <div key={variantIndex} className={`p-5 transition-colors ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t border-slate-300' : ''}`}>
+                      <div className="flex items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><div className="flex flex-wrap items-center gap-2"><h3 className="font-bold">{product.name}</h3>{variantIndex > 0 && <span className="rounded-full bg-navy-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-navy-800">Medida {variantIndex + 1}</span>}</div>{product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}</div><div className="flex items-center gap-3"><strong className="text-navy-700">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong>{variantIndex > 0 && <button type="button" onClick={() => removeMeasureVariant(group, product.id, variantIndex)} className="rounded-lg border border-red-300 bg-white px-2 py-1 text-xs font-bold text-red-700 hover:bg-red-50">Quitar</button>}</div></div>
+                        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-5">
+                          {product.fields.map((field) => {
+                            const fixed = product.fixedMeasures?.[field] !== undefined;
+                            return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
+                          })}
+                          <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
+                          <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
+                        </div>
+                      </div></div>
+                    </div>;
+                  })}
+                  {product.fields.length > 0 && <div className="border-t border-slate-200 px-5 py-3"><button type="button" onClick={() => addMeasureVariant(group, product)} className="rounded-lg border-2 border-dashed border-navy-400 px-3 py-2 text-xs font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50">+ Agregar otra medida</button></div>}
                 </div>;
               })}
 
