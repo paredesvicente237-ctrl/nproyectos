@@ -149,6 +149,8 @@ export default function CotizadorPage() {
   const [campanaRows, setCampanaRows] = useState(() => initialMeasureRows(campanas));
   const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
   const [unitRows, setUnitRows] = useState(initialUnitRows);
+  const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
+  const [preparingPdf, setPreparingPdf] = useState(false);
 
   const quoteLines = useMemo(() => {
     const measured = [
@@ -188,6 +190,32 @@ export default function CotizadorPage() {
     setGuillotinaRows(initialMeasureRows(guillotinas));
     setUnitRows(initialUnitRows());
     setClient({ nombre: "", proyecto: "", telefono: "", email: "" });
+    setQuoteNumber(null);
+  };
+
+  const printQuote = async () => {
+    if (!quoteLines.length) {
+      alert("Selecciona al menos un producto.");
+      return;
+    }
+
+    setPreparingPdf(true);
+    try {
+      let number = quoteNumber;
+      if (number === null) {
+        const response = await fetch("/api/quotes/number", { method: "POST" });
+        const result = (await response.json()) as { number?: number; error?: string };
+        if (!response.ok || !result.number) throw new Error(result.error || "No fue posible generar el folio.");
+        number = result.number;
+        setQuoteNumber(number);
+        await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+      }
+      window.print();
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "No fue posible generar el folio.");
+    } finally {
+      setPreparingPdf(false);
+    }
   };
 
   return (
@@ -200,8 +228,8 @@ export default function CotizadorPage() {
                 <Image src={siteAssets.logo} alt="Logo N Proyectos" priority className="h-9 w-auto object-contain sm:h-10" />
               </div>
               <span className="h-10 w-px bg-white/30 print:bg-slate-400" aria-hidden="true" />
-              <div className="flex h-14 items-center rounded-xl border-2 border-amber-300 bg-amber-400 px-4 shadow-md print:border-slate-900 print:bg-white print:shadow-none">
-                <span className="text-lg font-black tracking-[0.16em] text-navy-950 sm:text-xl">VARVACOA</span>
+              <div className="flex h-14 items-center rounded-xl border-2 border-white bg-white px-4 shadow-md print:border-slate-900 print:shadow-none">
+                <span className="text-lg font-black tracking-[0.16em] text-black sm:text-xl">VARVACOA</span>
               </div>
             </div>
             <div className="hidden border-l border-white/20 pl-6 md:block print:block print:border-slate-300">
@@ -263,13 +291,13 @@ export default function CotizadorPage() {
 
         <aside className="lg:sticky lg:top-6 lg:self-start print:static">
           <section className="overflow-hidden rounded-2xl border-2 border-navy-950 bg-navy-950 text-white shadow-2xl print:rounded-none print:bg-white print:text-slate-900 print:shadow-none">
-            <div className="border-b border-white/10 p-5 print:border-slate-300 print:px-0"><p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300 print:text-slate-500">Resumen</p><h2 className="mt-1 text-xl font-bold">Cotización</h2><div className="mt-3 hidden text-sm print:block"><p>Cliente: {client.nombre || '—'}</p><p>Proyecto: {client.proyecto || '—'}</p><p>Teléfono: {client.telefono || '—'} · Correo: {client.email || '—'}</p></div></div>
+            <div className="border-b border-white/10 p-5 print:border-slate-300 print:px-0"><p className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300 print:text-slate-500">Resumen</p><div className="mt-1 flex items-center justify-between gap-3"><h2 className="text-xl font-bold">Cotización</h2><strong className="rounded-lg bg-white px-3 py-1.5 text-sm text-navy-950 print:border print:border-slate-400">N.º {quoteNumber === null ? "Pendiente" : String(quoteNumber).padStart(6, "0")}</strong></div><div className="mt-3 hidden text-sm print:block"><p>Cliente: {client.nombre || '—'}</p><p>Proyecto: {client.proyecto || '—'}</p><p>Teléfono: {client.telefono || '—'} · Correo: {client.email || '—'}</p></div></div>
             <div className="max-h-[52vh] divide-y divide-white/10 overflow-y-auto print:max-h-none print:divide-slate-200">
               {quoteLines.length === 0 ? <p className="p-6 text-center text-sm text-slate-300 print:text-slate-500">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-wider text-blue-300 print:text-slate-500">{line.category}</p><p className="mt-1 text-sm font-bold">{line.name}</p><p className="mt-1 text-xs text-slate-300 print:text-slate-500">{line.detail}{line.detail && ' · '}{line.mode === 'con' ? 'Con material' : 'Sin material'} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm">{money(line.total)}</strong></div></div>)}
             </div>
             <div className="border-t border-white/10 bg-navy-900 p-5 print:border-slate-300 print:bg-white print:px-0">
               <div className="space-y-2 text-sm"><div className="flex justify-between"><span className="text-slate-300 print:text-slate-600">Subtotal neto</span><strong>{money(subtotal)}</strong></div><div className="flex justify-between"><span className="text-slate-300 print:text-slate-600">IVA 19%</span><strong>{money(iva)}</strong></div><div className="mt-3 flex justify-between border-t border-white/10 pt-3 text-lg print:border-slate-300"><span className="font-bold">Total</span><strong>{money(subtotal + iva)}</strong></div></div>
-              <div className="mt-5 grid gap-2 print:hidden"><button onClick={() => quoteLines.length ? window.print() : alert('Selecciona al menos un producto.')} className="rounded-xl bg-white px-4 py-3 text-sm font-bold text-navy-800 hover:bg-blue-50">Imprimir / Guardar PDF</button><button onClick={reset} className="rounded-xl border border-white/20 px-4 py-3 text-sm font-bold hover:bg-white/10">Limpiar cotización</button></div>
+              <div className="mt-5 grid gap-2 print:hidden"><button onClick={printQuote} disabled={preparingPdf} className="rounded-xl bg-white px-4 py-3 text-sm font-bold text-navy-800 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60">{preparingPdf ? "Generando folio…" : quoteNumber === null ? "Generar folio e imprimir PDF" : "Imprimir / Guardar PDF"}</button><button onClick={reset} className="rounded-xl border border-white/20 px-4 py-3 text-sm font-bold hover:bg-white/10">Limpiar cotización</button></div>
             </div>
           </section>
           <p className="mt-3 px-2 text-xs leading-relaxed text-slate-500 print:mt-6 print:px-0">Valores calculados desde la planilla comercial proporcionada. Cotización referencial sujeta a validación técnica y comercial de N Proyectos Ltda.</p>
