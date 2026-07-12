@@ -4,12 +4,12 @@ import { companyInfo } from "@/components/siteData";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-950">
+    <footer className="border-t border-white/10 bg-slate-950">
       <div className="container-custom px-5 py-12 sm:px-8 lg:px-10">
         {/* Top row: logo left, contact right */}
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-4">
-            <div className="inline-block overflow-hidden rounded-lg bg-white p-1.5">
+            <div className="inline-block overflow-hidden rounded bg-white p-1">
               <Image
                 src={siteAssets.logo}
                 alt={`Logo ${companyInfo.shortName}`}

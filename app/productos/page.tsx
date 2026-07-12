@@ -174,7 +174,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
         {/* Images */}
         <div className={isReversed ? "lg:[direction:ltr]" : ""}>
           {product.images.length === 1 ? (
-            <div className="overflow-hidden rounded-3xl shadow-lg">
+            <div className="overflow-hidden rounded-md border border-slate-200">
               <Image
                 src={product.images[0].src}
                 alt={product.images[0].alt}
@@ -184,7 +184,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
             </div>
           ) : product.images.length === 2 ? (
             <div className="grid grid-cols-2 gap-4">
-              <div className="overflow-hidden rounded-3xl shadow-lg">
+              <div className="overflow-hidden rounded-md border border-slate-200">
                 <Image
                   src={product.images[0].src}
                   alt={product.images[0].alt}
@@ -192,7 +192,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
                   sizes="(max-width: 1024px) 50vw, 25vw"
                 />
               </div>
-              <div className="overflow-hidden rounded-3xl shadow-lg">
+              <div className="overflow-hidden rounded-md border border-slate-200">
                 <Image
                   src={product.images[1].src}
                   alt={product.images[1].alt}
@@ -203,7 +203,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-4">
-              <div className="overflow-hidden rounded-3xl shadow-lg col-span-2 sm:col-span-1 sm:row-span-2">
+              <div className="col-span-2 overflow-hidden rounded-md border border-slate-200 sm:col-span-1 sm:row-span-2">
                 <Image
                   src={product.images[0].src}
                   alt={product.images[0].alt}
@@ -211,7 +211,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
               </div>
-              <div className="overflow-hidden rounded-2xl shadow-lg">
+              <div className="overflow-hidden rounded-md border border-slate-200">
                 <Image
                   src={product.images[1].src}
                   alt={product.images[1].alt}
@@ -219,7 +219,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
                   sizes="(max-width: 1024px) 50vw, 25vw"
                 />
               </div>
-              <div className="overflow-hidden rounded-2xl shadow-lg">
+              <div className="overflow-hidden rounded-md border border-slate-200">
                 <Image
                   src={product.images[2].src}
                   alt={product.images[2].alt}
@@ -236,7 +236,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           <span className="inline-flex items-center gap-2 rounded-full bg-navy-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-navy-600">
             {product.category}
           </span>
-          <h2 className="mt-4 text-3xl font-extrabold sm:text-4xl">
+          <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
             {product.name}
           </h2>
           <p className="mt-1 text-sm font-medium text-slate-400">
@@ -312,7 +312,7 @@ export default function ProductosPage() {
               Catálogo
               <span className="inline-block h-[3px] w-8 rounded-full bg-navy-400" />
             </span>
-            <h1 className="mt-5 text-4xl font-extrabold text-white sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
               Nuestros Productos
             </h1>
             <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-400">
@@ -357,7 +357,7 @@ export default function ProductosPage() {
           <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-navy-500/10 blur-[100px]" />
           <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-navy-400/10 blur-[100px]" />
           <div className="container-custom relative text-center">
-            <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+            <h2 className="text-3xl font-semibold text-white sm:text-4xl">
               ¿Necesitas un producto a medida?
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-lg text-slate-400">

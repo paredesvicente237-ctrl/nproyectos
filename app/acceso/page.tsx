@@ -38,9 +38,9 @@ export default function AccesoPage() {
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-navy-950 px-5 py-12">
       <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:44px_44px]" />
       <div className="absolute -left-24 top-12 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
-      <section className="relative w-full max-w-md rounded-3xl border border-white/10 bg-white p-7 shadow-2xl sm:p-9">
+      <section className="relative w-full max-w-md rounded-md border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-navy-600">N Proyectos Ltda.</p>
-        <h1 className="mt-3 text-3xl font-extrabold text-slate-900">Acceso al cotizador</h1>
+        <h1 className="mt-3 text-3xl font-semibold text-slate-900">Acceso al cotizador</h1>
         <p className="mt-2 text-sm leading-relaxed text-slate-500">Ingresa tus credenciales para consultar precios y generar cotizaciones.</p>
 
         <form onSubmit={submit} className="mt-7 space-y-4">

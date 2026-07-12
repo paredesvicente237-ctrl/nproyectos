@@ -36,23 +36,23 @@ export default function Equipment() {
   return (
     <section id="equipamiento" className="section-padding bg-white">
       <div className="container-custom">
-        <div className="grid gap-14 lg:grid-cols-2 lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           {/* Info side */}
           <div>
             <span className="eyebrow">Equipamiento</span>
-            <h2 className="mt-4 text-4xl font-extrabold sm:text-5xl">
+            <h2 className="section-title">
               Capacidad instalada
             </h2>
-            <p className="mt-4 text-lg text-slate-500">
+            <p className="section-copy">
               Personal calificado y certificado con amplia experiencia en
               trabajos de armado y soldadura.
             </p>
 
-            <div className="mt-10 grid gap-3 sm:grid-cols-2">
+            <div className="mt-9 grid border-l border-t border-slate-200 sm:grid-cols-2">
               {equipment.map((item) => (
                 <div
                   key={item.name}
-                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 px-5 py-4"
+                  className="flex items-center justify-between border-b border-r border-slate-200 px-5 py-4"
                 >
                   <span className="text-sm font-medium text-slate-700">
                     {item.name}
@@ -66,7 +66,7 @@ export default function Equipment() {
               ))}
             </div>
 
-            <div className="mt-8 rounded-2xl bg-slate-50 p-6">
+            <div className="mt-8 border-l-2 border-navy-600 bg-slate-50 p-6">
               <p className="text-sm font-bold text-slate-900">
                 Materiales de trabajo
               </p>
@@ -74,7 +74,7 @@ export default function Equipment() {
                 {materials.map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-600"
+                    className="border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600"
                   >
                     {item}
                   </span>
@@ -85,7 +85,7 @@ export default function Equipment() {
 
           {/* Carousel */}
           <div className="group relative">
-            <div className="overflow-hidden rounded-3xl shadow-2xl">
+            <div className="overflow-hidden rounded-md border border-slate-200">
               <div 
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -109,6 +109,7 @@ export default function Equipment() {
                 <button
                   key={idx}
                   onClick={() => setCurrentIndex(idx)}
+                  aria-label={`Mostrar imagen ${idx + 1}`}
                   className={`h-2 rounded-full transition-all duration-300 ${
                     currentIndex === idx ? "w-8 bg-white" : "w-2 bg-white/50"
                   }`}

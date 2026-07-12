@@ -327,7 +327,7 @@ export default function CotizadorPage() {
 
   return (
     <main className="min-h-screen bg-slate-200 text-slate-950">
-      <header className="border-b-4 border-amber-400 bg-navy-950 px-3 py-4 text-white shadow-xl sm:px-5 sm:py-6 print:bg-white print:px-0 print:text-slate-900">
+      <header className="border-b border-slate-700 bg-navy-950 px-3 py-4 text-white sm:px-5 sm:py-6 print:bg-white print:px-0 print:text-slate-900">
         <div className="mx-auto flex max-w-7xl flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center sm:gap-5">
           <div className="flex min-w-0 items-center justify-center gap-3 sm:justify-start sm:gap-6">
             <div className="flex min-w-0 items-center gap-2 sm:gap-4">
@@ -355,12 +355,12 @@ export default function CotizadorPage() {
 
       <div className="mx-auto grid max-w-7xl gap-5 px-3 py-5 sm:gap-6 sm:px-5 sm:py-8 lg:grid-cols-[minmax(0,1fr)_380px] print:block print:px-0">
         <div className="space-y-6 print:hidden">
-          <section className="flex flex-col items-start justify-between gap-3 rounded-2xl border-2 border-slate-400 bg-white p-4 shadow-md sm:flex-row sm:items-center sm:p-5">
+          <section className="flex flex-col items-start justify-between gap-3 rounded-md border border-slate-300 bg-white p-4 sm:flex-row sm:items-center sm:p-5">
             <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">1</span><div><p className="text-xs font-extrabold uppercase tracking-wider text-slate-600">Usuario conectado</p><h2 className="mt-0.5 text-xl font-extrabold text-slate-950">{currentUser}</h2></div></div>
             <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-extrabold text-emerald-800">Sesión activa</span>
           </section>
 
-          <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white shadow-md">
+          <section className="overflow-hidden rounded-md border border-slate-300 bg-white">
             <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
                 {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina'],['personalizado','Personalizado']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
@@ -409,7 +409,7 @@ export default function CotizadorPage() {
         </div>
 
         <aside className="lg:sticky lg:top-6 lg:self-start print:static">
-          <section className="overflow-hidden rounded-2xl border-2 border-slate-400 bg-white text-slate-950 shadow-2xl print:rounded-none print:shadow-none">
+          <section className="overflow-hidden rounded-md border border-slate-300 bg-white text-slate-950 print:rounded-none">
             <div className="border-b-2 border-slate-300 p-5 print:px-0"><p className="text-xs font-extrabold uppercase tracking-[0.2em] text-navy-700">Resumen</p><div className="mt-1 flex items-center justify-between gap-3"><h2 className="text-xl font-extrabold text-slate-950">Cotización</h2><strong className="rounded-lg border-2 border-navy-800 bg-navy-50 px-3 py-1.5 text-sm text-navy-950">N.º {quoteNumber === null ? "Pendiente" : String(quoteNumber).padStart(6, "0")}</strong></div><p className="mt-3 text-sm font-bold text-slate-700">Usuario: {currentUser}</p></div>
             <div className="max-h-[52vh] divide-y divide-slate-300 overflow-y-auto print:max-h-none">
               {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.modeText} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950">{money(line.total)}</strong></div></div>)}
