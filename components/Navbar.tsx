@@ -21,11 +21,10 @@ export default function Navbar() {
   return (
     <nav className={`fixed inset-x-0 top-0 z-50 border-b transition-colors ${isScrolled || isOpen ? "border-slate-200 bg-white/95 backdrop-blur" : "border-white/10 bg-slate-950/20"}`}>
       <div className="container-custom flex h-20 items-center justify-between px-5 sm:px-8 lg:px-10">
-        <Link href="/" className="flex items-center gap-3" aria-label={`Ir al inicio de ${companyInfo.shortName}`}>
+        <Link href="/" className="flex items-center" aria-label={`Ir al inicio de ${companyInfo.shortName}`}>
           <span className="overflow-hidden rounded bg-white p-1">
             <Image src={siteAssets.logo} alt={`Logo ${companyInfo.shortName}`} priority className="h-10 w-auto object-contain" />
           </span>
-          <span className={`hidden text-sm font-semibold sm:block ${isScrolled || isOpen ? "text-slate-950" : "text-white"}`}>{companyInfo.shortName}</span>
         </Link>
 
         <div className="hidden items-center gap-6 xl:flex">
