@@ -20,5 +20,6 @@ export const navLinks = [
   { label: "Equipamiento", href: "/#equipamiento" },
   { label: "Productos", href: "/productos" },
   { label: "Cotizador VA", href: "/cotizador" },
+  { label: "GDF", href: "/generador-formulas" },
   { label: "Contacto", href: "/#contacto" },
 ];

@@ -28,7 +28,7 @@ export default function Navbar() {
         </Link>
 
         <div className="hidden items-center gap-6 xl:flex">
-          {navLinks.slice(0, 6).map((link) => (
+          {navLinks.filter((link) => link.href !== "/#contacto").map((link) => (
             <Link key={link.href} href={link.href} className={`text-sm font-medium ${isScrolled ? "text-slate-600 hover:text-slate-950" : "text-slate-200 hover:text-white"}`}>{link.label}</Link>
           ))}
           <a href="/#contacto" className="btn-primary !min-h-10 !px-4">Cotizar</a>
