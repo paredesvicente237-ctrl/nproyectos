@@ -6,6 +6,14 @@ import { ensureActiveSessionsTable } from "@/lib/activeSession";
 
 type StoredUser = { usuario: string; salt: string; hash: string };
 
+const builtInUsers: StoredUser[] = [
+  {
+    usuario: "Nicolas",
+    salt: "yl6vlvanS3rNflb3GHFhXQ==",
+    hash: "U1BrR/9rLtcJPEd9uSL/37AZIsj/PAnKeDtm5iL8W2U=",
+  },
+];
+
 function validPassword(password: string, user: StoredUser) {
   const calculated = pbkdf2Sync(password, Buffer.from(user.salt, "base64"), 210000, 32, "sha256");
   const stored = Buffer.from(user.hash, "base64");
@@ -16,16 +24,18 @@ export async function POST(request: Request) {
   const configuredUsers = process.env.COTIZADOR_USERS_JSON;
   const secret = process.env.COTIZADOR_SESSION_SECRET;
 
-  if (!configuredUsers || !secret) {
+  if (!secret) {
     return NextResponse.json({ error: "El acceso al cotizador aún no está configurado." }, { status: 503 });
   }
 
   const body = (await request.json()) as { usuario?: string; password?: string };
-  let users: StoredUser[] = [];
-  try {
-    users = JSON.parse(configuredUsers) as StoredUser[];
-  } catch {
-    return NextResponse.json({ error: "La configuración de acceso no es válida." }, { status: 503 });
+  let users = builtInUsers;
+  if (configuredUsers) {
+    try {
+      users = [...builtInUsers, ...(JSON.parse(configuredUsers) as StoredUser[])];
+    } catch {
+      return NextResponse.json({ error: "La configuración de acceso no es válida." }, { status: 503 });
+    }
   }
 
   const user = users.find(

@@ -26,7 +26,11 @@ export default function AccesoPage() {
         setError(result.error || "No fue posible iniciar sesión.");
         return;
       }
-      window.location.replace("/cotizador");
+      const requestedPath = new URLSearchParams(window.location.search).get("desde");
+      const destination = requestedPath?.startsWith("/") && !requestedPath.startsWith("//")
+        ? requestedPath
+        : "/cotizador";
+      window.location.replace(destination);
     } catch {
       setError("No fue posible conectar con el servidor.");
     } finally {
@@ -40,8 +44,8 @@ export default function AccesoPage() {
       <div className="absolute -left-24 top-12 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
       <section className="relative w-full max-w-md rounded-md border border-slate-200 bg-white p-7 shadow-sm sm:p-9">
         <p className="text-xs font-bold uppercase tracking-[0.22em] text-navy-600">N Proyectos Ltda.</p>
-        <h1 className="mt-3 text-3xl font-semibold text-slate-900">Acceso al cotizador</h1>
-        <p className="mt-2 text-sm leading-relaxed text-slate-500">Ingresa tus credenciales para consultar precios y generar cotizaciones.</p>
+        <h1 className="mt-3 text-3xl font-semibold text-slate-900">Acceso privado</h1>
+        <p className="mt-2 text-sm leading-relaxed text-slate-500">Ingresa tus credenciales para acceder a las herramientas internas.</p>
 
         <form onSubmit={submit} className="mt-7 space-y-4">
           <label className="block text-sm font-semibold text-slate-700">Usuario<input autoComplete="username" required className="form-input mt-2" value={usuario} onChange={(event) => setUsuario(event.target.value)} /></label>
