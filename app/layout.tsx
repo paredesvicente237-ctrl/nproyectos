@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit, DM_Sans } from "next/font/google";
+import { companyInfo } from "@/components/siteData";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -17,19 +18,58 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "N Proyectos Ltda | Servicios y Proyectos en Aceros",
+  metadataBase: new URL(companyInfo.website),
+  title: {
+    default: "Metalmecánica y fabricación en acero en Santiago | N Proyectos",
+    template: "%s | N Proyectos",
+  },
   description:
-    "Servicios y proyectos en aceros para minería, manufactura, industria y construcción. Corte, plegado, armado, soldadura y apoyo técnico para fabricación industrial.",
+    "Empresa metalmecánica en Santiago. Fabricación en acero, corte y plegado de planchas, soldadura MIG/TIG y control acústico para industria y construcción.",
   keywords: [
-    "metalmecánica",
-    "fabricación en acero",
-    "corte láser",
-    "corte guillotina",
-    "plegado",
-    "soldadura",
-    "proyectos en acero",
+    "metalmecánica Santiago",
+    "fabricación en acero Santiago",
+    "corte y plegado de planchas",
+    "soldadura MIG TIG Santiago",
+    "control acústico industrial",
+    "maestranza Santiago",
     "N Proyectos Ltda",
   ],
+  applicationName: companyInfo.shortName,
+  authors: [{ name: companyInfo.legalName, url: companyInfo.website }],
+  creator: companyInfo.legalName,
+  publisher: companyInfo.legalName,
+  category: "Metalmecánica industrial",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "es_CL",
+    url: "/",
+    siteName: companyInfo.shortName,
+    title: "Metalmecánica y fabricación en acero en Santiago | N Proyectos",
+    description:
+      "Fabricación en acero, corte y plegado, soldadura MIG/TIG y control acústico para proyectos industriales.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Metalmecánica y fabricación en acero | N Proyectos",
+    description:
+      "Fabricación en acero, corte y plegado, soldadura y control acústico en Santiago.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
 };
 
 export default function RootLayout({
