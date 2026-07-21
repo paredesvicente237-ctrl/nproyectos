@@ -8,9 +8,18 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 export const metadata: Metadata = {
-  title: "Productos | N Proyectos Ltda",
+  title: "Productos acústicos e industriales",
   description:
-    "Productos acústicos e industriales: espuma acústica, splitters, celosías, paneles perforados y pantallas móviles.",
+    "Productos acústicos e industriales fabricados a medida en Chile: espuma acústica, splitters, celosías, paneles perforados y pantallas móviles.",
+  alternates: { canonical: "/productos" },
+  openGraph: {
+    type: "website",
+    locale: "es_CL",
+    url: "/productos",
+    title: "Productos acústicos e industriales | N Proyectos",
+    description:
+      "Espuma acústica, splitters, celosías, paneles perforados y pantallas móviles fabricados según cada proyecto.",
+  },
 };
 
 type ProductSpec = { label: string; value: string };
