@@ -39,6 +39,9 @@ export const metadata: Metadata = {
   creator: companyInfo.legalName,
   publisher: companyInfo.legalName,
   category: "Metalmecánica industrial",
+  verification: {
+    google: "eH3H6pVDPXb9MD39NW4vskeCo_2PHSlcXbtniXNkBl0",
+  },
   formatDetection: {
     email: false,
     address: false,
