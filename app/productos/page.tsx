@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
+import { Download, FileText } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
 import { companyInfo } from "@/components/siteData";
 import Navbar from "@/components/Navbar";
@@ -31,6 +32,7 @@ type Product = {
   code: string;
   category: string;
   description: string;
+  datasheet: string;
   specs: ProductSpec[];
   uses: string[];
   images: ProductImage[];
@@ -42,6 +44,7 @@ const products: Product[] = [
     name: "Espuma Acústica",
     code: "NFonoAB",
     category: "Acústica",
+    datasheet: "/fichas-tecnicas/espuma-acustica-nfonoab.pdf",
     description:
       "Acondicionamiento acústico para espacios donde el control de ruido y reverberación es crítico. Ideal para estudios, salas de conferencias y recintos industriales.",
     specs: [
@@ -71,6 +74,7 @@ const products: Product[] = [
     name: "Splitter Acústico",
     code: "NSplitter",
     category: "Acústica",
+    datasheet: "/fichas-tecnicas/splitter-acustico-nsplitter.pdf",
     description:
       "Atenuador acústico tipo splitter para sistemas de ventilación y ductos industriales. Reduce el ruido generado por el flujo de aire manteniendo la eficiencia del sistema.",
     specs: [
@@ -97,6 +101,7 @@ const products: Product[] = [
     name: "Celosía Acústica",
     code: "NCelosía",
     category: "Acústica",
+    datasheet: "/fichas-tecnicas/celosia-acustica-ncelosia.pdf",
     description:
       "Celosías metálicas diseñadas para ventilación con atenuación acústica. Permiten el paso de aire controlando la transmisión de ruido en fachadas e instalaciones industriales.",
     specs: [
@@ -122,6 +127,7 @@ const products: Product[] = [
     name: "Panel Perforado",
     code: "NPerfAB",
     category: "Acústica",
+    datasheet: "/fichas-tecnicas/panel-perforado-nperfab.pdf",
     description:
       "Paneles metálicos perforados para revestimiento acústico de muros y cielos. Combinan absorción acústica con estética industrial, utilizados en conjunto con material absorbente.",
     specs: [
@@ -148,6 +154,7 @@ const products: Product[] = [
     name: "Pantalla Móvil",
     code: "NMóvil",
     category: "Seguridad Industrial",
+    datasheet: "/fichas-tecnicas/pantalla-movil-nmovil.pdf",
     description:
       "Pantalla móvil plegable con ruedas para protección en trabajos de soldadura y esmerilado. Estructura metálica robusta con paneles translúcidos que permiten visibilidad controlada.",
     specs: [
@@ -285,21 +292,27 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
           </div>
 
           {/* CTA */}
-          <a
-            href={`${companyInfo.whatsappHref.replace(
-              "cotizar%20un%20proyecto",
-              `cotizar%20${encodeURIComponent(product.name)}`
-            )}`}
-            className="btn-primary mt-8"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.913.913l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.319 0-4.478-.671-6.306-1.828l-.452-.279-2.677.897.897-2.677-.279-.452A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-            </svg>
-            Cotizar este producto
-          </a>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={`${companyInfo.whatsappHref.replace(
+                "cotizar%20un%20proyecto",
+                `cotizar%20${encodeURIComponent(product.name)}`
+              )}`}
+              className="btn-primary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.913.913l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.319 0-4.478-.671-6.306-1.828l-.452-.279-2.677.897.897-2.677-.279-.452A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+              </svg>
+              Cotizar este producto
+            </a>
+            <a href={product.datasheet} download className="btn-outline">
+              <Download className="h-4 w-4" aria-hidden="true" />
+              Descargar ficha técnica
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -332,6 +345,12 @@ export default function ProductosPage() {
 
             {/* Quick nav */}
             <div className="mx-auto mt-10 flex flex-wrap justify-center gap-3">
+              <a
+                href="#fichas-tecnicas"
+                className="rounded-full border border-navy-400/50 bg-navy-500/15 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:border-navy-300 hover:bg-navy-500/25"
+              >
+                Descargar fichas técnicas
+              </a>
               {products.map((p) => (
                 <a
                   key={p.id}
@@ -339,6 +358,61 @@ export default function ProductosPage() {
                   className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300 transition-all hover:border-navy-400/40 hover:bg-navy-500/10 hover:text-white"
                 >
                   {p.name}
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Technical sheets */}
+        <section
+          id="fichas-tecnicas"
+          className="scroll-mt-20 border-b border-slate-200 bg-slate-100 px-5 py-16 sm:px-8 md:py-20 lg:px-10"
+        >
+          <div className="container-custom grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+            <div className="lg:sticky lg:top-28 lg:self-start">
+              <span className="eyebrow">Documentación técnica</span>
+              <h2 className="section-title">
+                Una ficha clara para cada producto.
+              </h2>
+              <p className="section-copy">
+                Descarga especificaciones, aplicaciones y datos de contacto en
+                PDF. Cada documento está preparado para compartir, imprimir o
+                adjuntar a una solicitud de cotización.
+              </p>
+              <div className="mt-7 flex items-center gap-3 text-sm font-semibold text-slate-700">
+                <span className="flex h-10 w-10 items-center justify-center rounded-md bg-navy-900 text-white">
+                  <FileText className="h-5 w-5" aria-hidden="true" />
+                </span>
+                {products.length} fichas disponibles
+              </div>
+            </div>
+
+            <div className="border-t border-slate-300">
+              {products.map((product) => (
+                <a
+                  key={product.id}
+                  href={product.datasheet}
+                  download
+                  className="group grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-slate-300 bg-white px-4 py-5 transition-colors hover:bg-navy-50 sm:gap-6 sm:px-6"
+                >
+                  <span className="flex h-11 w-11 items-center justify-center rounded-md border border-navy-200 bg-navy-50 text-[10px] font-bold uppercase tracking-wider text-navy-700">
+                    PDF
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+                      {product.category} · {product.code}
+                    </span>
+                    <span className="mt-1 block truncate text-base font-semibold text-slate-950 sm:text-lg">
+                      {product.name}
+                    </span>
+                  </span>
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-600 transition-all group-hover:border-navy-600 group-hover:bg-navy-700 group-hover:text-white">
+                    <Download className="h-4 w-4" aria-hidden="true" />
+                    <span className="sr-only">
+                      Descargar ficha técnica de {product.name}
+                    </span>
+                  </span>
                 </a>
               ))}
             </div>
