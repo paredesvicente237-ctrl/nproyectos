@@ -143,13 +143,13 @@ const parrillas: MeasureProduct[] = [
     id: "modulo-barra-inox",
     name: "Módulo barra inox Ø8",
     fields: ["largo", "ancho"],
-    calculate: ({ largo, ancho }, mode) => ((largo * ancho) / 2 / 10000) * (mode === "con" ? 8500 : 5000),
+    calculate: ({ largo, ancho }, mode) => largo * 80 + (mode === "con" ? ((largo * ancho) / 2 / 10000) * 4600 : 0),
   },
   {
     id: "modulo-v-inox",
     name: "Módulo V 1,5 inox",
     fields: ["largo", "ancho"],
-    calculate: ({ largo, ancho }, mode) => ((largo * ancho) / 2 / 10000) * (mode === "con" ? 5000 : 3000),
+    calculate: ({ largo, ancho }, mode) => largo * 80 + (mode === "con" ? ((largo * ancho) / 2 / 10000) * 2000 : 0),
   },
   {
     id: "separador-parrilla",
@@ -179,8 +179,8 @@ const parrillas: MeasureProduct[] = [
     fixedMeasures: { ancho: 40 },
     calculate: ({ largo, ancho }, mode) => largo * 10 + (mode === "con" ? ((ancho + 50) * (largo + 60) * 3 * 8) / 1_000_000 * 6000 : 0),
   },
-  { id: "pata-falsa-inox", name: "Pata falsa inox", fields: [], calculate: (_values, mode) => mode === "con" ? 22000 : 12000 },
-  { id: "pata-falsa-fierro", name: "Pata falsa fierro", fields: [], calculate: (_values, mode) => mode === "con" ? 18000 : 12000 },
+  { id: "pata-falsa-inox", name: "Pata falsa inox", fields: [], calculate: (_values, mode) => mode === "con" ? 14000 : 10000 },
+  { id: "pata-falsa-fierro", name: "Pata falsa fierro", fields: [], calculate: (_values, mode) => mode === "con" ? 12000 : 8000 },
   { id: "manilla-parrilla", name: "Manilla", fields: [], calculate: (_values, mode) => mode === "con" ? 10000 : 5000 },
 ];
 
