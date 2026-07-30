@@ -390,9 +390,8 @@ export default function CotizadorPage() {
                   {rows.map((row, variantIndex) => {
                     const unitPrice = product.calculate(row, row.mode);
                     return <div key={variantIndex} className={`p-4 transition-colors sm:p-5 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
-                      <div className={`grid items-start gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_7rem_minmax(0,1fr)] sm:grid-cols-[auto_8rem_minmax(0,1fr)]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
+                      <div className={`grid items-start gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_7rem] sm:grid-cols-[auto_minmax(0,1fr)_8rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
                         <input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} />
-                        {variantIndex === 0 && <ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} />}
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-start justify-between gap-2">
                             <div>
@@ -405,6 +404,7 @@ export default function CotizadorPage() {
                             </div>
                           </div>
                         </div>
+                        {variantIndex === 0 && <ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} />}
                         <div className={`mt-1 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5 ${variantIndex === 0 ? 'col-span-3' : 'col-span-2'}`}>
                           {product.fields.map((field) => {
                             const fixed = product.fixedMeasures?.[field] !== undefined;
