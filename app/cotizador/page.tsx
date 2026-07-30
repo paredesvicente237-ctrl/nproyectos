@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
+import { ProductReference } from "@/components/cotizador/ProductReference";
 
 type Mode = "con" | "sin";
 type Section = "parrillas" | "campanas" | "guillotinas" | "personalizado";
@@ -374,7 +375,7 @@ export default function CotizadorPage() {
           </section>
 
           <section className="overflow-hidden rounded-md border border-slate-300 bg-white">
-            <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada.</p></div></div>
+            <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada. Presiona una referencia para ver cómo tomar las medidas.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
                 {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina'],['personalizado','Personalizado']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
               </div>
@@ -389,8 +390,22 @@ export default function CotizadorPage() {
                   {rows.map((row, variantIndex) => {
                     const unitPrice = product.calculate(row, row.mode);
                     return <div key={variantIndex} className={`p-4 transition-colors sm:p-5 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
-                      <div className="flex items-start gap-3"><input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} /><div className="min-w-0 flex-1"><div className="flex flex-wrap items-start justify-between gap-2"><div><div className="flex flex-wrap items-center gap-2"><h3 className="font-bold">{product.name}</h3>{variantIndex > 0 && <span className="rounded-full bg-navy-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-navy-800">Medida {variantIndex + 1}</span>}</div>{product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}</div><div className="flex items-center gap-3"><strong className="text-navy-700">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong>{variantIndex > 0 && <button type="button" onClick={() => removeMeasureVariant(group, product.id, variantIndex)} className="rounded-lg border border-red-300 bg-white px-2 py-1 text-xs font-bold text-red-700 hover:bg-red-50">Quitar</button>}</div></div>
-                        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+                      <div className={`grid items-start gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_7rem_minmax(0,1fr)] sm:grid-cols-[auto_8rem_minmax(0,1fr)]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
+                        <input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} />
+                        {variantIndex === 0 && <ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} />}
+                        <div className="min-w-0">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div>
+                              <div className="flex flex-wrap items-center gap-2"><h3 className="font-bold">{product.name}</h3>{variantIndex > 0 && <span className="rounded-full bg-navy-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-navy-800">Medida {variantIndex + 1}</span>}</div>
+                              {product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <strong className="text-navy-700">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong>
+                              {variantIndex > 0 && <button type="button" onClick={() => removeMeasureVariant(group, product.id, variantIndex)} className="rounded-lg border border-red-300 bg-white px-2 py-1 text-xs font-bold text-red-700 hover:bg-red-50">Quitar</button>}
+                            </div>
+                          </div>
+                        </div>
+                        <div className={`mt-1 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5 ${variantIndex === 0 ? 'col-span-3' : 'col-span-2'}`}>
                           {product.fields.map((field) => {
                             const fixed = product.fixedMeasures?.[field] !== undefined;
                             return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
@@ -398,7 +413,7 @@ export default function CotizadorPage() {
                           <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
                           {(product.modes?.length ?? 2) > 1 && <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}>{(product.modes ?? (["con", "sin"] as Mode[])).map((mode) => <option key={mode} value={mode}>{mode === "con" ? "Con material" : "Sin material"}</option>)}</select></label>}
                         </div>
-                      </div></div>
+                      </div>
                     </div>;
                   })}
                   {product.fields.length > 0 && <div className="border-t border-slate-200 px-4 py-3 sm:px-5"><button type="button" onClick={() => addMeasureVariant(group, product)} className="w-full rounded-lg border-2 border-dashed border-navy-400 px-3 py-2 text-xs font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50 sm:w-auto">+ Agregar otra medida</button></div>}
