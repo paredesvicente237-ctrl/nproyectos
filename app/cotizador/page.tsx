@@ -55,18 +55,6 @@ const campanas: MeasureProduct[] = [
     },
   },
   {
-    id: "conica",
-    name: "Campana cónica",
-    fields: ["largo", "ancho", "alto"],
-    modes: ["con"],
-    calculate: ({ largo, ancho, alto }) => {
-      const materialConica =
-        (((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2) +
-        (((ancho * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2);
-      return materialConica * 5000;
-    },
-  },
-  {
     id: "mediterraneo-falso",
     name: "Mediterráneo falso",
     fields: ["largo", "ancho", "alto"],
@@ -76,7 +64,7 @@ const campanas: MeasureProduct[] = [
         ((((largo * alto * 1.2 * 8) / 1_000_000) * 2) +
           (((ancho * alto * 1.2 * 8) / 1_000_000) * 2 * 1.3)) *
         1.2;
-      return materialMediterranea * 5000;
+      return materialMediterranea * 6500;
     },
   },
   {
