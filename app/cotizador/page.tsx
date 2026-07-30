@@ -40,7 +40,7 @@ const campanas: MeasureProduct[] = [
   },
   {
     id: "conica-mediterranea",
-    name: "Campana cónica + mediterráneo falso",
+    name: "Campana cónica mediterránea",
     fields: ["largo", "ancho", "alto"],
     modes: ["con"],
     calculate: ({ largo, ancho, alto }) => {
