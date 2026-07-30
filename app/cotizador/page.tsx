@@ -386,11 +386,11 @@ export default function CotizadorPage() {
                 const group = section as MeasureGroup;
                 const primaryRow = group === "parrillas" ? parrillaRows[product.id] : group === "campanas" ? campanaRows[product.id] : guillotinaRows[product.id];
                 const rows = [primaryRow, ...(measureVariants[`${group}:${product.id}`] || [])];
-                return <div key={product.id} className="border-t-8 border-slate-300 bg-white first:border-t-0">
+                return <div key={product.id} className="border-t-4 border-slate-300 bg-white first:border-t-0">
                   {rows.map((row, variantIndex) => {
                     const unitPrice = product.calculate(row, row.mode);
-                    return <div key={variantIndex} className={`p-4 transition-colors sm:p-5 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
-                      <div className={`grid items-start gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_7rem] sm:grid-cols-[auto_minmax(0,1fr)_8rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
+                    return <div key={variantIndex} className={`p-3 transition-colors sm:p-4 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
+                      <div className={`grid items-start gap-2 sm:gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_5rem] sm:grid-cols-[auto_minmax(0,1fr)_6rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
                         <input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} />
                         <div className="min-w-0">
                           <div className="flex flex-wrap items-start justify-between gap-2">
@@ -405,7 +405,7 @@ export default function CotizadorPage() {
                           </div>
                         </div>
                         {variantIndex === 0 && <ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} />}
-                        <div className={`mt-1 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5 ${variantIndex === 0 ? 'col-span-3' : 'col-span-2'}`}>
+                        <div className={`mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-5 ${variantIndex === 0 ? 'col-span-3' : 'col-span-2'}`}>
                           {product.fields.map((field) => {
                             const fixed = product.fixedMeasures?.[field] !== undefined;
                             return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
