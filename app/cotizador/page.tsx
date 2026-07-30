@@ -390,9 +390,9 @@ export default function CotizadorPage() {
                   {rows.map((row, variantIndex) => {
                     const unitPrice = product.calculate(row, row.mode);
                     return <div key={variantIndex} className={`p-3 transition-colors sm:p-4 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
-                      <div className={`grid items-start gap-2 sm:gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_5rem] sm:grid-cols-[auto_minmax(0,1fr)_6rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
+                      <div className={`grid items-start gap-2 sm:gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_5rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
                         <input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} />
-                        <div className="min-w-0">
+                        <div className={`min-w-0 ${variantIndex === 0 ? 'col-span-2' : ''}`}>
                           <div className="flex flex-wrap items-start justify-between gap-2">
                             <div>
                               <div className="flex flex-wrap items-center gap-2"><h3 className="font-bold">{product.name}</h3>{variantIndex > 0 && <span className="rounded-full bg-navy-100 px-2 py-0.5 text-[10px] font-extrabold uppercase text-navy-800">Medida {variantIndex + 1}</span>}</div>
@@ -404,8 +404,7 @@ export default function CotizadorPage() {
                             </div>
                           </div>
                         </div>
-                        {variantIndex === 0 && <ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} />}
-                        <div className={`mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-5 ${variantIndex === 0 ? 'col-span-3' : 'col-span-2'}`}>
+                        <div className={`mt-1 grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-5 ${variantIndex === 0 ? 'col-start-1 col-end-3 row-start-2' : 'col-span-2'}`}>
                           {product.fields.map((field) => {
                             const fixed = product.fixedMeasures?.[field] !== undefined;
                             return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
@@ -413,6 +412,7 @@ export default function CotizadorPage() {
                           <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
                           {(product.modes?.length ?? 2) > 1 && <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}>{(product.modes ?? (["con", "sin"] as Mode[])).map((mode) => <option key={mode} value={mode}>{mode === "con" ? "Con material" : "Sin material"}</option>)}</select></label>}
                         </div>
+                        {variantIndex === 0 && <div className="col-start-3 row-start-2 self-start justify-self-end xl:self-end"><ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} /></div>}
                       </div>
                     </div>;
                   })}

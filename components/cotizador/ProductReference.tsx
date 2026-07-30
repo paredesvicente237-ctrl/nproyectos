@@ -11,7 +11,7 @@ function PendingReferenceIcon() {
   return (
     <svg
       viewBox="0 0 48 48"
-      className="h-5 w-5"
+      className="h-4 w-4"
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
@@ -30,11 +30,11 @@ function PendingReferenceIcon() {
 export function ProductReference({ productName }: ProductReferenceProps) {
   return (
     <div
-      className="flex h-14 w-20 shrink-0 flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 px-1.5 text-center text-slate-500 sm:h-16 sm:w-24"
+      className="flex h-12 w-20 shrink-0 flex-col items-center justify-center rounded-lg border border-dashed border-slate-300 bg-slate-50 px-1.5 text-center text-slate-500"
       aria-label={`Referencia visual de ${productName}: próximamente`}
     >
       <PendingReferenceIcon />
-      <span className="mt-1 text-[9px] font-extrabold uppercase leading-tight tracking-[0.08em] text-navy-800 sm:text-[10px]">
+      <span className="mt-0.5 text-[9px] font-extrabold uppercase leading-tight tracking-[0.06em] text-navy-800">
         Próximamente
       </span>
     </div>
