@@ -7,6 +7,7 @@ import { siteAssets } from "@/components/siteAssets";
 import { ProductReference } from "@/components/cotizador/ProductReference";
 
 type Mode = "con" | "sin";
+type PaintMode = "sin" | "poliuretano" | "electrostatica";
 type Section = "parrillas" | "campanas" | "guillotinas" | "personalizado";
 type MeasureGroup = "parrillas" | "campanas" | "guillotinas";
 
@@ -18,13 +19,34 @@ type MeasureProduct = {
   fixedMeasures?: Partial<Measures>;
   modes?: Mode[];
   calculate: (values: Measures, mode: Mode) => number;
+  paintArea?: (values: Measures) => number;
 };
 
 type Measures = { largo: number; ancho: number; alto: number };
-type MeasureRow = Measures & { quantity: number; mode: Mode; selected: boolean };
+type MeasureRow = Measures & { quantity: number; mode: Mode; paint: PaintMode; selected: boolean };
 type CustomRow = { id: number; description: string; price: number; quantity: number };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
+
+const paintRates: Record<Exclude<PaintMode, "sin">, number> = {
+  poliuretano: 10500,
+  electrostatica: 8500,
+};
+
+const conicalPaintArea = ({ largo, ancho, alto }: Measures) =>
+  ((largo * alto) / 1_000_000) * 4 + ((ancho * alto) / 1_000_000) * 4 * 0.8;
+
+const mediterraneanPaintArea = ({ largo, ancho, alto }: Measures) =>
+  ((largo * alto) / 1_000_000) * 4 + ((ancho * alto) / 1_000_000) * 4;
+
+const paintPrice = (product: MeasureProduct, row: MeasureRow) =>
+  product.paintArea && row.paint !== "sin" ? product.paintArea(row) * paintRates[row.paint] : 0;
+
+const paintNames: Record<PaintMode, string> = {
+  sin: "Sin pintura",
+  poliuretano: "Pintura poliuretano",
+  electrostatica: "Pintura electrostática",
+};
 
 const campanas: MeasureProduct[] = [
   {
@@ -32,6 +54,7 @@ const campanas: MeasureProduct[] = [
     name: "Campana cónica exterior",
     fields: ["largo", "ancho", "alto"],
     modes: ["con"],
+    paintArea: conicalPaintArea,
     calculate: ({ largo, ancho, alto }) => {
       const material =
         (((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2) +
@@ -44,6 +67,7 @@ const campanas: MeasureProduct[] = [
     name: "Campana cónica mediterránea",
     fields: ["largo", "ancho", "alto"],
     modes: ["con"],
+    paintArea: (values) => conicalPaintArea(values) + mediterraneanPaintArea(values),
     calculate: ({ largo, ancho, alto }) => {
       const materialConica =
         (((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 * 2) +
@@ -60,6 +84,7 @@ const campanas: MeasureProduct[] = [
     name: "Mediterráneo falso",
     fields: ["largo", "ancho", "alto"],
     modes: ["con"],
+    paintArea: mediterraneanPaintArea,
     calculate: ({ largo, ancho, alto }) => {
       const materialMediterranea =
         ((((largo * alto * 1.2 * 8) / 1_000_000) * 2) +
@@ -73,6 +98,7 @@ const campanas: MeasureProduct[] = [
     name: "Faldón",
     fields: ["largo", "alto"],
     modes: ["con"],
+    paintArea: ({ largo, alto }) => ((largo * alto) / 1_000_000) * 2,
     calculate: ({ largo, alto }) => {
       const material = ((largo * alto * 1.2 * 8) / 1_000_000) * 1.2;
       return material * 2800;
@@ -83,6 +109,7 @@ const campanas: MeasureProduct[] = [
     name: "Faldón C",
     fields: ["largo", "alto"],
     modes: ["con"],
+    paintArea: ({ largo, alto }) => ((largo * alto) / 1_000_000) * 2 + 4,
     calculate: ({ largo, alto }) => {
       const material = ((largo * alto * 1.2 * 8) / 1_000_000) * 1.2 + 20;
       return material * 2800;
@@ -93,6 +120,7 @@ const campanas: MeasureProduct[] = [
     name: "Chimenea",
     fields: ["largo", "ancho", "alto"],
     modes: ["con"],
+    paintArea: ({ largo, ancho, alto }) => (((largo + ancho) * alto * 4) / 1_000_000) + 2,
     calculate: ({ largo, ancho, alto }) => {
       const material = ((((largo + ancho) * alto * 1.2 * 8) / 1_000_000) * 2) * 1.67 + 10;
       return material * 2000;
@@ -199,7 +227,7 @@ const parrillas: MeasureProduct[] = [
 ];
 
 const initialMeasureRows = (products: MeasureProduct[]) =>
-  Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", selected: false }])) as Record<string, MeasureRow>;
+  Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", paint: "sin", selected: false }])) as Record<string, MeasureRow>;
 
 const money = (value: number) =>
   new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 }).format(Math.round(value));
@@ -242,9 +270,9 @@ export default function CotizadorPage() {
         name: `${product.name}${variantIndex > 0 ? ` · Medida ${variantIndex + 1}` : ""}`,
         detail: product.fields.map((field) => `${fieldNames[field]} ${row[field]} mm`).join(" · "),
         mode: row.mode,
-        modeText: row.mode === "con" ? "Con material" : "Sin material",
+        modeText: `${row.mode === "con" ? "Con material" : "Sin material"}${product.paintArea ? ` · ${paintNames[row.paint]}` : ""}`,
         quantity: row.quantity,
-        total: product.calculate(row, row.mode) * row.quantity,
+        total: (product.calculate(row, row.mode) + paintPrice(product, row)) * row.quantity,
       }));
 
     const custom = customRows
@@ -285,7 +313,7 @@ export default function CotizadorPage() {
 
   const addMeasureVariant = (group: MeasureGroup, product: MeasureProduct) => {
     const key = `${group}:${product.id}`;
-    const newRow: MeasureRow = { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", selected: true };
+    const newRow: MeasureRow = { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", paint: "sin", selected: true };
     setMeasureVariants((current) => ({ ...current, [key]: [...(current[key] || []), newRow] }));
   };
 
@@ -388,7 +416,7 @@ export default function CotizadorPage() {
                 const rows = [primaryRow, ...(measureVariants[`${group}:${product.id}`] || [])];
                 return <div key={product.id} className="border-t-4 border-slate-300 bg-white first:border-t-0">
                   {rows.map((row, variantIndex) => {
-                    const unitPrice = product.calculate(row, row.mode);
+                    const unitPrice = product.calculate(row, row.mode) + paintPrice(product, row);
                     return <div key={variantIndex} className={`p-3 transition-colors sm:p-4 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
                       <div className={`grid items-start gap-2 sm:gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_5rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
                         <input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} />
@@ -410,6 +438,7 @@ export default function CotizadorPage() {
                             return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
                           })}
                           <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
+                          {product.paintArea && <label className="text-xs font-extrabold text-slate-800">Pintura<select className="mt-1 w-full rounded-lg border-2 border-amber-400 bg-amber-50 px-3 py-2 font-semibold text-slate-950 outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200" value={row.paint} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { paint: e.target.value as PaintMode })}><option value="sin">Sin pintura</option><option value="poliuretano">Poliuretano</option><option value="electrostatica">Electrostática</option></select>{row.paint !== "sin" && <span className="mt-1 block text-[10px] font-extrabold text-amber-700">Recargo: {money(paintPrice(product, row))}</span>}</label>}
                           {(product.modes?.length ?? 2) > 1 && <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}>{(product.modes ?? (["con", "sin"] as Mode[])).map((mode) => <option key={mode} value={mode}>{mode === "con" ? "Con material" : "Sin material"}</option>)}</select></label>}
                         </div>
                         {variantIndex === 0 && <div className="col-start-3 row-start-2 self-start justify-self-end xl:self-end"><ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} /></div>}
