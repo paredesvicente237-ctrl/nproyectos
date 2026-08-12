@@ -74,23 +74,22 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="section-padding bg-white">
+    <section id="contacto" className="section-padding technical-grid bg-slate-50">
       <div className="container-custom">
-        <div>
+        <div className="max-w-3xl">
           <span className="eyebrow">Contacto</span>
           <h2 className="section-title">
-            Cotiza tu proyecto
+            Hablemos de tu próximo proyecto.
           </h2>
           <p className="section-copy">
-            Envía los datos de tu requerimiento y te contactamos con una
-            propuesta técnica.
+            Cuéntanos qué necesitas fabricar. Revisaremos el requerimiento para responder con una propuesta técnica clara.
           </p>
         </div>
 
         <div className="mt-12">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
             {/* Form Container */}
-            <div className="relative overflow-hidden rounded-md border border-slate-200 bg-white p-6 sm:p-8">
+            <div className="relative overflow-hidden border border-slate-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.07)] sm:p-8">
               
               {/* Success Message Overlay */}
               {feedback === "success" && (

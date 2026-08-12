@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Process from "@/components/Process";
+import ProductSolutions from "@/components/ProductSolutions";
 import Services from "@/components/Services";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { companyInfo } from "@/components/siteData";
@@ -89,7 +90,7 @@ export default function Home() {
         <Services />
         <Process />
         <Equipment />
-
+        <ProductSolutions />
         <Contact />
       </main>
       <Footer />

@@ -1,40 +1,55 @@
 import Image from "next/image";
-import { Clock3, DraftingCompass, ShieldCheck, TrendingDown } from "lucide-react";
+import { ArrowRight, DraftingCompass, Gauge, ShieldCheck } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
 
-const values = [
-  { icon: ShieldCheck, title: "Personal certificado", text: "Equipo calificado en armado y soldadura industrial." },
-  { icon: DraftingCompass, title: "Ingeniería aplicada", text: "Trabajamos desde diseños, planos, prototipos o requerimientos funcionales." },
-  { icon: Clock3, title: "Plazos competitivos", text: "Producción planificada y seguimiento durante cada etapa." },
-  { icon: TrendingDown, title: "Menor desperdicio", text: "Optimizamos materiales con foco en factibilidad y reducción de merma." },
+const principles = [
+  { icon: DraftingCompass, title: "Desarrollo desde planos", text: "Traducimos requerimientos y diseños en una solución lista para fabricar." },
+  { icon: Gauge, title: "Control de fabricación", text: "Coordinamos materiales, procesos y terminaciones durante cada etapa." },
+  { icon: ShieldCheck, title: "Compromiso de entrega", text: "Trabajamos con alcance y comunicación claros desde el inicio." },
 ];
 
 export default function About() {
   return (
-    <section id="nosotros" className="section-padding bg-slate-50">
-      <div className="container-custom grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-        <div className="lg:sticky lg:top-28">
-          <span className="eyebrow">Quiénes somos</span>
-          <h2 className="section-title">Experiencia técnica convertida en soluciones fabricables.</h2>
-          <p className="section-copy">N Proyectos reúne profesionales con experiencia en servicios metalmecánicos para minería, manufactura, construcción e industria. Abordamos cada encargo desde su requerimiento técnico hasta la entrega.</p>
-          <a href="/#contacto" className="btn-outline mt-8">Conversemos sobre tu proyecto</a>
-        </div>
-
-        <div>
-          <div className="relative overflow-hidden rounded-md">
-            <Image src={siteAssets.goodWelding} alt="Equipo trabajando en fabricación metalmecánica" className="aspect-[16/10] w-full object-cover" sizes="(max-width: 1024px) 100vw, 58vw" />
-            <div className="absolute inset-x-0 bottom-0 bg-slate-950/90 p-5 sm:p-6">
-              <p className="text-sm leading-6 text-slate-200">Nuestra misión es desarrollar piezas, partes y soluciones industriales con calidad verificable y plazos claros.</p>
+    <section id="nosotros" className="section-padding overflow-hidden bg-white">
+      <div className="container-custom">
+        <div className="grid lg:grid-cols-[0.82fr_1.18fr]">
+          <div className="relative z-10 bg-[#06152c] p-8 sm:p-12 lg:p-14">
+            <span className="eyebrow !text-blue-300 before:!bg-blue-400">Sobre N Proyectos</span>
+            <h2 className="mt-5 max-w-xl text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-white sm:text-4xl lg:text-[2.8rem]">
+              Criterio técnico en cada decisión de fabricación.
+            </h2>
+            <p className="mt-6 max-w-xl text-base leading-7 text-slate-300">
+              Somos una empresa metalmecánica orientada a resolver encargos industriales con ingeniería aplicada, fabricación a medida y comunicación directa con cada cliente.
+            </p>
+            <a href="/#contacto" className="mt-8 inline-flex items-center gap-3 text-sm font-semibold text-blue-300 hover:text-white">
+              Conversemos sobre tu proyecto <ArrowRight className="h-4 w-4" />
+            </a>
+            <div className="mt-12 border-t border-white/15 pt-7">
+              <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">Áreas atendidas</p>
+              <p className="mt-3 text-sm leading-6 text-slate-300">Minería · Manufactura · Construcción · Industria</p>
             </div>
           </div>
-          <div className="mt-8 grid gap-x-8 gap-y-7 sm:grid-cols-2">
-            {values.map(({ icon: Icon, title, text }) => (
-              <div key={title} className="border-t border-slate-300 pt-5">
-                <Icon className="h-5 w-5 text-navy-600" />
-                <h3 className="mt-3 text-base font-semibold">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
-              </div>
-            ))}
+
+          <div className="grid bg-slate-50 md:grid-cols-[1fr_0.9fr]">
+            <div className="flex flex-col justify-center p-8 sm:p-10 lg:p-12">
+              {principles.map(({ icon: Icon, title, text }, index) => (
+                <article key={title} className="flex gap-5 border-b border-slate-200 py-6 first:pt-0 last:border-b-0 last:pb-0">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center border border-blue-200 bg-white text-blue-700">
+                    <Icon className="h-5 w-5" strokeWidth={1.7} />
+                  </span>
+                  <div>
+                    <p className="font-mono text-[10px] font-semibold tracking-[0.15em] text-blue-700">0{index + 1}</p>
+                    <h3 className="mt-1 text-base font-semibold text-slate-950">{title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+            <div className="relative min-h-[380px] md:min-h-full">
+              <Image src={siteAssets.goodBending} alt="Plegado industrial de acero" fill className="object-cover object-center" sizes="(max-width: 768px) 100vw, 35vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#06152c]/65 via-transparent to-transparent" />
+              <p className="absolute bottom-6 left-6 border-l-2 border-blue-400 pl-3 text-xs font-medium uppercase tracking-[0.12em] text-white">Precisión en proceso</p>
+            </div>
           </div>
         </div>
       </div>

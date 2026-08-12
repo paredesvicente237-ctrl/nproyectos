@@ -1,120 +1,43 @@
-"use client";
 import Image from "next/image";
+import { Check } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
-import { useState, useEffect } from "react";
 
 const equipment = [
-  { name: "Corte Láser", spec: "" },
-  { name: "Corte Guillotina", spec: "" },
-  { name: "Plegadoras", spec: "" },
-  { name: "Curvado de Tubos", spec: "" },
-  { name: "Soldadura MIG/TIG", spec: "" },
-  { name: "Soldadura Láser", spec: "" },
+  { process: "Corte", capability: "Láser y guillotina" },
+  { process: "Conformado", capability: "Plegado y curvado" },
+  { process: "Uniones", capability: "MIG, TIG y láser" },
+  { process: "Desarrollo", capability: "CAD / Inventor" },
 ];
-
-const materials = [
-  "Acero carbono", "Acero inoxidable", "Galvanizado", "Diamantado",
-  "Perforado", "Bronce", "Aluminio", "Cobre",
-];
-
-const carouselImages = [
-  { src: siteAssets.goodGuillotine, alt: "Corte industrial" },
-  { src: siteAssets.fotobuenax1, alt: "Maquinaria de precisión" },
-  { src: siteAssets.fotobuenax2, alt: "Instalaciones N Proyectos" },
-];
+const materials = ["Acero carbono", "Acero inoxidable", "Galvanizado", "Aluminio", "Cobre", "Bronce", "Plancha perforada", "Plancha diamantada"];
 
 export default function Equipment() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % carouselImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
   return (
-    <section id="equipamiento" className="section-padding bg-white">
-      <div className="container-custom">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-          {/* Info side */}
-          <div>
-            <span className="eyebrow">Equipamiento</span>
-            <h2 className="section-title">
-              Capacidad instalada
-            </h2>
-            <p className="section-copy">
-              Personal calificado y certificado con amplia experiencia en
-              trabajos de armado y soldadura.
-            </p>
-
-            <div className="mt-9 grid border-l border-t border-slate-200 sm:grid-cols-2">
-              {equipment.map((item) => (
-                <div
-                  key={item.name}
-                  className="flex items-center justify-between border-b border-r border-slate-200 px-5 py-4"
-                >
-                  <span className="text-sm font-medium text-slate-700">
-                    {item.name}
-                  </span>
-                  {item.spec && (
-                    <span className="rounded-lg bg-navy-50 px-3 py-1 text-sm font-bold text-navy-600">
-                      {item.spec}
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 border-l-2 border-navy-600 bg-slate-50 p-6">
-              <p className="text-sm font-bold text-slate-900">
-                Materiales de trabajo
-              </p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {materials.map((item) => (
-                  <span
-                    key={item}
-                    className="border border-slate-200 bg-white px-3 py-1.5 text-sm font-medium text-slate-600"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
-            </div>
+    <section id="equipamiento" className="overflow-hidden bg-[#06152c]">
+      <div className="container-custom grid lg:grid-cols-2">
+        <div className="relative min-h-[430px] lg:min-h-[650px]">
+          <Image src={siteAssets.fotobuenax1} alt="Equipo de corte láser en taller metalmecánico" fill className="object-cover object-center" sizes="(max-width: 1024px) 100vw, 50vw" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#06152c]/60 max-lg:bg-gradient-to-t" />
+          <div className="absolute bottom-7 left-7 right-7 border border-white/30 bg-[#06152c]/85 p-5 backdrop-blur sm:right-auto sm:max-w-sm">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-blue-300">Equipo de producción</p>
+            <p className="mt-2 text-sm font-semibold leading-6 text-white">Corte láser para geometrías precisas y fabricación repetible.</p>
           </div>
-
-          {/* Carousel */}
-          <div className="group relative">
-            <div className="overflow-hidden rounded-md border border-slate-200">
-              <div 
-                className="flex transition-transform duration-700 ease-in-out"
-                style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-              >
-                {carouselImages.map((image, idx) => (
-                  <div key={idx} className="min-w-full">
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      className="aspect-[4/3] w-full object-cover lg:aspect-square"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
-                  </div>
-                ))}
+        </div>
+        <div className="flex flex-col justify-center px-6 py-16 sm:px-12 lg:px-16 lg:py-20">
+          <span className="eyebrow !text-blue-300 before:!bg-blue-400">Equipamiento y materiales</span>
+          <h2 className="mt-5 max-w-xl text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-white sm:text-4xl">Capacidad para resolver proyectos diversos.</h2>
+          <p className="mt-5 max-w-xl text-base leading-7 text-slate-300">Combinamos equipamiento industrial, personal calificado y experiencia en distintos materiales para responder a cada geometría.</p>
+          <div className="mt-10 border-l border-t border-white/15">
+            {equipment.map((item) => (
+              <div key={item.process} className="grid grid-cols-[0.8fr_1.2fr] border-b border-r border-white/15 text-sm">
+                <span className="border-r border-white/15 px-4 py-4 font-mono text-[10px] uppercase tracking-[0.15em] text-slate-500">{item.process}</span>
+                <span className="flex items-center gap-3 px-4 py-4 font-medium text-slate-200"><Check className="h-4 w-4 text-blue-400" /> {item.capability}</span>
               </div>
-            </div>
-
-            {/* Controls */}
-            <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-2">
-              {carouselImages.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentIndex(idx)}
-                  aria-label={`Mostrar imagen ${idx + 1}`}
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    currentIndex === idx ? "w-8 bg-white" : "w-2 bg-white/50"
-                  }`}
-                />
-              ))}
+            ))}
+          </div>
+          <div className="mt-8">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-slate-500">Materiales habituales</p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {materials.map((item) => <span key={item} className="border border-white/15 px-3 py-2 text-xs font-medium text-slate-300">{item}</span>)}
             </div>
           </div>
         </div>

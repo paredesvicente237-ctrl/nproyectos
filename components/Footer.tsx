@@ -6,7 +6,7 @@ import { services } from "@/lib/serviceData";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-slate-950">
+    <footer className="border-t border-white/10 bg-[#041020]">
       <div className="container-custom px-5 py-12 sm:px-8 lg:px-10">
         <div className="grid gap-10 md:grid-cols-[1.1fr_1fr_0.8fr]">
           <div>
@@ -14,11 +14,11 @@ export default function Footer() {
               <Image
                 src={siteAssets.logo}
                 alt={`Logo ${companyInfo.shortName}`}
-                className="h-9 w-auto object-contain"
+                className="h-9 w-auto object-contain mix-blend-multiply"
               />
             </div>
             <p className="mt-4 max-w-sm text-sm leading-6 text-slate-500">
-              Soluciones en acero para fabricación y proyectos industriales.
+              Ingeniería y fabricación metalmecánica para proyectos industriales que exigen precisión.
             </p>
           </div>
 
