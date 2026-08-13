@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
-import { companyInfo } from "@/components/siteData";
+import { companyInfo, salesContact } from "@/components/siteData";
 
 const services = [
   "Área Servicios",
@@ -202,6 +202,29 @@ export default function Contact() {
 
             {/* Contact info sidebar */}
             <div className="flex flex-col gap-3">
+              <div className="border border-blue-200 bg-[#06152c] p-5 text-white shadow-[0_15px_40px_rgba(6,21,44,0.14)]">
+                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-300">Contacto comercial</p>
+                <div className="mt-4 flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center border border-white/20 bg-white/10 text-lg font-semibold">A</span>
+                  <div>
+                    <p className="text-lg font-semibold text-white">{salesContact.name}</p>
+                    <p className="text-xs text-slate-400">Ejecutivo de ventas</p>
+                  </div>
+                </div>
+                <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                  <a href={salesContact.whatsappHref} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center border border-blue-400/40 bg-blue-600 px-3 text-xs font-semibold text-white hover:bg-blue-500">
+                    WhatsApp
+                  </a>
+                  <a href={salesContact.emailHref} className="flex min-h-11 items-center justify-center border border-white/20 px-3 text-xs font-semibold text-white hover:bg-white/10">
+                    Enviar correo
+                  </a>
+                </div>
+                <div className="mt-4 space-y-1 text-sm text-slate-300">
+                  <a href={salesContact.phoneHref} className="block hover:text-white">{salesContact.phoneDisplay}</a>
+                  <a href={salesContact.emailHref} className="block break-all hover:text-white">{salesContact.email}</a>
+                </div>
+              </div>
+
               <a
                 href={companyInfo.phoneHref}
                 className="group card flex items-start gap-4 !p-5"
@@ -212,7 +235,7 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Teléfono</p>
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Teléfono general</p>
                   <p className="mt-1 text-base font-semibold text-slate-900">{companyInfo.phoneDisplay}</p>
                 </div>
               </a>
@@ -227,7 +250,7 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Correo</p>
+                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Correo general</p>
                   <p className="mt-1 text-sm font-semibold text-slate-900 break-all">{companyInfo.email}</p>
                 </div>
               </a>

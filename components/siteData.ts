@@ -20,6 +20,17 @@ export const companyInfo = {
     "https://www.google.com/maps?q=Av.+Yungay+743,+La+Granja,+Chile&output=embed",
 };
 
+export const salesContact = {
+  name: "Américo",
+  role: "Ventas",
+  phoneDisplay: "+56 9 5010 7432",
+  phoneHref: "tel:+56950107432",
+  email: "ventasnproyectos@gmail.com",
+  emailHref: "mailto:ventasnproyectos@gmail.com",
+  whatsappHref:
+    "https://wa.me/56950107432?text=Hola%20Am%C3%A9rico%2C%20quiero%20cotizar%20un%20proyecto%20con%20N%20Proyectos.",
+};
+
 export const navLinks = [
   { label: "Inicio", href: "/#inicio" },
   { label: "Quiénes Somos", href: "/#nosotros" },

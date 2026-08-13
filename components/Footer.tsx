@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { siteAssets } from "@/components/siteAssets";
-import { companyInfo } from "@/components/siteData";
+import { companyInfo, salesContact } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
 export default function Footer() {
@@ -36,8 +36,12 @@ export default function Footer() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-300">Contacto</p>
             <div className="mt-4 flex flex-col gap-2 text-sm text-slate-500">
-            <a href={companyInfo.phoneHref} className="hover:text-white">{companyInfo.phoneDisplay}</a>
-            <a href={companyInfo.emailHref} className="hover:text-white">{companyInfo.email}</a>
+              <p className="font-semibold text-slate-300">{salesContact.name} · {salesContact.role}</p>
+              <a href={salesContact.phoneHref} className="hover:text-white">{salesContact.phoneDisplay}</a>
+              <a href={salesContact.emailHref} className="hover:text-white">{salesContact.email}</a>
+              <span className="my-1 h-px bg-white/10" />
+              <a href={companyInfo.phoneHref} className="hover:text-white">General: {companyInfo.phoneDisplay}</a>
+              <a href={companyInfo.emailHref} className="hover:text-white">{companyInfo.email}</a>
               <span>{companyInfo.address}, Chile</span>
             </div>
           </div>
