@@ -25,6 +25,9 @@ export default function Footer() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-300">Servicios</p>
             <nav className="mt-4 grid gap-2" aria-label="Servicios del pie de página">
+              <Link href="/maestranza-santiago" className="text-sm font-semibold text-slate-300 hover:text-white">
+                Maestranza en Santiago
+              </Link>
               {services.map((service) => (
                 <Link key={service.slug} href={`/servicios/${service.slug}`} className="text-sm text-slate-500 hover:text-white">
                   {service.shortName}

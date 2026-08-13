@@ -21,11 +21,11 @@ const dmSans = DM_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(companyInfo.website),
   title: {
-    default: "Metalmecánica y fabricación en acero en Santiago | N Proyectos",
+    default: "Maestranza en Santiago y fabricación en acero | N Proyectos",
     template: "%s | N Proyectos",
   },
   description:
-    "Empresa metalmecánica en Santiago. Fabricación en acero, corte y plegado de planchas, soldadura MIG/TIG y control acústico para industria y construcción.",
+    "Maestranza en Santiago para fabricación en acero, corte y plegado de planchas, soldadura MIG/TIG y control acústico industrial. Cotiza tu proyecto a medida.",
   keywords: [
     "metalmecánica Santiago",
     "fabricación en acero Santiago",
@@ -33,6 +33,9 @@ export const metadata: Metadata = {
     "soldadura MIG TIG Santiago",
     "control acústico industrial",
     "maestranza Santiago",
+    "maestranza La Granja",
+    "fabricación acero inoxidable Santiago",
+    "estructuras metálicas Santiago",
     "N Proyectos Ltda",
   ],
   applicationName: companyInfo.shortName,
@@ -53,13 +56,13 @@ export const metadata: Metadata = {
     locale: "es_CL",
     url: "/",
     siteName: companyInfo.shortName,
-    title: "Metalmecánica y fabricación en acero en Santiago | N Proyectos",
+    title: "Maestranza en Santiago y fabricación en acero | N Proyectos",
     description:
-      "Fabricación en acero, corte y plegado, soldadura MIG/TIG y control acústico para proyectos industriales.",
+      "Fabricación en acero, corte y plegado, soldadura MIG/TIG y control acústico para proyectos industriales en Santiago.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Metalmecánica y fabricación en acero | N Proyectos",
+    title: "Maestranza y fabricación en acero | N Proyectos",
     description:
       "Fabricación en acero, corte y plegado, soldadura y control acústico en Santiago.",
   },

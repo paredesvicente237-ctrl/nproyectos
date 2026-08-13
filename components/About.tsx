@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, DraftingCompass, Gauge, ShieldCheck } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
 
@@ -21,6 +22,9 @@ export default function About() {
             <p className="mt-6 max-w-xl text-base leading-7 text-slate-300">
               Somos una empresa metalmecánica orientada a resolver encargos industriales con ingeniería aplicada, fabricación a medida y comunicación directa con cada cliente.
             </p>
+            <Link href="/maestranza-santiago" className="mt-5 inline-flex text-sm font-semibold text-blue-300 underline decoration-blue-400/50 underline-offset-4 hover:text-white">
+              Conoce nuestra maestranza en Santiago
+            </Link>
             <a href="/#contacto" className="mt-8 inline-flex items-center gap-3 text-sm font-semibold text-blue-300 hover:text-white">
               Conversemos sobre tu proyecto <ArrowRight className="h-4 w-4" />
             </a>
