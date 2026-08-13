@@ -12,6 +12,11 @@ const builtInUsers: StoredUser[] = [
     salt: "yl6vlvanS3rNflb3GHFhXQ==",
     hash: "U1BrR/9rLtcJPEd9uSL/37AZIsj/PAnKeDtm5iL8W2U=",
   },
+  {
+    usuario: "Tiara",
+    salt: "P1ATQ31xKKAxr8GrXYRHUQ==",
+    hash: "N1DTzMwUmIAvnvH9Pmye1oKqLMAJHse2dHth26sDHAw=",
+  },
 ];
 
 function validPassword(password: string, user: StoredUser) {
