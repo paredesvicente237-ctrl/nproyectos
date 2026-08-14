@@ -25,7 +25,7 @@ type MeasureProduct = {
 type Measures = { largo: number; ancho: number; alto: number };
 type MeasureRow = Measures & { quantity: number; mode: Mode; paint: PaintMode; selected: boolean };
 type UnitProduct = { id: string; name: string; packSize: number; unitPrice: number };
-type UnitRow = { quantity: number; selected: boolean };
+type UnitRow = { sets: number; selected: boolean };
 type CustomRow = { id: number; description: string; price: number; quantity: number };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
@@ -247,10 +247,7 @@ const initialMeasureRows = (products: MeasureProduct[]) =>
   Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", paint: "sin", selected: false }])) as Record<string, MeasureRow>;
 
 const initialUnitRows = () =>
-  Object.fromEntries(unitProducts.map((product) => [product.id, { quantity: product.packSize, selected: false }])) as Record<string, UnitRow>;
-
-const normalizePackQuantity = (quantity: number, packSize: number) =>
-  Math.ceil(Math.max(packSize, quantity || packSize) / packSize) * packSize;
+  Object.fromEntries(unitProducts.map((product) => [product.id, { sets: 1, selected: false }])) as Record<string, UnitRow>;
 
 const money = (value: number) =>
   new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 }).format(Math.round(value));
@@ -319,11 +316,11 @@ export default function CotizadorPage() {
           id: product.id,
           category: "Productos unitarios",
           name: product.name,
-          detail: `Lote de ${product.packSize} unid. · ${money(product.unitPrice)} c/u`,
+          detail: `${row.sets} ${row.sets === 1 ? "set" : "sets"} · 1 set = ${product.packSize} unid. · ${money(product.unitPrice)} c/u`,
           mode: "con" as Mode,
           modeText: "Con material",
-          quantity: row.quantity,
-          total: product.unitPrice * row.quantity,
+          quantity: row.sets * product.packSize,
+          total: product.unitPrice * product.packSize * row.sets,
         }));
 
     return [...measured, ...unitary, ...custom];
@@ -494,8 +491,8 @@ export default function CotizadorPage() {
 
               {section === "unitarios" && <div className="bg-slate-200">
                 <div className="border-b border-slate-300 bg-blue-50 px-4 py-4 sm:px-5">
-                  <p className="text-sm font-extrabold text-navy-950">Productos por lote</p>
-                  <p className="mt-1 text-xs font-semibold leading-5 text-slate-700">Los precios son unitarios. La cantidad se ajusta automáticamente al múltiplo de fabricación indicado en cada producto.</p>
+                  <p className="text-sm font-extrabold text-navy-950">Productos por set</p>
+                  <p className="mt-1 text-xs font-semibold leading-5 text-slate-700">Elige la cantidad de sets completos. El precio indicado es por unidad y el total considera todas las unidades incluidas.</p>
                 </div>
                 {unitProducts.map((product) => {
                   const row = unitRows[product.id];
@@ -506,15 +503,15 @@ export default function CotizadorPage() {
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                           <div>
                             <h3 className="font-extrabold text-slate-950">{product.name}</h3>
-                            <span className="mt-2 inline-flex rounded-md border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-extrabold text-navy-800">Lote: {product.packSize} unidades</span>
+                            <span className="mt-2 inline-flex rounded-md border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-extrabold text-navy-800">1 set = {product.packSize} unidades</span>
                           </div>
                           <div className="sm:text-right">
                             <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Total</p>
-                            <strong className="mt-1 block text-lg text-navy-800">{row.selected ? money(product.unitPrice * row.quantity) : '—'}</strong>
+                            <strong className="mt-1 block text-lg text-navy-800">{row.selected ? money(product.unitPrice * product.packSize * row.sets) : '—'}</strong>
                           </div>
                         </div>
                         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                          <label className="text-xs font-extrabold text-slate-800">Cantidad · múltiplos de {product.packSize}<input type="number" min={product.packSize} step={product.packSize} className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" value={row.quantity} onChange={(event) => updateUnitRow(product.id, { quantity: normalizePackQuantity(Number(event.target.value), product.packSize) })} /></label>
+                          <label className="text-xs font-extrabold text-slate-800">Cantidad de sets<input type="number" min="1" step="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" value={row.sets} onChange={(event) => updateUnitRow(product.id, { sets: Math.max(1, Math.floor(Number(event.target.value)) || 1) })} /><span className="mt-1.5 block text-xs font-bold text-navy-700">{row.sets} {row.sets === 1 ? 'set' : 'sets'} = {row.sets * product.packSize} unidades</span></label>
                           <div className="rounded-lg border-2 border-amber-300 bg-amber-50 px-3 py-2">
                             <p className="text-xs font-extrabold text-amber-900">Valor unitario</p>
                             <p className="mt-1 text-base font-extrabold text-amber-950">{money(product.unitPrice)}</p>
