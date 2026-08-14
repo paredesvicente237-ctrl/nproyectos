@@ -1,5 +1,5 @@
-export const LOGIN_HISTORY_ADMIN = "nicolas";
+export const LOGIN_HISTORY_ADMINS = new Set(["nicolas", "vicente"]);
 
 export function canViewLoginHistory(username: string | null | undefined) {
-  return username?.trim().toLocaleLowerCase("es") === LOGIN_HISTORY_ADMIN;
+  return LOGIN_HISTORY_ADMINS.has(username?.trim().toLocaleLowerCase("es") ?? "");
 }
