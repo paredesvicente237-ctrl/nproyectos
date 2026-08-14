@@ -14,6 +14,11 @@ const builtInUsers: StoredUser[] = [
     hash: "U1BrR/9rLtcJPEd9uSL/37AZIsj/PAnKeDtm5iL8W2U=",
   },
   {
+    usuario: "Vicente",
+    salt: "BmGrxassMMgcIbr8thB4eQ==",
+    hash: "a3C10M5EGH8s/ZpL+zfgDz8VfNdlYtiF4WzyvxkqeK0=",
+  },
+  {
     usuario: "Tiara",
     salt: "P1ATQ31xKKAxr8GrXYRHUQ==",
     hash: "N1DTzMwUmIAvnvH9Pmye1oKqLMAJHse2dHth26sDHAw=",
