@@ -8,7 +8,7 @@ import { ProductReference } from "@/components/cotizador/ProductReference";
 
 type Mode = "con" | "sin";
 type PaintMode = "sin" | "poliuretano" | "electrostatica";
-type Section = "parrillas" | "campanas" | "guillotinas" | "personalizado";
+type Section = "parrillas" | "campanas" | "guillotinas" | "unitarios" | "personalizado";
 type MeasureGroup = "parrillas" | "campanas" | "guillotinas";
 
 type MeasureProduct = {
@@ -24,6 +24,8 @@ type MeasureProduct = {
 
 type Measures = { largo: number; ancho: number; alto: number };
 type MeasureRow = Measures & { quantity: number; mode: Mode; paint: PaintMode; selected: boolean };
+type UnitProduct = { id: string; name: string; packSize: number; withMaterial: number; withoutMaterial: number };
+type UnitRow = { quantity: number; mode: Mode; selected: boolean };
 type CustomRow = { id: number; description: string; price: number; quantity: number };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
@@ -226,8 +228,29 @@ const parrillas: MeasureProduct[] = [
   { id: "manilla-parrilla", name: "Manilla", fields: [], calculate: (_values, mode) => mode === "con" ? 10000 : 5000 },
 ];
 
+const unitProducts: UnitProduct[] = [
+  { id: "bandeja-parrillera-aza-soldada", name: "Bandeja parrillera aza soldada", packSize: 16, withMaterial: 58200, withoutMaterial: 44700 },
+  { id: "bandeja-parrillera-aza-unida", name: "Bandeja parrillera aza unida", packSize: 13, withMaterial: 57000, withoutMaterial: 40385 },
+  { id: "bandeja-pq-abierta", name: "Bandeja PQ abierta", packSize: 13, withMaterial: 60000, withoutMaterial: 43385 },
+  { id: "bandeja-pq-cerrada", name: "Bandeja PQ cerrada", packSize: 13, withMaterial: 67200, withoutMaterial: 50585 },
+  { id: "bandeja-dos-quemadores", name: "Bandeja dos quemadores", packSize: 12, withMaterial: 57200, withoutMaterial: 33200 },
+  { id: "bandeja-1-3", name: "Bandeja 1/3", packSize: 18, withMaterial: 60600, withoutMaterial: 43600 },
+  { id: "bandeja-2-3", name: "Bandeja 2/3", packSize: 10, withMaterial: 74160, withoutMaterial: 45360 },
+  { id: "bandeja-3-3", name: "Bandeja 3/3", packSize: 6, withMaterial: 98400, withoutMaterial: 53400 },
+  { id: "frontal-va-1480-acero", name: "Frontal VA 110×20/1480 · 3 mm A.C.", packSize: 14, withMaterial: 19500, withoutMaterial: 15386 },
+  { id: "frontal-va-1480-inox", name: "Frontal VA 110×20/1480 · 2 mm inox", packSize: 14, withMaterial: 42000, withoutMaterial: 31714 },
+  { id: "frontal-va-980-inox", name: "Frontal VA 110×20/980 · 2 mm inox", packSize: 23, withMaterial: 25565, withoutMaterial: 19304 },
+  { id: "nichos-acero", name: "Nichos · 3 mm A.C. + soldadura y pulido", packSize: 1, withMaterial: 140000, withoutMaterial: 80000 },
+];
+
 const initialMeasureRows = (products: MeasureProduct[]) =>
   Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", paint: "sin", selected: false }])) as Record<string, MeasureRow>;
+
+const initialUnitRows = () =>
+  Object.fromEntries(unitProducts.map((product) => [product.id, { quantity: product.packSize, mode: "con", selected: false }])) as Record<string, UnitRow>;
+
+const normalizePackQuantity = (quantity: number, packSize: number) =>
+  Math.ceil(Math.max(packSize, quantity || packSize) / packSize) * packSize;
 
 const money = (value: number) =>
   new Intl.NumberFormat("es-CL", { style: "currency", currency: "CLP", maximumFractionDigits: 0 }).format(Math.round(value));
@@ -240,6 +263,7 @@ export default function CotizadorPage() {
   const [campanaRows, setCampanaRows] = useState(() => initialMeasureRows(campanas));
   const [guillotinaRows, setGuillotinaRows] = useState(() => initialMeasureRows(guillotinas));
   const [parrillaRows, setParrillaRows] = useState(() => initialMeasureRows(parrillas));
+  const [unitRows, setUnitRows] = useState(initialUnitRows);
   const [measureVariants, setMeasureVariants] = useState<Record<string, MeasureRow[]>>({});
   const [customRows, setCustomRows] = useState<CustomRow[]>([
     { id: 1, description: "", price: 0, quantity: 1 },
@@ -288,8 +312,25 @@ export default function CotizadorPage() {
         total: row.price * row.quantity,
       }));
 
-    return [...measured, ...custom];
-  }, [campanaRows, customRows, guillotinaRows, measureVariants, parrillaRows]);
+    const unitary = unitProducts
+      .map((product) => ({ product, row: unitRows[product.id] }))
+      .filter(({ row }) => row.selected)
+      .map(({ product, row }) => {
+        const unitPrice = row.mode === "con" ? product.withMaterial : product.withoutMaterial;
+        return {
+          id: product.id,
+          category: "Productos unitarios",
+          name: product.name,
+          detail: `Lote de ${product.packSize} unid. · ${money(unitPrice)} c/u`,
+          mode: row.mode,
+          modeText: row.mode === "con" ? "Con material" : "Sin material",
+          quantity: row.quantity,
+          total: unitPrice * row.quantity,
+        };
+      });
+
+    return [...measured, ...unitary, ...custom];
+  }, [campanaRows, customRows, guillotinaRows, measureVariants, parrillaRows, unitRows]);
 
   const subtotal = quoteLines.reduce((sum, line) => sum + line.total, 0);
   const iva = subtotal * 0.19;
@@ -333,10 +374,15 @@ export default function CotizadorPage() {
     setCustomRows((current) => [...current, { id: Date.now(), description: "", price: 0, quantity: 1 }]);
   };
 
+  const updateUnitRow = (id: string, patch: Partial<UnitRow>) => {
+    setUnitRows((current) => ({ ...current, [id]: { ...current[id], ...patch } }));
+  };
+
   const reset = () => {
     setCampanaRows(initialMeasureRows(campanas));
     setGuillotinaRows(initialMeasureRows(guillotinas));
     setParrillaRows(initialMeasureRows(parrillas));
+    setUnitRows(initialUnitRows());
     setMeasureVariants({});
     setCustomRows([{ id: 1, description: "", price: 0, quantity: 1 }]);
     setQuoteNumber(null);
@@ -405,7 +451,7 @@ export default function CotizadorPage() {
           <section className="overflow-hidden rounded-md border border-slate-300 bg-white">
             <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Valores netos según la planilla entregada. Presiona una referencia para ver cómo tomar las medidas.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
-                {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina'],['personalizado','Personalizado']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
+                {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina'],['unitarios','Unitarios'],['personalizado','Personalizado']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
               </div>
             </div>
 
@@ -448,6 +494,42 @@ export default function CotizadorPage() {
                   {product.fields.length > 0 && <div className="border-t border-slate-200 px-4 py-3 sm:px-5"><button type="button" onClick={() => addMeasureVariant(group, product)} className="w-full rounded-lg border-2 border-dashed border-navy-400 px-3 py-2 text-xs font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50 sm:w-auto">+ Agregar otra medida</button></div>}
                 </div>;
               })}
+
+              {section === "unitarios" && <div className="bg-slate-200">
+                <div className="border-b border-slate-300 bg-blue-50 px-4 py-4 sm:px-5">
+                  <p className="text-sm font-extrabold text-navy-950">Productos por lote</p>
+                  <p className="mt-1 text-xs font-semibold leading-5 text-slate-700">Los precios son unitarios. La cantidad se ajusta automáticamente al múltiplo de fabricación indicado en cada producto.</p>
+                </div>
+                {unitProducts.map((product) => {
+                  const row = unitRows[product.id];
+                  const unitPrice = row.mode === "con" ? product.withMaterial : product.withoutMaterial;
+                  return <div key={product.id} className={`border-t-4 border-slate-300 p-4 transition-colors first:border-t-0 sm:p-5 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'}`}>
+                    <div className="grid gap-4 sm:grid-cols-[auto_minmax(0,1fr)]">
+                      <input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(event) => updateUnitRow(product.id, { selected: event.target.checked })} />
+                      <div className="min-w-0">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                          <div>
+                            <h3 className="font-extrabold text-slate-950">{product.name}</h3>
+                            <span className="mt-2 inline-flex rounded-md border border-blue-200 bg-blue-50 px-2.5 py-1 text-xs font-extrabold text-navy-800">Lote: {product.packSize} unidades</span>
+                          </div>
+                          <div className="sm:text-right">
+                            <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Total</p>
+                            <strong className="mt-1 block text-lg text-navy-800">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong>
+                          </div>
+                        </div>
+                        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                          <label className="text-xs font-extrabold text-slate-800">Cantidad · múltiplos de {product.packSize}<input type="number" min={product.packSize} step={product.packSize} className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" value={row.quantity} onChange={(event) => updateUnitRow(product.id, { quantity: normalizePackQuantity(Number(event.target.value), product.packSize) })} /></label>
+                          <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" value={row.mode} onChange={(event) => updateUnitRow(product.id, { mode: event.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
+                          <div className="rounded-lg border-2 border-amber-300 bg-amber-50 px-3 py-2">
+                            <p className="text-xs font-extrabold text-amber-900">Valor unitario</p>
+                            <p className="mt-1 text-base font-extrabold text-amber-950">{money(unitPrice)}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>;
+                })}
+              </div>}
 
               {section === "personalizado" && <div className="bg-slate-200">
                 {customRows.map((row, index) => <div key={row.id} className="border-t-8 border-slate-300 bg-white p-4 sm:p-5">
