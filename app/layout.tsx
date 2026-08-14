@@ -59,12 +59,21 @@ export const metadata: Metadata = {
     title: "Maestranza en Santiago y fabricación en acero | N Proyectos",
     description:
       "Fabricación en acero, corte y plegado, soldadura MIG/TIG y control acústico para proyectos industriales en Santiago.",
+    images: [
+      {
+        url: "/images/hero-soldadura-nproyectos.webp",
+        width: 1672,
+        height: 941,
+        alt: "Soldadura y fabricación metalmecánica de N Proyectos",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Maestranza y fabricación en acero | N Proyectos",
     description:
       "Fabricación en acero, corte y plegado, soldadura y control acústico en Santiago.",
+    images: ["/images/hero-soldadura-nproyectos.webp"],
   },
   robots: {
     index: true,
