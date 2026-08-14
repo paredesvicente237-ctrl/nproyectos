@@ -24,8 +24,8 @@ type MeasureProduct = {
 
 type Measures = { largo: number; ancho: number; alto: number };
 type MeasureRow = Measures & { quantity: number; mode: Mode; paint: PaintMode; selected: boolean };
-type UnitProduct = { id: string; name: string; packSize: number; withMaterial: number; withoutMaterial: number };
-type UnitRow = { quantity: number; mode: Mode; selected: boolean };
+type UnitProduct = { id: string; name: string; packSize: number; unitPrice: number };
+type UnitRow = { quantity: number; selected: boolean };
 type CustomRow = { id: number; description: string; price: number; quantity: number };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
@@ -229,25 +229,25 @@ const parrillas: MeasureProduct[] = [
 ];
 
 const unitProducts: UnitProduct[] = [
-  { id: "bandeja-parrillera-aza-soldada", name: "Bandeja parrillera aza soldada", packSize: 16, withMaterial: 58200, withoutMaterial: 44700 },
-  { id: "bandeja-parrillera-aza-unida", name: "Bandeja parrillera aza unida", packSize: 13, withMaterial: 57000, withoutMaterial: 40385 },
-  { id: "bandeja-pq-abierta", name: "Bandeja PQ abierta", packSize: 13, withMaterial: 60000, withoutMaterial: 43385 },
-  { id: "bandeja-pq-cerrada", name: "Bandeja PQ cerrada", packSize: 13, withMaterial: 67200, withoutMaterial: 50585 },
-  { id: "bandeja-dos-quemadores", name: "Bandeja dos quemadores", packSize: 12, withMaterial: 57200, withoutMaterial: 33200 },
-  { id: "bandeja-1-3", name: "Bandeja 1/3", packSize: 18, withMaterial: 60600, withoutMaterial: 43600 },
-  { id: "bandeja-2-3", name: "Bandeja 2/3", packSize: 10, withMaterial: 74160, withoutMaterial: 45360 },
-  { id: "bandeja-3-3", name: "Bandeja 3/3", packSize: 6, withMaterial: 98400, withoutMaterial: 53400 },
-  { id: "frontal-va-1480-acero", name: "Frontal VA 110×20/1480 · 3 mm A.C.", packSize: 14, withMaterial: 19500, withoutMaterial: 15386 },
-  { id: "frontal-va-1480-inox", name: "Frontal VA 110×20/1480 · 2 mm inox", packSize: 14, withMaterial: 42000, withoutMaterial: 31714 },
-  { id: "frontal-va-980-inox", name: "Frontal VA 110×20/980 · 2 mm inox", packSize: 23, withMaterial: 25565, withoutMaterial: 19304 },
-  { id: "nichos-acero", name: "Nichos · 3 mm A.C. + soldadura y pulido", packSize: 1, withMaterial: 140000, withoutMaterial: 80000 },
+  { id: "bandeja-parrillera-aza-soldada", name: "Bandeja parrillera aza soldada", packSize: 16, unitPrice: 58200 },
+  { id: "bandeja-parrillera-aza-unida", name: "Bandeja parrillera aza unida", packSize: 13, unitPrice: 57000 },
+  { id: "bandeja-pq-abierta", name: "Bandeja PQ abierta", packSize: 13, unitPrice: 60000 },
+  { id: "bandeja-pq-cerrada", name: "Bandeja PQ cerrada", packSize: 13, unitPrice: 67200 },
+  { id: "bandeja-dos-quemadores", name: "Bandeja dos quemadores", packSize: 12, unitPrice: 57200 },
+  { id: "bandeja-1-3", name: "Bandeja 1/3", packSize: 18, unitPrice: 60600 },
+  { id: "bandeja-2-3", name: "Bandeja 2/3", packSize: 10, unitPrice: 74160 },
+  { id: "bandeja-3-3", name: "Bandeja 3/3", packSize: 6, unitPrice: 98400 },
+  { id: "frontal-va-1480-acero", name: "Frontal VA 110×20/1480 · 3 mm A.C.", packSize: 14, unitPrice: 19500 },
+  { id: "frontal-va-1480-inox", name: "Frontal VA 110×20/1480 · 2 mm inox", packSize: 14, unitPrice: 42000 },
+  { id: "frontal-va-980-inox", name: "Frontal VA 110×20/980 · 2 mm inox", packSize: 23, unitPrice: 25565 },
+  { id: "nichos-acero", name: "Nichos · 3 mm A.C. + soldadura y pulido", packSize: 1, unitPrice: 140000 },
 ];
 
 const initialMeasureRows = (products: MeasureProduct[]) =>
   Object.fromEntries(products.map((product) => [product.id, { ...emptyMeasures, ...product.fixedMeasures, quantity: 1, mode: product.modes?.[0] ?? "con", paint: "sin", selected: false }])) as Record<string, MeasureRow>;
 
 const initialUnitRows = () =>
-  Object.fromEntries(unitProducts.map((product) => [product.id, { quantity: product.packSize, mode: "con", selected: false }])) as Record<string, UnitRow>;
+  Object.fromEntries(unitProducts.map((product) => [product.id, { quantity: product.packSize, selected: false }])) as Record<string, UnitRow>;
 
 const normalizePackQuantity = (quantity: number, packSize: number) =>
   Math.ceil(Math.max(packSize, quantity || packSize) / packSize) * packSize;
@@ -315,19 +315,16 @@ export default function CotizadorPage() {
     const unitary = unitProducts
       .map((product) => ({ product, row: unitRows[product.id] }))
       .filter(({ row }) => row.selected)
-      .map(({ product, row }) => {
-        const unitPrice = row.mode === "con" ? product.withMaterial : product.withoutMaterial;
-        return {
+      .map(({ product, row }) => ({
           id: product.id,
           category: "Productos unitarios",
           name: product.name,
-          detail: `Lote de ${product.packSize} unid. · ${money(unitPrice)} c/u`,
-          mode: row.mode,
-          modeText: row.mode === "con" ? "Con material" : "Sin material",
+          detail: `Lote de ${product.packSize} unid. · ${money(product.unitPrice)} c/u`,
+          mode: "con" as Mode,
+          modeText: "Con material",
           quantity: row.quantity,
-          total: unitPrice * row.quantity,
-        };
-      });
+          total: product.unitPrice * row.quantity,
+        }));
 
     return [...measured, ...unitary, ...custom];
   }, [campanaRows, customRows, guillotinaRows, measureVariants, parrillaRows, unitRows]);
@@ -502,7 +499,6 @@ export default function CotizadorPage() {
                 </div>
                 {unitProducts.map((product) => {
                   const row = unitRows[product.id];
-                  const unitPrice = row.mode === "con" ? product.withMaterial : product.withoutMaterial;
                   return <div key={product.id} className={`border-t-4 border-slate-300 p-4 transition-colors first:border-t-0 sm:p-5 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'}`}>
                     <div className="grid gap-4 sm:grid-cols-[auto_minmax(0,1fr)]">
                       <input type="checkbox" className="mt-1 h-5 w-5 accent-blue-700" checked={row.selected} onChange={(event) => updateUnitRow(product.id, { selected: event.target.checked })} />
@@ -514,15 +510,14 @@ export default function CotizadorPage() {
                           </div>
                           <div className="sm:text-right">
                             <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Total</p>
-                            <strong className="mt-1 block text-lg text-navy-800">{row.selected ? money(unitPrice * row.quantity) : '—'}</strong>
+                            <strong className="mt-1 block text-lg text-navy-800">{row.selected ? money(product.unitPrice * row.quantity) : '—'}</strong>
                           </div>
                         </div>
-                        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                        <div className="mt-4 grid gap-3 sm:grid-cols-2">
                           <label className="text-xs font-extrabold text-slate-800">Cantidad · múltiplos de {product.packSize}<input type="number" min={product.packSize} step={product.packSize} className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" value={row.quantity} onChange={(event) => updateUnitRow(product.id, { quantity: normalizePackQuantity(Number(event.target.value), product.packSize) })} /></label>
-                          <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" value={row.mode} onChange={(event) => updateUnitRow(product.id, { mode: event.target.value as Mode })}><option value="con">Con material</option><option value="sin">Sin material</option></select></label>
                           <div className="rounded-lg border-2 border-amber-300 bg-amber-50 px-3 py-2">
                             <p className="text-xs font-extrabold text-amber-900">Valor unitario</p>
-                            <p className="mt-1 text-base font-extrabold text-amber-950">{money(unitPrice)}</p>
+                            <p className="mt-1 text-base font-extrabold text-amber-950">{money(product.unitPrice)}</p>
                           </div>
                         </div>
                       </div>
