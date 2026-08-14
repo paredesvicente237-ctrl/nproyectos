@@ -208,14 +208,14 @@ const parrillas: MeasureProduct[] = [
   },
   {
     id: "frontal-va-inox",
-    name: "Frontal VA 2 mm inox",
+    name: "Tapa pro 2mm Inox",
     fields: ["largo", "ancho"],
     fixedMeasures: { ancho: 110 },
     calculate: ({ largo, ancho }, mode) => mode === "con" ? ((ancho + 50) * largo * 2 * 8) / 1_000_000 * 15700 : 20000,
   },
   {
     id: "frontal-va-acero",
-    name: "Frontal VA 3 mm acero",
+    name: "Tapa pro 3mm Acero",
     fields: ["largo", "ancho"],
     fixedMeasures: { ancho: 110 },
     calculate: ({ largo, ancho }, mode) => mode === "con" ? ((ancho + 50) * largo * 3 * 8) / 1_000_000 * 7000 : 20000,
