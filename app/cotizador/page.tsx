@@ -241,9 +241,6 @@ const unitProducts: UnitProduct[] = [
   { id: "bandeja-1-3", name: "Bandeja 1/3", packSize: 18, unitPrice: 60600 },
   { id: "bandeja-2-3", name: "Bandeja 2/3", packSize: 10, unitPrice: 74160 },
   { id: "bandeja-3-3", name: "Bandeja 3/3", packSize: 6, unitPrice: 98400 },
-  { id: "frontal-va-1480-acero", name: "Frontal VA 110×20/1480 · 3 mm A.C.", packSize: 14, unitPrice: 19500 },
-  { id: "frontal-va-1480-inox", name: "Frontal VA 110×20/1480 · 2 mm inox", packSize: 14, unitPrice: 42000 },
-  { id: "frontal-va-980-inox", name: "Frontal VA 110×20/980 · 2 mm inox", packSize: 23, unitPrice: 25565 },
   { id: "nichos-acero", name: "Nichos · 3 mm A.C. + soldadura y pulido", packSize: 1, unitPrice: 140000 },
 ];
 

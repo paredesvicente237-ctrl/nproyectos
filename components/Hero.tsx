@@ -13,7 +13,7 @@ export default function Hero() {
     <section id="inicio" className="relative overflow-hidden bg-[#041020] pt-[76px]">
       <div className="absolute inset-0">
         <Image
-          src="/images/hero-soldadura-nproyectos.webp"
+          src="/images/hero-soldadura-nproyectos-clara.webp"
           alt="Soldador de N Proyectos fabricando una pieza metálica"
           fill
           priority
@@ -21,8 +21,8 @@ export default function Hero() {
           className="object-cover object-[78%_center] sm:object-[63%_center] lg:object-center"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,12,26,.98)_0%,rgba(3,12,26,.92)_34%,rgba(3,12,26,.48)_62%,rgba(3,12,26,.12)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,12,26,.82)_0%,transparent_38%,rgba(3,12,26,.18)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,12,26,.94)_0%,rgba(3,12,26,.8)_34%,rgba(3,12,26,.34)_62%,rgba(3,12,26,.06)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,12,26,.62)_0%,transparent_38%,rgba(3,12,26,.1)_100%)]" />
         <div className="technical-grid absolute inset-y-0 left-0 w-1/2 opacity-[0.08]" />
       </div>
 
