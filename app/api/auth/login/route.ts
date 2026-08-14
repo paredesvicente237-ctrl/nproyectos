@@ -3,6 +3,7 @@ import { pbkdf2Sync, randomUUID, timingSafeEqual } from "crypto";
 import { cookies } from "next/headers";
 import { AUTH_COOKIE, createSession, getSession, sessionMaxAge } from "@/lib/auth";
 import { ensureActiveSessionsTable } from "@/lib/activeSession";
+import { recordLogin } from "@/lib/loginHistory";
 
 type StoredUser = { usuario: string; salt: string; hash: string };
 
@@ -73,6 +74,8 @@ export async function POST(request: Request) {
       { status: 409 }
     );
   }
+
+  await recordLogin(user.usuario);
 
   const response = NextResponse.json({ ok: true });
   response.cookies.set(AUTH_COOKIE, await createSession(secret, user.usuario, sessionId), {
