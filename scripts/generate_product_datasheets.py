@@ -377,7 +377,7 @@ def generate_pdf(product: dict, temp_dir: Path) -> Path:
     pdf.setFillColor(SLATE_500)
     pdf.setFont(FONT_REGULAR, 7.7)
     pdf.drawString(42, 73, "N Proyectos Ltda  ·  Av. Yungay 743, La Granja, Chile")
-    pdf.drawString(42, 59, "nproyectosltda@gmail.com  ·  +56 9 3075 1812")
+    pdf.drawString(42, 59, "ventasnproyectosltda@gmail.com  ·  +56 9 5010 7432")
     pdf.setFillColor(NAVY_MID)
     pdf.setFont(FONT_BOLD, 8.2)
     pdf.drawRightString(553, 66, "www.nproyectos.cl")

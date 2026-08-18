@@ -42,9 +42,6 @@ export default function Footer() {
               <p className="font-semibold text-slate-300">{salesContact.name} · {salesContact.role}</p>
               <a href={salesContact.phoneHref} className="hover:text-white">{salesContact.phoneDisplay}</a>
               <a href={salesContact.emailHref} className="hover:text-white">{salesContact.email}</a>
-              <span className="my-1 h-px bg-white/10" />
-              <a href={companyInfo.phoneHref} className="hover:text-white">General: {companyInfo.phoneDisplay}</a>
-              <a href={companyInfo.emailHref} className="hover:text-white">{companyInfo.email}</a>
               <span>{companyInfo.address}, Chile</span>
             </div>
           </div>
