@@ -21,7 +21,7 @@ export const companyInfo = {
 };
 
 export const salesContact = {
-  name: "Américo",
+  name: "Américo Véliz",
   role: "Ventas",
   phoneDisplay: "+56 9 5010 7432",
   phoneHref: "tel:+56950107432",
