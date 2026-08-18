@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AUTH_COOKIE, verifySession } from "@/lib/auth";
+import { AUTH_COOKIE, getSession } from "@/lib/auth";
+import { isActiveSession } from "@/lib/activeSession";
+import { userCanEnterCotizador } from "@/lib/cotizadorAccessControl";
 
 export async function middleware(request: NextRequest) {
-  const session = request.cookies.get(AUTH_COOKIE)?.value;
-  const authorized = await verifySession(session, process.env.COTIZADOR_SESSION_SECRET);
+  const session = await getSession(
+    request.cookies.get(AUTH_COOKIE)?.value,
+    process.env.COTIZADOR_SESSION_SECRET
+  );
+  const authorized = session
+    && await isActiveSession(session)
+    && await userCanEnterCotizador(session.user);
 
   if (authorized) return NextResponse.next();
 

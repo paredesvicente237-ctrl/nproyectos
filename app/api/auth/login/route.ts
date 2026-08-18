@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { AUTH_COOKIE, createSession, getSession, sessionMaxAge } from "@/lib/auth";
 import { ensureActiveSessionsTable } from "@/lib/activeSession";
 import { recordLogin } from "@/lib/loginHistory";
+import { userCanEnterCotizador } from "@/lib/cotizadorAccessControl";
 
 type StoredUser = { usuario: string; salt: string; hash: string };
 
@@ -56,6 +57,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Usuario o contraseña incorrectos." }, { status: 401 });
   }
 
+  if (!(await userCanEnterCotizador(user.usuario))) {
+    return NextResponse.json(
+      { error: "El cotizador está temporalmente reservado para Nicolas." },
+      { status: 423 }
+    );
+  }
+
   const cookieStore = await cookies();
   const currentSession = await getSession(cookieStore.get(AUTH_COOKIE)?.value, secret);
   const sessionId = currentSession?.user.toLocaleLowerCase("es") === user.usuario.toLocaleLowerCase("es")
@@ -77,6 +85,18 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { error: "Este usuario ya tiene una sesión activa en otro dispositivo. Cierra esa sesión antes de volver a ingresar." },
       { status: 409 }
+    );
+  }
+
+  if (!(await userCanEnterCotizador(user.usuario))) {
+    await sql`
+      DELETE FROM active_sessions
+      WHERE username = ${user.usuario.toLocaleLowerCase("es")}
+        AND session_id = ${sessionId}
+    `;
+    return NextResponse.json(
+      { error: "El cotizador está temporalmente reservado para Nicolas." },
+      { status: 423 }
     );
   }
 

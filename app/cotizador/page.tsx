@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
 import { ProductReference } from "@/components/cotizador/ProductReference";
-import { canViewLoginHistory } from "@/lib/permissions";
+import { canManageExclusiveAccess, canViewLoginHistory } from "@/lib/permissions";
 
 type Mode = "con" | "sin";
 type PaintMode = "sin" | "poliuretano" | "electrostatica";
@@ -31,6 +31,7 @@ type CustomRow = { id: number; description: string; price: number; quantity: num
 type AccessHistoryEntry = { id: string; username: string; loggedInAt: string };
 type AccessHistorySummary = { username: string; loginCount: number; lastLoginAt: string; active: boolean };
 type AccessHistoryResponse = { entries: AccessHistoryEntry[]; summaries: AccessHistorySummary[] };
+type AccessControlResponse = { exclusive: boolean; exclusiveUsername: string | null; updatedAt: string | null };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
 
@@ -280,17 +281,64 @@ export default function CotizadorPage() {
   const [accessHistory, setAccessHistory] = useState<AccessHistoryResponse | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState("");
+  const [exclusiveAccess, setExclusiveAccess] = useState<boolean | null>(null);
+  const [accessControlLoading, setAccessControlLoading] = useState(false);
+  const [accessControlError, setAccessControlError] = useState("");
   const historyAllowed = canViewLoginHistory(currentUser);
+  const accessControlAllowed = canManageExclusiveAccess(currentUser);
+
+  const loadExclusiveAccess = async () => {
+    setAccessControlLoading(true);
+    setAccessControlError("");
+    try {
+      const response = await fetch("/api/auth/access-control", { cache: "no-store" });
+      const result = (await response.json()) as AccessControlResponse & { error?: string };
+      if (!response.ok) throw new Error(result.error || "No fue posible consultar el acceso.");
+      setExclusiveAccess(result.exclusive);
+    } catch (error) {
+      setAccessControlError(error instanceof Error ? error.message : "No fue posible consultar el acceso.");
+    } finally {
+      setAccessControlLoading(false);
+    }
+  };
 
   useEffect(() => {
-    fetch("/api/auth/me")
-      .then(async (response) => {
+    let mounted = true;
+    let redirecting = false;
+    const validateSession = async () => {
+      try {
+        const response = await fetch("/api/auth/me", { cache: "no-store" });
         if (!response.ok) throw new Error("Sesión no válida");
-        return response.json() as Promise<{ user: string }>;
-      })
-      .then(({ user }) => setCurrentUser(user))
-      .catch(() => window.location.assign("/acceso"));
+        const { user } = (await response.json()) as { user: string };
+        if (mounted) setCurrentUser(user);
+      } catch {
+        if (!redirecting) {
+          redirecting = true;
+          window.location.assign("/acceso");
+        }
+      }
+    };
+
+    void validateSession();
+    const sessionCheck = window.setInterval(() => void validateSession(), 5000);
+    const validateVisibleSession = () => {
+      if (document.visibilityState === "visible") void validateSession();
+    };
+    window.addEventListener("focus", validateSession);
+    document.addEventListener("visibilitychange", validateVisibleSession);
+    return () => {
+      mounted = false;
+      window.clearInterval(sessionCheck);
+      window.removeEventListener("focus", validateSession);
+      document.removeEventListener("visibilitychange", validateVisibleSession);
+    };
   }, []);
+
+  useEffect(() => {
+    if (accessControlAllowed) void loadExclusiveAccess();
+    // El permiso cambia únicamente cuando se resuelve el usuario conectado.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessControlAllowed]);
 
   const loadAccessHistory = async () => {
     setHistoryLoading(true);
@@ -311,6 +359,29 @@ export default function CotizadorPage() {
     const willOpen = !historyOpen;
     setHistoryOpen(willOpen);
     if (willOpen && !accessHistory) void loadAccessHistory();
+  };
+
+  const toggleExclusiveAccess = async () => {
+    const willEnable = !exclusiveAccess;
+    if (willEnable && !window.confirm("Se cerrarán las sesiones de todos los demás usuarios y solo Nicolas podrá ingresar. ¿Activar acceso exclusivo?")) return;
+
+    setAccessControlLoading(true);
+    setAccessControlError("");
+    try {
+      const response = await fetch("/api/auth/access-control", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ exclusive: willEnable }),
+      });
+      const result = (await response.json()) as AccessControlResponse & { error?: string };
+      if (!response.ok) throw new Error(result.error || "No fue posible cambiar el acceso.");
+      setExclusiveAccess(result.exclusive);
+      if (historyOpen) void loadAccessHistory();
+    } catch (error) {
+      setAccessControlError(error instanceof Error ? error.message : "No fue posible cambiar el acceso.");
+    } finally {
+      setAccessControlLoading(false);
+    }
   };
 
   const quoteLines = useMemo(() => {
@@ -482,6 +553,22 @@ export default function CotizadorPage() {
                 </button>}
               </div>
             </div>
+
+            {accessControlAllowed && <div className={`border-t-2 px-4 py-4 sm:px-5 ${exclusiveAccess ? "border-red-300 bg-red-50" : "border-slate-300 bg-slate-50"}`}>
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-start gap-3">
+                  <span className={`mt-0.5 h-2.5 w-2.5 shrink-0 rounded-full ${exclusiveAccess === null ? "bg-slate-400" : exclusiveAccess ? "bg-red-600 shadow-[0_0_0_4px_rgba(220,38,38,0.12)]" : "bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.12)]"}`} aria-hidden="true" />
+                  <div>
+                    <p className={`text-sm font-extrabold ${exclusiveAccess ? "text-red-950" : "text-slate-950"}`}>{exclusiveAccess === null ? "Estado de acceso" : exclusiveAccess ? "Acceso exclusivo activo" : "Acceso compartido activo"}</p>
+                    <p className={`mt-1 text-xs font-semibold leading-5 ${exclusiveAccess ? "text-red-800" : "text-slate-600"}`}>{exclusiveAccess === null ? "Consulta el estado antes de realizar cambios." : exclusiveAccess ? "Los demás usuarios fueron desconectados y no pueden volver a ingresar." : "Los usuarios autorizados pueden ingresar normalmente al cotizador."}</p>
+                  </div>
+                </div>
+                <button type="button" onClick={() => void (exclusiveAccess === null ? loadExclusiveAccess() : toggleExclusiveAccess())} disabled={accessControlLoading} className={`min-h-10 shrink-0 rounded-lg border-2 px-4 text-xs font-extrabold transition-colors disabled:cursor-wait disabled:opacity-60 ${exclusiveAccess ? "border-emerald-700 bg-emerald-700 text-white hover:bg-emerald-800" : exclusiveAccess === false ? "border-red-700 bg-white text-red-800 hover:bg-red-700 hover:text-white" : "border-slate-500 bg-white text-slate-800 hover:bg-slate-100"}`}>
+                  {accessControlLoading ? "Procesando…" : exclusiveAccess === null ? "Consultar estado" : exclusiveAccess ? "Permitir acceso nuevamente" : "Bloquear a los demás usuarios"}
+                </button>
+              </div>
+              {accessControlError && <p role="alert" className="mt-3 rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-bold text-red-800">{accessControlError}</p>}
+            </div>}
 
             {historyAllowed && historyOpen && <div className="border-t-2 border-slate-300 bg-slate-50 p-4 sm:p-5">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
