@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
   if (!(await userCanEnterCotizador(user.usuario))) {
     return NextResponse.json(
-      { error: "El cotizador está temporalmente reservado para Nicolas." },
+      { error: "Cotizador caído temporalmente, favor comunicarse con N Proyectos." },
       { status: 423 }
     );
   }
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
         AND session_id = ${sessionId}
     `;
     return NextResponse.json(
-      { error: "El cotizador está temporalmente reservado para Nicolas." },
+      { error: "Cotizador caído temporalmente, favor comunicarse con N Proyectos." },
       { status: 423 }
     );
   }
