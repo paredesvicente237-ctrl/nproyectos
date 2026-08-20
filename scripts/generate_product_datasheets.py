@@ -65,6 +65,35 @@ PRODUCTS = [
         ],
     },
     {
+        "slug": "panel-acustico-naislanpanel",
+        "name": "Panel Acústico",
+        "code": "NAislanPANEL",
+        "category": "Control acústico",
+        "image": ROOT / "img" / "naislan-panel-producto.jpg",
+        "description": (
+            "Panel acústico modular con terminación en metal galvanizado, "
+            "diseñado para reducir la transmisión de ruido y formar encierros "
+            "o barreras resistentes para instalaciones industriales."
+        ),
+        "specs": [
+            ("Dimensión", "97 x 300 cm"),
+            ("Espesores", "5 cm / 10 cm"),
+            ("Aislación", "35 a 45 Rw"),
+            ("Terminación", "Metal galvanizado"),
+            ("Propiedades", "Ignífugo y resistente a la corrosión"),
+            ("Fabricación", "Medidas especiales a pedido"),
+        ],
+        "uses": [
+            "Salas de bombas",
+            "Salas de máquinas",
+            "Grupos electrógenos",
+            "Plantas de tratamiento de aguas",
+            "Encierros de equipos",
+            "Galpones",
+            "Pantallas y barreras",
+        ],
+    },
+    {
         "slug": "splitter-acustico-nsplitter",
         "name": "Splitter Acústico",
         "code": "NSplitter",

@@ -11,7 +11,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 export const metadata: Metadata = {
   title: "Productos acústicos e industriales",
   description:
-    "Productos acústicos e industriales fabricados a medida en Chile: espuma acústica, splitters, celosías, paneles perforados y pantallas móviles.",
+    "Productos acústicos e industriales fabricados a medida en Chile: paneles acústicos, espuma acústica, splitters, celosías, paneles perforados y pantallas móviles.",
   alternates: { canonical: "/productos" },
   openGraph: {
     type: "website",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     url: "/productos",
     title: "Productos acústicos e industriales | N Proyectos",
     description:
-      "Espuma acústica, splitters, celosías, paneles perforados y pantallas móviles fabricados según cada proyecto.",
+      "Paneles acústicos, espuma acústica, splitters, celosías, paneles perforados y pantallas móviles fabricados según cada proyecto.",
   },
 };
 
@@ -67,6 +67,36 @@ const products: Product[] = [
       { src: siteAssets.espumaAcustica, alt: "Espuma acústica NFonoAB primer plano" },
       { src: siteAssets.espumaAplicacion, alt: "Espuma acústica instalada en cielo" },
       { src: siteAssets.espumaEstudio, alt: "Espuma acústica en estudio de grabación" },
+    ],
+  },
+  {
+    id: "panel-acustico-naislanpanel",
+    name: "Panel Acústico",
+    code: "NAislanPANEL",
+    category: "Control acústico",
+    datasheet: "/fichas-tecnicas/panel-acustico-naislanpanel.pdf",
+    description:
+      "Panel acústico modular con terminación en metal galvanizado, diseñado para reducir la transmisión de ruido y formar encierros o barreras resistentes para instalaciones industriales.",
+    specs: [
+      { label: "Dimensión", value: "97 x 300 cm" },
+      { label: "Espesores", value: "5 cm / 10 cm" },
+      { label: "Aislación", value: "35 a 45 Rw" },
+      { label: "Terminación", value: "Metal galvanizado" },
+      { label: "Propiedades", value: "Ignífugo y resistente a la corrosión" },
+      { label: "Fabricación", value: "Medidas especiales a pedido" },
+    ],
+    uses: [
+      "Salas de bombas",
+      "Salas de máquinas",
+      "Grupos electrógenos",
+      "Plantas de tratamiento de aguas",
+      "Encierros de equipos",
+      "Galpones",
+      "Pantallas y barreras",
+    ],
+    images: [
+      { src: siteAssets.naislanPanelProducto, alt: "Panel acústico NAislanPANEL galvanizado" },
+      { src: siteAssets.naislanPanelAplicacion, alt: "Encierro industrial construido con paneles acústicos NAislanPANEL" },
     ],
   },
   {
