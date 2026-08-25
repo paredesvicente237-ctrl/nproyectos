@@ -11,7 +11,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 export const metadata: Metadata = {
   title: "Productos acústicos e industriales",
   description:
-    "Productos acústicos e industriales fabricados a medida en Chile: paneles acústicos, espuma acústica, splitters, celosías, paneles perforados y pantallas móviles.",
+    "Productos acústicos e industriales fabricados a medida en Chile: silenciadores de escape, paneles acústicos, espuma acústica, splitters, celosías y pantallas móviles.",
   alternates: { canonical: "/productos" },
   openGraph: {
     type: "website",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     url: "/productos",
     title: "Productos acústicos e industriales | N Proyectos",
     description:
-      "Paneles acústicos, espuma acústica, splitters, celosías, paneles perforados y pantallas móviles fabricados según cada proyecto.",
+      "Silenciadores de escape, paneles acústicos, espuma acústica, splitters, celosías y pantallas móviles fabricados según cada proyecto.",
   },
 };
 
@@ -150,6 +150,31 @@ const products: Product[] = [
     ],
     images: [
       { src: siteAssets.celosia, alt: "Celosía acústica instalada en fachada" },
+    ],
+  },
+  {
+    id: "silenciador-escape-gases",
+    name: "Silenciador de Escape de Gases",
+    code: "NSilenSE",
+    category: "Control acústico industrial",
+    datasheet: "/fichas-tecnicas/silenciador-escape-gases-nsilense.pdf",
+    description:
+      "Silenciador diseñado para controlar el ruido en admisiones y escapes de motores de combustión interna, sopladores y bombas de vacío, con fabricación según los requerimientos de cada instalación.",
+    specs: [
+      { label: "Grado industrial", value: "12 a 18 dBA N.R." },
+      { label: "Grado residencial", value: "20 a 25 dBA N.R." },
+      { label: "Grado crítico", value: "25 a 32 dBA N.R." },
+      { label: "Grado súper crítico", value: "30 a 38 dBA N.R." },
+      { label: "Grado hospitalario", value: "35 a 50 dBA N.R." },
+      { label: "Fabricación", value: "A medida; accesorios disponibles" },
+    ],
+    uses: [
+      "Admisiones y escapes de motores de combustión interna",
+      "Admisiones y descargas de sopladores",
+      "Descargas de bombas de vacío",
+    ],
+    images: [
+      { src: siteAssets.silenciadorEscapeGases, alt: "Silenciador de escape de gases NSilenSE" },
     ],
   },
   {

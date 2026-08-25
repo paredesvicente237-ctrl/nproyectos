@@ -15,6 +15,7 @@ import panelPerforado from "@/img/panel-perforado.png";
 import panelAplicacion from "@/img/panel-aplicacion.png";
 import naislanPanelProducto from "@/img/naislan-panel-producto.jpg";
 import naislanPanelAplicacion from "@/img/naislan-panel-aplicacion.jpg";
+import silenciadorEscapeGases from "@/img/silenciador-escape-gases-nsilense.png";
 
 import fotobuenax1 from "@/img/fotobuenax1.png";
 import fotobuenax2 from "@/img/fotobuenax2.png";
@@ -37,4 +38,5 @@ export const siteAssets = {
   panelAplicacion,
   naislanPanelProducto,
   naislanPanelAplicacion,
+  silenciadorEscapeGases,
 };

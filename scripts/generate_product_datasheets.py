@@ -147,6 +147,31 @@ PRODUCTS = [
         ],
     },
     {
+        "slug": "silenciador-escape-gases-nsilense",
+        "name": "Silenciador de Escape de Gases",
+        "code": "NSilenSE",
+        "category": "Control acústico industrial",
+        "image": ROOT / "img" / "silenciador-escape-gases-nsilense.png",
+        "description": (
+            "Silenciador diseñado para controlar el ruido en admisiones y "
+            "escapes de motores de combustión interna, sopladores y bombas de "
+            "vacío, con fabricación según los requerimientos de cada instalación."
+        ),
+        "specs": [
+            ("Grado industrial", "12 a 18 dBA N.R."),
+            ("Grado residencial", "20 a 25 dBA N.R."),
+            ("Grado crítico", "25 a 32 dBA N.R."),
+            ("Grado súper crítico", "30 a 38 dBA N.R."),
+            ("Grado hospitalario", "35 a 50 dBA N.R."),
+            ("Fabricación", "A medida; accesorios disponibles"),
+        ],
+        "uses": [
+            "Admisiones y escapes de motores de combustión interna",
+            "Admisiones y descargas de sopladores",
+            "Descargas de bombas de vacío",
+        ],
+    },
+    {
         "slug": "panel-perforado-nperfab",
         "name": "Panel Perforado",
         "code": "NPerfAB",
