@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { siteAssets } from "@/components/siteAssets";
 import { ProductReference } from "@/components/cotizador/ProductReference";
-import { canManageExclusiveAccess, canViewLoginHistory } from "@/lib/permissions";
+import { canManageExclusiveAccess, canViewLoginHistory, canViewQuoteHistory } from "@/lib/permissions";
 
 type Mode = "con" | "sin";
 type PaintMode = "sin" | "poliuretano" | "electrostatica";
@@ -32,6 +32,9 @@ type AccessHistoryEntry = { id: string; username: string; loggedInAt: string };
 type AccessHistorySummary = { username: string; loginCount: number; lastLoginAt: string; active: boolean };
 type AccessHistoryResponse = { entries: AccessHistoryEntry[]; summaries: AccessHistorySummary[] };
 type AccessControlResponse = { exclusive: boolean; exclusiveUsername: string | null; updatedAt: string | null };
+type QuoteHistoryLine = { category: string; name: string; detail: string; modeText: string; quantity: number; total: number };
+type QuoteHistoryEntry = { id: string; number: number; username: string; subtotal: number; iva: number; total: number; items: QuoteHistoryLine[]; emailedTo: string; emailSent: boolean; createdAt: string };
+type QuoteHistoryResponse = { quotes: QuoteHistoryEntry[] };
 
 const emptyMeasures: Measures = { largo: 0, ancho: 0, alto: 0 };
 
@@ -281,10 +284,15 @@ export default function CotizadorPage() {
   const [accessHistory, setAccessHistory] = useState<AccessHistoryResponse | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [historyError, setHistoryError] = useState("");
+  const [quoteHistoryOpen, setQuoteHistoryOpen] = useState(false);
+  const [quoteHistory, setQuoteHistory] = useState<QuoteHistoryEntry[] | null>(null);
+  const [quoteHistoryLoading, setQuoteHistoryLoading] = useState(false);
+  const [quoteHistoryError, setQuoteHistoryError] = useState("");
   const [exclusiveAccess, setExclusiveAccess] = useState<boolean | null>(null);
   const [accessControlLoading, setAccessControlLoading] = useState(false);
   const [accessControlError, setAccessControlError] = useState("");
   const historyAllowed = canViewLoginHistory(currentUser);
+  const quoteHistoryAllowed = canViewQuoteHistory(currentUser);
   const accessControlAllowed = canManageExclusiveAccess(currentUser);
   const pricesVisible = quoteNumber !== null;
 
@@ -360,6 +368,27 @@ export default function CotizadorPage() {
     const willOpen = !historyOpen;
     setHistoryOpen(willOpen);
     if (willOpen && !accessHistory) void loadAccessHistory();
+  };
+
+  const loadQuoteHistory = async () => {
+    setQuoteHistoryLoading(true);
+    setQuoteHistoryError("");
+    try {
+      const response = await fetch("/api/quotes", { cache: "no-store" });
+      const result = (await response.json()) as QuoteHistoryResponse & { error?: string };
+      if (!response.ok) throw new Error(result.error || "No fue posible cargar las cotizaciones.");
+      setQuoteHistory(result.quotes);
+    } catch (error) {
+      setQuoteHistoryError(error instanceof Error ? error.message : "No fue posible cargar las cotizaciones.");
+    } finally {
+      setQuoteHistoryLoading(false);
+    }
+  };
+
+  const toggleQuoteHistory = () => {
+    const willOpen = !quoteHistoryOpen;
+    setQuoteHistoryOpen(willOpen);
+    if (willOpen && !quoteHistory) void loadQuoteHistory();
   };
 
   const toggleExclusiveAccess = async () => {
@@ -499,12 +528,24 @@ export default function CotizadorPage() {
     try {
       let number = quoteNumber;
       if (number === null) {
-        const response = await fetch("/api/quotes/number", { method: "POST" });
-        const result = (await response.json()) as { number?: number; error?: string };
-        if (!response.ok || !result.number) throw new Error(result.error || "No fue posible generar el folio.");
+        const response = await fetch("/api/quotes", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lines: quoteLines }),
+        });
+        const result = (await response.json().catch(() => ({}))) as { number?: number; emailSent?: boolean; error?: string };
+        if (!result.number) throw new Error(result.error || "No fue posible generar el folio.");
         number = result.number;
         setQuoteNumber(number);
         await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
+        if (!response.ok || !result.emailSent) {
+          alert(result.error || "La cotización quedó guardada, pero no fue posible enviar la copia por correo.");
+        } else {
+          alert(`Cotización N.º ${String(number).padStart(6, "0")} guardada. N Proyectos recibirá una copia en su correo.`);
+        }
+        if (quoteHistoryOpen) void loadQuoteHistory();
+      } else {
+        alert(`La cotización N.º ${String(number).padStart(6, "0")} ya fue guardada y enviada al correo de N Proyectos.`);
       }
       window.print();
     } catch (error) {
@@ -547,10 +588,13 @@ export default function CotizadorPage() {
           <section className="rounded-md border border-slate-300 bg-white">
             <div className="flex flex-col items-stretch justify-between gap-4 p-4 sm:flex-row sm:items-center sm:p-5">
               <div className="flex items-center gap-3"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">1</span><div><p className="text-xs font-extrabold uppercase tracking-wider text-slate-600">Usuario conectado</p><h2 className="mt-0.5 text-xl font-extrabold text-slate-950">{currentUser}</h2></div></div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="rounded-full bg-emerald-100 px-3 py-1.5 text-xs font-extrabold text-emerald-800">Sesión activa</span>
                 {historyAllowed && <button type="button" onClick={toggleAccessHistory} aria-expanded={historyOpen} className="rounded-lg border-2 border-navy-800 bg-white px-3 py-1.5 text-xs font-extrabold text-navy-900 transition-colors hover:bg-navy-50">
-                  {historyOpen ? "Ocultar historial" : "Ver historial"}
+                  {historyOpen ? "Ocultar accesos" : "Historial de accesos"}
+                </button>}
+                {quoteHistoryAllowed && <button type="button" onClick={toggleQuoteHistory} aria-expanded={quoteHistoryOpen} className="rounded-lg border-2 border-amber-500 bg-amber-50 px-3 py-1.5 text-xs font-extrabold text-amber-950 transition-colors hover:bg-amber-100">
+                  {quoteHistoryOpen ? "Ocultar cotizaciones" : "Historial de cotizaciones"}
                 </button>}
               </div>
             </div>
@@ -609,6 +653,54 @@ export default function CotizadorPage() {
                   </div>
                 </div>
               </>}
+            </div>}
+
+            {quoteHistoryAllowed && quoteHistoryOpen && <div className="border-t-2 border-amber-300 bg-amber-50/60 p-4 sm:p-5">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-amber-800">Uso exclusivo de Nicolás</p>
+                  <h3 className="mt-1 text-lg font-extrabold text-slate-950">Historial de cotizaciones</h3>
+                  <p className="mt-1 text-sm font-medium text-slate-600">Incluye el folio, usuario, productos, total y estado del correo de cada cotización.</p>
+                </div>
+                <button type="button" onClick={() => void loadQuoteHistory()} disabled={quoteHistoryLoading} className="self-start rounded-lg border border-amber-500 bg-white px-3 py-2 text-xs font-extrabold text-amber-950 hover:bg-amber-100 disabled:cursor-wait disabled:opacity-60">
+                  {quoteHistoryLoading ? "Actualizando…" : "Actualizar"}
+                </button>
+              </div>
+
+              {quoteHistoryError && <p role="alert" className="mt-4 rounded-lg border border-red-300 bg-red-50 px-3 py-2 text-sm font-bold text-red-800">{quoteHistoryError}</p>}
+              {quoteHistoryLoading && !quoteHistory && <p className="mt-4 text-sm font-semibold text-slate-600">Cargando cotizaciones…</p>}
+              {!quoteHistoryLoading && quoteHistory?.length === 0 && <p className="mt-4 rounded-lg border border-dashed border-amber-400 bg-white px-4 py-5 text-center text-sm font-semibold text-slate-600">Todavía no hay cotizaciones registradas. La próxima cotización generada aparecerá aquí.</p>}
+
+              {(quoteHistory?.length ?? 0) > 0 && <div className="mt-4 space-y-3">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-lg border border-amber-300 bg-white p-4"><p className="text-xs font-extrabold uppercase tracking-wider text-amber-800">Cotizaciones registradas</p><p className="mt-1 text-2xl font-black text-slate-950">{quoteHistory?.length}</p></div>
+                  <div className="rounded-lg border border-amber-300 bg-white p-4"><p className="text-xs font-extrabold uppercase tracking-wider text-amber-800">Monto total cotizado</p><p className="mt-1 text-2xl font-black text-slate-950">{money(quoteHistory?.reduce((sum, quote) => sum + quote.total, 0) ?? 0)}</p></div>
+                </div>
+
+                {quoteHistory?.map((quote) => <details key={quote.id} className="group overflow-hidden rounded-lg border border-slate-300 bg-white shadow-sm">
+                  <summary className="cursor-pointer list-none p-4 marker:hidden">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div>
+                        <div className="flex flex-wrap items-center gap-2"><strong className="text-base text-slate-950">Cotización N.º {String(quote.number).padStart(6, "0")}</strong><span className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wide ${quote.emailSent ? "bg-emerald-100 text-emerald-800" : "bg-red-100 text-red-800"}`}>{quote.emailSent ? "Correo enviado" : "Correo pendiente"}</span></div>
+                        <p className="mt-1 text-xs font-semibold text-slate-600">{quote.username} · {formatAccessDate(quote.createdAt)} · {quote.items.length} {quote.items.length === 1 ? "producto" : "productos"}</p>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 sm:block sm:text-right"><span className="text-xs font-bold text-slate-500 sm:block">Total</span><strong className="text-lg text-navy-900">{money(quote.total)}</strong></div>
+                    </div>
+                  </summary>
+                  <div className="border-t border-slate-300 bg-slate-50 p-4">
+                    <div className="overflow-hidden rounded-lg border border-slate-300 bg-white">
+                      <div className="divide-y divide-slate-200">
+                        {quote.items.map((line, index) => <div key={`${quote.id}-${index}`} className="grid gap-2 px-4 py-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+                          <div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-600">{[line.detail, line.modeText, `Cant. ${line.quantity}`].filter(Boolean).join(" · ")}</p></div>
+                          <strong className="text-sm text-slate-950">{money(line.total)}</strong>
+                        </div>)}
+                      </div>
+                    </div>
+                    <div className="mt-3 ml-auto max-w-xs space-y-1.5 text-sm"><div className="flex justify-between gap-5"><span className="font-semibold text-slate-600">Subtotal</span><strong>{money(quote.subtotal)}</strong></div><div className="flex justify-between gap-5"><span className="font-semibold text-slate-600">IVA 19%</span><strong>{money(quote.iva)}</strong></div><div className="flex justify-between gap-5 border-t border-slate-400 pt-2 text-base"><span className="font-extrabold">Total</span><strong>{money(quote.total)}</strong></div></div>
+                    <p className="mt-3 text-xs font-semibold text-slate-600">Copia: {quote.emailedTo}</p>
+                  </div>
+                </details>)}
+              </div>}
             </div>}
           </section>
 
