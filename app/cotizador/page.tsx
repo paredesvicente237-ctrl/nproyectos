@@ -564,11 +564,11 @@ export default function CotizadorPage() {
   return (
     <main className="min-h-screen bg-slate-200 text-slate-950">
       {quoteConfirmationOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 print:hidden" role="presentation">
-        <section role="alertdialog" aria-modal="true" aria-labelledby="quote-warning-title" aria-describedby="quote-warning-description" className="w-full max-w-md overflow-hidden rounded-2xl border-2 border-amber-400 bg-white shadow-2xl">
-          <div className="border-b border-amber-300 bg-amber-50 px-5 py-4">
+        <section role="dialog" aria-modal="true" aria-labelledby="quote-warning-title" aria-describedby="quote-warning-description" className="w-full max-w-md overflow-hidden rounded-2xl border-2 border-blue-300 bg-white shadow-2xl">
+          <div className="border-b border-blue-200 bg-blue-50 px-5 py-4">
             <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-amber-400 text-xl font-black text-amber-950" aria-hidden="true">!</span>
-              <div><p className="text-xs font-extrabold uppercase tracking-[0.16em] text-amber-800">Advertencia</p><h2 id="quote-warning-title" className="mt-0.5 text-lg font-extrabold text-slate-950">Antes de crear la cotización</h2></div>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-800 text-lg font-black text-white" aria-hidden="true">@</span>
+              <h2 id="quote-warning-title" className="text-lg font-extrabold text-slate-950">Confirmar creación de la cotización</h2>
             </div>
           </div>
           <div className="px-5 py-5">
