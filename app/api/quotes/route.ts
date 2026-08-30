@@ -13,7 +13,7 @@ import {
 
 export const dynamic = "force-dynamic";
 
-const QUOTE_EMAIL = "ventasnproyectosltda@gmail.com";
+const QUOTE_EMAIL = "nproyectosltda@gmail.com";
 
 async function getAuthorizedSession() {
   const cookieStore = await cookies();
