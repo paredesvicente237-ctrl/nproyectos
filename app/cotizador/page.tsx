@@ -280,7 +280,6 @@ export default function CotizadorPage() {
   ]);
   const [quoteNumber, setQuoteNumber] = useState<number | null>(null);
   const [preparingPdf, setPreparingPdf] = useState(false);
-  const [quoteConfirmationOpen, setQuoteConfirmationOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
   const [accessHistory, setAccessHistory] = useState<AccessHistoryResponse | null>(null);
   const [historyLoading, setHistoryLoading] = useState(false);
@@ -519,14 +518,9 @@ export default function CotizadorPage() {
     setQuoteNumber(null);
   };
 
-  const printQuote = async (confirmed = false) => {
+  const printQuote = async () => {
     if (!quoteLines.length) {
       alert("Selecciona al menos un producto.");
-      return;
-    }
-
-    if (quoteNumber === null && !confirmed) {
-      setQuoteConfirmationOpen(true);
       return;
     }
 
@@ -539,19 +533,12 @@ export default function CotizadorPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ lines: quoteLines }),
         });
-        const result = (await response.json().catch(() => ({}))) as { number?: number; emailSent?: boolean; error?: string };
+        const result = (await response.json().catch(() => ({}))) as { number?: number; error?: string };
         if (!result.number) throw new Error(result.error || "No fue posible generar el folio.");
         number = result.number;
         setQuoteNumber(number);
         await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-        if (!response.ok || !result.emailSent) {
-          alert(result.error || "La cotización quedó guardada, pero no fue posible enviar la copia por correo.");
-        } else {
-          alert(`Cotización N.º ${String(number).padStart(6, "0")} guardada. Se envió una copia a nproyectosltda@gmail.com.`);
-        }
         if (quoteHistoryOpen) void loadQuoteHistory();
-      } else {
-        alert(`La cotización N.º ${String(number).padStart(6, "0")} ya fue guardada y enviada al correo de N Proyectos.`);
       }
       window.print();
     } catch (error) {
@@ -563,25 +550,6 @@ export default function CotizadorPage() {
 
   return (
     <main className="min-h-screen bg-slate-200 text-slate-950">
-      {quoteConfirmationOpen && <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-4 print:hidden" role="presentation">
-        <section role="dialog" aria-modal="true" aria-labelledby="quote-warning-title" aria-describedby="quote-warning-description" className="w-full max-w-md overflow-hidden rounded-2xl border-2 border-blue-300 bg-white shadow-2xl">
-          <div className="border-b border-blue-200 bg-blue-50 px-5 py-4">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-navy-800 text-lg font-black text-white" aria-hidden="true">@</span>
-              <h2 id="quote-warning-title" className="text-lg font-extrabold text-slate-950">Confirmar creación de la cotización</h2>
-            </div>
-          </div>
-          <div className="px-5 py-5">
-            <p id="quote-warning-description" className="text-sm font-semibold leading-6 text-slate-700">Al confirmar, la cotización quedará guardada y se enviará automáticamente una copia al correo de N Proyectos:</p>
-            <p className="mt-3 break-all rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-center text-sm font-extrabold text-amber-950">nproyectosltda@gmail.com</p>
-            <p className="mt-4 text-sm font-bold text-slate-950">¿Deseas crear la cotización?</p>
-            <div className="mt-5 grid gap-2 sm:grid-cols-2">
-              <button type="button" onClick={() => setQuoteConfirmationOpen(false)} className="rounded-xl border-2 border-slate-400 bg-white px-4 py-3 text-sm font-extrabold text-slate-800 hover:bg-slate-100">No, cancelar</button>
-              <button type="button" onClick={() => { setQuoteConfirmationOpen(false); void printQuote(true); }} className="rounded-xl border-2 border-amber-500 bg-amber-400 px-4 py-3 text-sm font-extrabold text-amber-950 hover:bg-amber-300">Sí, crear y enviar</button>
-            </div>
-          </div>
-        </section>
-      </div>}
       <header className="border-b border-slate-700 bg-navy-950 px-3 py-4 text-white sm:px-5 sm:py-6 print:bg-white print:px-0 print:text-slate-900">
         <div className="mx-auto flex max-w-7xl flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center sm:gap-5">
           <div className="flex min-w-0 items-center justify-center gap-3 sm:justify-start sm:gap-6">
