@@ -10,6 +10,11 @@ type StoredUser = { usuario: string; salt: string; hash: string };
 
 const builtInUsers: StoredUser[] = [
   {
+    usuario: "Alex Alonso",
+    salt: "Q4xCMqfk+W/hv7SaigD/pA==",
+    hash: "uTfBrPacAUqYj40b+klHMIDzeH9AgzYX9r7UdP9Jr5c=",
+  },
+  {
     usuario: "Nicolas",
     salt: "yl6vlvanS3rNflb3GHFhXQ==",
     hash: "U1BrR/9rLtcJPEd9uSL/37AZIsj/PAnKeDtm5iL8W2U=",
