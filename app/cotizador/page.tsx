@@ -294,7 +294,6 @@ export default function CotizadorPage() {
   const historyAllowed = canViewLoginHistory(currentUser);
   const quoteHistoryAllowed = canViewQuoteHistory(currentUser);
   const accessControlAllowed = canManageExclusiveAccess(currentUser);
-  const pricesVisible = quoteNumber !== null;
 
   const loadExclusiveAccess = async () => {
     setAccessControlLoading(true);
@@ -452,7 +451,7 @@ export default function CotizadorPage() {
           id: product.id,
           category: "Productos unitarios",
           name: product.name,
-          detail: `${row.sets} ${row.sets === 1 ? "set" : "sets"} · 1 set = ${product.packSize} unid.${pricesVisible ? ` · ${money(product.unitPrice)} c/u` : ""}`,
+          detail: `${row.sets} ${row.sets === 1 ? "set" : "sets"} · 1 set = ${product.packSize} unid.`,
           mode: "con" as Mode,
           modeText: "Con material",
           quantity: row.sets * product.packSize,
@@ -460,7 +459,7 @@ export default function CotizadorPage() {
         }));
 
     return [...measured, ...unitary, ...custom];
-  }, [campanaRows, customRows, guillotinaRows, measureVariants, parrillaRows, pricesVisible, unitRows]);
+  }, [campanaRows, customRows, guillotinaRows, measureVariants, parrillaRows, unitRows]);
 
   const subtotal = quoteLines.reduce((sum, line) => sum + line.total, 0);
   const iva = subtotal * 0.19;
@@ -698,7 +697,7 @@ export default function CotizadorPage() {
           </section>
 
           <section className="overflow-hidden rounded-md border border-slate-300 bg-white">
-            <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Los valores se mostrarán al generar el número de cotización. Presiona una referencia para ver cómo tomar las medidas.</p></div></div>
+            <div className="border-b-2 border-slate-300 p-5"><div className="mb-4 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy-800 text-sm font-bold text-white">2</span><div><h2 className="text-lg font-extrabold text-slate-950">Agregar productos</h2><p className="text-sm font-medium text-slate-700">Los valores permanecerán ocultos en pantalla y se incluirán únicamente en el PDF. Presiona una referencia para ver cómo tomar las medidas.</p></div></div>
               <div className="flex gap-2 overflow-x-auto">
                 {([['parrillas','Parrillas'],['campanas','Campanas'],['guillotinas','Mueble guillotina'],['unitarios','Unitarios'],['personalizado','Personalizado']] as const).map(([id, label]) => <button key={id} onClick={() => setSection(id)} className={`whitespace-nowrap rounded-xl border-2 px-4 py-2.5 text-sm font-extrabold ${section === id ? 'border-navy-950 bg-navy-950 text-white shadow-md' : 'border-slate-400 bg-white text-slate-900 hover:border-navy-700 hover:bg-slate-100'}`}>{label}</button>)}
               </div>
@@ -711,7 +710,6 @@ export default function CotizadorPage() {
                 const rows = [primaryRow, ...(measureVariants[`${group}:${product.id}`] || [])];
                 return <div key={product.id} className="border-t-4 border-slate-300 bg-white first:border-t-0">
                   {rows.map((row, variantIndex) => {
-                    const unitPrice = product.calculate(row, row.mode) + paintPrice(product, row);
                     return <div key={variantIndex} className={`p-3 transition-colors sm:p-4 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
                       <div className={`grid items-start gap-2 sm:gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_5rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
                         <input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} />
@@ -722,7 +720,7 @@ export default function CotizadorPage() {
                               {product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}
                             </div>
                             <div className="flex items-center gap-3">
-                              <strong className="text-navy-700">{row.selected ? pricesVisible ? money(unitPrice * row.quantity) : "Valor oculto" : '—'}</strong>
+                              <strong className="text-navy-700">{row.selected ? "Valor oculto" : '—'}</strong>
                               {variantIndex > 0 && <button type="button" onClick={() => removeMeasureVariant(group, product.id, variantIndex)} className="rounded-lg border border-red-300 bg-white px-2 py-1 text-xs font-bold text-red-700 hover:bg-red-50">Quitar</button>}
                             </div>
                           </div>
@@ -733,7 +731,7 @@ export default function CotizadorPage() {
                             return <label key={field} className="text-xs font-extrabold text-slate-800">{fieldNames[field]} (mm){fixed && <span className="ml-1 text-red-700">· Medida fija</span>}<input type="number" min="0" disabled={fixed} className={`mt-1 w-full rounded-lg border-2 px-3 py-2 font-semibold outline-none ${fixed ? 'cursor-not-allowed border-red-300 bg-red-50 text-red-900' : 'border-slate-400 bg-white text-slate-950 focus:border-navy-700 focus:ring-2 focus:ring-blue-200'}`} value={row[field] || ''} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { [field]: Number(e.target.value) })} /></label>;
                           })}
                           <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 px-3 py-2 font-semibold text-slate-950" value={row.quantity} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { quantity: Math.max(1, Number(e.target.value)) })} /></label>
-                          {product.paintArea && <label className="text-xs font-extrabold text-slate-800">Pintura<select className="mt-1 w-full rounded-lg border-2 border-amber-400 bg-amber-50 px-3 py-2 font-semibold text-slate-950 outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200" value={row.paint} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { paint: e.target.value as PaintMode })}><option value="sin">Sin pintura</option><option value="poliuretano">Poliuretano</option><option value="electrostatica">Electrostática</option></select>{row.paint !== "sin" && <span className="mt-2 block rounded-md border border-amber-300 bg-amber-100 px-2 py-1.5 text-sm font-extrabold leading-tight text-amber-900">{pricesVisible ? `Valor: ${money(paintPrice(product, row))}` : "Valor oculto hasta generar la cotización"}</span>}</label>}
+                          {product.paintArea && <label className="text-xs font-extrabold text-slate-800">Pintura<select className="mt-1 w-full rounded-lg border-2 border-amber-400 bg-amber-50 px-3 py-2 font-semibold text-slate-950 outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200" value={row.paint} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { paint: e.target.value as PaintMode })}><option value="sin">Sin pintura</option><option value="poliuretano">Poliuretano</option><option value="electrostatica">Electrostática</option></select>{row.paint !== "sin" && <span className="mt-2 block rounded-md border border-amber-300 bg-amber-100 px-2 py-1.5 text-sm font-extrabold leading-tight text-amber-900">Valor oculto</span>}</label>}
                           {(product.modes?.length ?? 2) > 1 && <label className="text-xs font-extrabold text-slate-800">Modalidad<select className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950" value={row.mode} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { mode: e.target.value as Mode })}>{(product.modes ?? (["con", "sin"] as Mode[])).map((mode) => <option key={mode} value={mode}>{mode === "con" ? "Con material" : "Sin material"}</option>)}</select></label>}
                         </div>
                         {variantIndex === 0 && <div className="col-start-3 row-start-2 self-start justify-self-end xl:self-end"><ProductReference productId={product.id} productName={product.name} fields={product.fields} fixedMeasures={product.fixedMeasures} /></div>}
@@ -747,7 +745,7 @@ export default function CotizadorPage() {
               {section === "unitarios" && <div className="bg-slate-200">
                 <div className="border-b border-slate-300 bg-blue-50 px-4 py-4 sm:px-5">
                   <p className="text-sm font-extrabold text-navy-950">Productos por set</p>
-                  <p className="mt-1 text-xs font-semibold leading-5 text-slate-700">Elige la cantidad de sets completos. Los valores unitarios y totales aparecerán al generar el número de cotización.</p>
+                  <p className="mt-1 text-xs font-semibold leading-5 text-slate-700">Elige la cantidad de sets completos. Los valores unitarios y totales permanecerán ocultos en pantalla.</p>
                 </div>
                 {unitProducts.map((product) => {
                   const row = unitRows[product.id];
@@ -762,14 +760,14 @@ export default function CotizadorPage() {
                           </div>
                           <div className="sm:text-right">
                             <p className="text-xs font-bold uppercase tracking-wider text-slate-500">Total</p>
-                            <strong className="mt-1 block text-lg text-navy-800">{row.selected ? pricesVisible ? money(product.unitPrice * product.packSize * row.sets) : "Valor oculto" : '—'}</strong>
+                            <strong className="mt-1 block text-lg text-navy-800">{row.selected ? "Valor oculto" : '—'}</strong>
                           </div>
                         </div>
                         <div className="mt-4 grid gap-3 sm:grid-cols-2">
                           <label className="text-xs font-extrabold text-slate-800">Cantidad de sets<input type="number" min="1" step="1" className="mt-1 w-full rounded-lg border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700 focus:ring-2 focus:ring-blue-200" value={row.sets} onChange={(event) => updateUnitRow(product.id, { sets: Math.max(1, Math.floor(Number(event.target.value)) || 1) })} /><span className="mt-1.5 block text-xs font-bold text-navy-700">{row.sets} {row.sets === 1 ? 'set' : 'sets'} = {row.sets * product.packSize} unidades</span></label>
                           <div className="rounded-lg border-2 border-amber-300 bg-amber-50 px-3 py-2">
                             <p className="text-xs font-extrabold text-amber-900">Valor unitario</p>
-                            <p className="mt-1 text-base font-extrabold text-amber-950">{pricesVisible ? money(product.unitPrice) : "Disponible al generar cotización"}</p>
+                            <p className="mt-1 text-base font-extrabold text-amber-950">Valor oculto</p>
                           </div>
                         </div>
                       </div>
@@ -786,7 +784,7 @@ export default function CotizadorPage() {
                     <label className="text-xs font-extrabold text-slate-800">Precio<input type="number" min="0" className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" placeholder="0" value={row.price || ""} onChange={(event) => updateCustomRow(row.id, { price: Math.max(0, Number(event.target.value)) })} /></label>
                     <label className="text-xs font-extrabold text-slate-800">Cantidad<input type="number" min="1" className="mt-1 w-full rounded-xl border-2 border-slate-400 bg-white px-3 py-2 font-semibold text-slate-950 outline-none focus:border-navy-700" value={row.quantity} onChange={(event) => updateCustomRow(row.id, { quantity: Math.max(1, Number(event.target.value)) })} /></label>
                   </div>
-                  {row.price > 0 && <div className="mt-4 flex justify-between rounded-xl bg-navy-50 px-4 py-3 text-sm"><span className="font-bold text-slate-700">Total</span><strong className="text-navy-950">{pricesVisible ? money(row.price * row.quantity) : "Valor oculto"}</strong></div>}
+                  {row.price > 0 && <div className="mt-4 flex justify-between rounded-xl bg-navy-50 px-4 py-3 text-sm"><span className="font-bold text-slate-700">Total</span><strong className="text-navy-950">Valor oculto</strong></div>}
                 </div>)}
                 <div className="border-t border-slate-300 bg-white p-4 sm:p-5"><button type="button" onClick={addCustomRow} className="w-full rounded-xl border-2 border-dashed border-navy-400 px-4 py-3 text-sm font-extrabold text-navy-800 hover:border-navy-700 hover:bg-navy-50 sm:w-auto">+ Agregar otro trabajo personalizado</button></div>
               </div>}
@@ -798,10 +796,11 @@ export default function CotizadorPage() {
           <section className="overflow-hidden rounded-md border border-slate-300 bg-white text-slate-950 print:rounded-none">
             <div className="border-b-2 border-slate-300 p-5 print:px-0"><p className="text-xs font-extrabold uppercase tracking-[0.2em] text-navy-700">Resumen</p><div className="mt-1 flex items-center justify-between gap-3"><h2 className="text-xl font-extrabold text-slate-950">Cotización</h2><strong className="rounded-lg border-2 border-navy-800 bg-navy-50 px-3 py-1.5 text-sm text-navy-950">N.º {quoteNumber === null ? "Pendiente" : String(quoteNumber).padStart(6, "0")}</strong></div><p className="mt-3 text-sm font-bold text-slate-700">Usuario: {currentUser}</p></div>
             <div className="max-h-[52vh] divide-y divide-slate-300 overflow-y-auto print:max-h-none">
-              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.modeText} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950">{pricesVisible ? money(line.total) : "Valor oculto"}</strong></div></div>)}
+              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.modeText} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950 print:hidden">Valor oculto</strong><strong className="hidden whitespace-nowrap text-sm text-slate-950 print:block">{money(line.total)}</strong></div></div>)}
             </div>
             <div className="border-t-2 border-slate-300 bg-slate-50 p-5 print:bg-white print:px-0">
-              {pricesVisible ? <div className="space-y-2 text-sm"><div className="flex justify-between"><span className="font-semibold text-slate-700">Subtotal neto</span><strong className="text-slate-950">{money(subtotal)}</strong></div><div className="flex justify-between"><span className="font-semibold text-slate-700">IVA 19%</span><strong className="text-slate-950">{money(iva)}</strong></div><div className="mt-3 flex justify-between border-t-2 border-slate-400 pt-3 text-lg"><span className="font-extrabold text-slate-950">Total</span><strong className="text-slate-950">{money(subtotal + iva)}</strong></div></div> : <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-bold leading-5 text-navy-900">Los valores se mostrarán después de generar el número de cotización.</div>}
+              <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-bold leading-5 text-navy-900 print:hidden">Los valores están ocultos en pantalla y aparecerán únicamente en el PDF de la cotización.</div>
+              <div className="hidden space-y-2 text-sm print:block"><div className="flex justify-between"><span className="font-semibold text-slate-700">Subtotal neto</span><strong className="text-slate-950">{money(subtotal)}</strong></div><div className="flex justify-between"><span className="font-semibold text-slate-700">IVA 19%</span><strong className="text-slate-950">{money(iva)}</strong></div><div className="mt-3 flex justify-between border-t-2 border-slate-400 pt-3 text-lg"><span className="font-extrabold text-slate-950">Total</span><strong className="text-slate-950">{money(subtotal + iva)}</strong></div></div>
               <div className="mt-5 grid gap-2 print:hidden"><button onClick={() => void printQuote()} disabled={preparingPdf} className="rounded-xl bg-navy-900 px-4 py-3 text-sm font-bold text-white hover:bg-navy-800 disabled:cursor-wait disabled:opacity-60">{preparingPdf ? "Generando folio…" : quoteNumber === null ? "Generar folio e imprimir PDF" : "Imprimir / Guardar PDF"}</button><button onClick={reset} className="rounded-xl border-2 border-slate-400 bg-white px-4 py-3 text-sm font-bold text-slate-800 hover:bg-slate-100">Limpiar cotización</button></div>
             </div>
           </section>
