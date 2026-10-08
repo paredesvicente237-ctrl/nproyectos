@@ -710,6 +710,7 @@ export default function CotizadorPage() {
                 const rows = [primaryRow, ...(measureVariants[`${group}:${product.id}`] || [])];
                 return <div key={product.id} className="border-t-4 border-slate-300 bg-white first:border-t-0">
                   {rows.map((row, variantIndex) => {
+                    const calculatedTotal = (product.calculate(row, row.mode) + paintPrice(product, row)) * row.quantity;
                     return <div key={variantIndex} className={`p-3 transition-colors sm:p-4 ${row.selected ? 'border-l-4 border-amber-500 bg-amber-50' : 'bg-white'} ${variantIndex > 0 ? 'border-t-2 border-slate-300' : ''}`}>
                       <div className={`grid items-start gap-2 sm:gap-3 ${variantIndex === 0 ? 'grid-cols-[auto_minmax(0,1fr)_5rem]' : 'grid-cols-[auto_minmax(0,1fr)]'}`}>
                         <input type="checkbox" className="mt-1 h-5 w-5 shrink-0 accent-blue-700" checked={row.selected} onChange={(e) => updateMeasureVariant(group, product.id, variantIndex, { selected: e.target.checked })} />
@@ -720,7 +721,7 @@ export default function CotizadorPage() {
                               {product.note && <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">{product.note}</p>}
                             </div>
                             <div className="flex items-center gap-3">
-                              <strong className="text-navy-700">{row.selected ? "Valor oculto" : '—'}</strong>
+                              <strong className="text-navy-700">{row.selected ? product.id === "separador-parrilla" ? money(calculatedTotal) : "Valor oculto" : '—'}</strong>
                               {variantIndex > 0 && <button type="button" onClick={() => removeMeasureVariant(group, product.id, variantIndex)} className="rounded-lg border border-red-300 bg-white px-2 py-1 text-xs font-bold text-red-700 hover:bg-red-50">Quitar</button>}
                             </div>
                           </div>
@@ -796,7 +797,7 @@ export default function CotizadorPage() {
           <section className="overflow-hidden rounded-md border border-slate-300 bg-white text-slate-950 print:rounded-none">
             <div className="border-b-2 border-slate-300 p-5 print:px-0"><p className="text-xs font-extrabold uppercase tracking-[0.2em] text-navy-700">Resumen</p><div className="mt-1 flex items-center justify-between gap-3"><h2 className="text-xl font-extrabold text-slate-950">Cotización</h2><strong className="rounded-lg border-2 border-navy-800 bg-navy-50 px-3 py-1.5 text-sm text-navy-950">N.º {quoteNumber === null ? "Pendiente" : String(quoteNumber).padStart(6, "0")}</strong></div><p className="mt-3 text-sm font-bold text-slate-700">Usuario: {currentUser}</p></div>
             <div className="max-h-[52vh] divide-y divide-slate-300 overflow-y-auto print:max-h-none">
-              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.modeText} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950 print:hidden">Valor oculto</strong><strong className="hidden whitespace-nowrap text-sm text-slate-950 print:block">{money(line.total)}</strong></div></div>)}
+              {quoteLines.length === 0 ? <p className="p-6 text-center text-sm font-semibold text-slate-600">Selecciona productos para comenzar.</p> : quoteLines.map((line) => <div key={`${line.category}-${line.id}`} className="p-4"><div className="flex justify-between gap-3"><div><p className="text-[10px] font-extrabold uppercase tracking-wider text-navy-700">{line.category}</p><p className="mt-1 text-sm font-extrabold text-slate-950">{line.name}</p><p className="mt-1 text-xs font-medium text-slate-700">{line.detail}{line.detail && ' · '}{line.modeText} · Cant. {line.quantity}</p></div><strong className="whitespace-nowrap text-sm text-slate-950 print:hidden">{line.id.startsWith("separador-parrilla-") ? money(line.total) : "Valor oculto"}</strong><strong className="hidden whitespace-nowrap text-sm text-slate-950 print:block">{money(line.total)}</strong></div></div>)}
             </div>
             <div className="border-t-2 border-slate-300 bg-slate-50 p-5 print:bg-white print:px-0">
               <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-sm font-bold leading-5 text-navy-900 print:hidden">Los valores están ocultos en pantalla y aparecerán únicamente en el PDF de la cotización.</div>
