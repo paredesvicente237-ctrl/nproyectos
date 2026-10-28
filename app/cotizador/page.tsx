@@ -133,7 +133,7 @@ const campanas: MeasureProduct[] = [
     paintArea: ({ largo, ancho, alto }) => (((largo + ancho) * alto * 4) / 1_000_000) + 2,
     calculate: ({ largo, ancho, alto }) => {
       const material = ((((largo + ancho) * alto * 1.2 * 8) / 1_000_000) * 2) * 1.67 + 10;
-      return material * 2000;
+      return material * 2600;
     },
   },
   {
