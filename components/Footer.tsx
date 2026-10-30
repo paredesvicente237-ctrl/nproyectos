@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { siteAssets } from "@/components/siteAssets";
+import BrandLogo from "@/components/BrandLogo";
 import { companyInfo, salesContact } from "@/components/siteData";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import { services } from "@/lib/serviceData";
@@ -11,13 +10,7 @@ export default function Footer() {
       <div className="container-custom px-5 py-12 sm:px-8 lg:px-10">
         <div className="grid gap-10 md:grid-cols-[1.1fr_1fr_0.8fr]">
           <div>
-            <div className="inline-block overflow-hidden rounded bg-white p-1">
-              <Image
-                src={siteAssets.logo}
-                alt={`Logo ${companyInfo.shortName}`}
-                className="h-9 w-auto object-contain mix-blend-multiply"
-              />
-            </div>
+            <BrandLogo variant="dark" className="h-9 w-[112px] sm:w-[126px]" />
             <p className="mt-4 max-w-sm text-sm leading-6 text-slate-500">
               Ingeniería y fabricación metalmecánica para proyectos industriales que exigen precisión.
             </p>

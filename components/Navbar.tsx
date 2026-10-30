@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowRight, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { siteAssets } from "@/components/siteAssets";
+import BrandLogo from "@/components/BrandLogo";
 import { companyInfo, navLinks } from "@/components/siteData";
 
 export default function Navbar() {
@@ -26,9 +25,7 @@ export default function Navbar() {
     <nav className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-300 ${transparentHome ? "border-white/20 bg-[#17191b]/15 text-white backdrop-blur-sm" : "border-slate-200/90 bg-white/95 text-slate-700 shadow-[0_8px_30px_rgba(15,35,55,0.08)] backdrop-blur"}`}>
       <div className="container-custom flex h-[76px] items-center justify-between px-5 sm:px-8 lg:px-10">
         <Link href="/" className="flex items-center" aria-label={`Ir al inicio de ${companyInfo.shortName}`}>
-          <span className="overflow-hidden bg-white">
-            <Image src={siteAssets.logo} alt={`Logo ${companyInfo.shortName}`} priority className="h-10 w-auto object-contain mix-blend-multiply sm:h-11" />
-          </span>
+          <BrandLogo variant={transparentHome ? "dark" : "light"} priority />
         </Link>
 
         <div className="hidden items-center gap-3 xl:flex 2xl:gap-5">

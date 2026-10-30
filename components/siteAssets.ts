@@ -20,8 +20,11 @@ import silenciadorEscapeGases from "@/img/silenciador-escape-gases-nsilense.png"
 import fotobuenax1 from "@/img/fotobuenax1.png";
 import fotobuenax2 from "@/img/fotobuenax2.png";
 
+const transparentLogo = "/images/nproyectos-logo-transparent.png";
+
 export const siteAssets = {
   logo,
+  transparentLogo,
   goodGuillotine,
   goodSparks,
   goodBending,
