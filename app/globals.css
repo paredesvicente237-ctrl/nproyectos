@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 @layer base {
-  :root { color-scheme: light; --steel-ink: #172634; --steel-blue: #0d3154; --brand-blue: #145fce; --paper: #f3f6f8; }
+  :root { color-scheme: light; --paper: #f5f5f2; --ink: #17191b; --steel: #777d81; --rule: #DADDDC; --brand: #145fce; }
   html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
   body { @apply bg-white font-body text-slate-600; letter-spacing: -0.012em; }
-  h1, h2, h3, h4, h5, h6 { @apply font-heading font-semibold text-slate-950; letter-spacing: -0.035em; }
+  h1, h2, h3, h4, h5, h6 { @apply font-heading font-semibold text-[#17191b]; letter-spacing: -0.04em; }
   a, button { @apply transition-colors duration-200; }
   a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid #68a5ff; outline-offset: 3px; }
   ::selection { @apply bg-blue-700 text-white; }
@@ -15,22 +15,21 @@
 @layer components {
   .section-padding { @apply px-5 py-16 sm:px-8 md:py-24 lg:px-10; }
   .container-custom { @apply mx-auto w-full max-w-[1440px]; }
-  .eyebrow { @apply inline-flex items-center gap-3 text-[11px] font-bold tracking-[0.11em] text-blue-800; }
-  .eyebrow::before { content: ""; @apply h-[2px] w-7 bg-blue-600; }
-  .section-title { @apply mt-4 max-w-2xl text-3xl font-semibold leading-[1.06] tracking-[-0.045em] sm:text-4xl lg:text-[3.2rem]; }
+  .eyebrow { @apply inline-flex items-center gap-3 text-xs font-semibold text-blue-800; }
+  .eyebrow::before { content: ""; @apply h-px w-8 bg-blue-700; }
+  .section-title { @apply mt-4 max-w-3xl text-3xl font-semibold leading-[1.04] tracking-[-0.05em] sm:text-4xl lg:text-[3.25rem]; }
   .section-copy { @apply mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8; }
   .btn-primary { @apply inline-flex min-h-12 items-center justify-center gap-3 bg-blue-700 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2; }
   .btn-outline { @apply inline-flex min-h-12 items-center justify-center gap-3 border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-800 hover:border-blue-600 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2; }
-  .btn-white { @apply inline-flex min-h-11 items-center justify-center gap-2 border border-white/30 bg-white px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-blue-50; }
+  .btn-white { @apply inline-flex min-h-11 items-center justify-center gap-2 border border-white/40 bg-white px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-blue-50; }
   .card { @apply border border-slate-200 bg-white p-6; }
   .form-label { @apply mb-2 block text-sm font-semibold text-slate-800; }
   .form-input { @apply w-full border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 outline-none placeholder:text-slate-400 focus:border-blue-700 focus:ring-2 focus:ring-blue-100 disabled:bg-slate-100; }
-  .industrial-rule { background: linear-gradient(90deg, #145fce 0 48px, #d5dde4 48px 100%); height: 1px; }
 }
 
 @layer utilities {
-  .technical-grid { background-image: linear-gradient(rgba(20,95,206,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(20,95,206,.045) 1px, transparent 1px); background-size: 48px 48px; }
-  .steel-sheen { background: linear-gradient(120deg, #10283e 0%, #0d3154 55%, #12283a 100%); }
+  .technical-grid { background-image: linear-gradient(rgba(20,95,206,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(20,95,206,.04) 1px, transparent 1px); background-size: 48px 48px; }
+  .steel-sheen { background: linear-gradient(120deg, #202426 0%, #34404a 52%, #202426 100%); }
   .text-balance { text-wrap: balance; }
 }
 

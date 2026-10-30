@@ -5,6 +5,7 @@ import Equipment from "@/components/Equipment";
 
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
+import IndustrialProcesses from "@/components/IndustrialProcesses";
 import Navbar from "@/components/Navbar";
 import Process from "@/components/Process";
 import ProductSolutions from "@/components/ProductSolutions";
@@ -88,6 +89,7 @@ export default function Home() {
         <Hero />
         <About />
         <Services />
+        <IndustrialProcesses />
         <Process />
         <Equipment />
         <ProductSolutions />

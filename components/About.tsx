@@ -11,50 +11,42 @@ const principles = [
 
 export default function About() {
   return (
-    <section id="nosotros" className="section-padding overflow-hidden bg-white">
-      <div className="container-custom">
-        <div className="grid items-stretch lg:grid-cols-[.95fr_1.05fr]">
-          <div className="flex flex-col justify-center py-4 sm:py-8 lg:pr-16">
-            <span className="eyebrow">Sobre N Proyectos</span>
-            <h2 className="mt-5 max-w-xl text-3xl font-semibold leading-[1.04] tracking-[-0.045em] text-[#172634] sm:text-4xl lg:text-[3.25rem]">
-              Criterio técnico en cada decisión de fabricación.
-            </h2>
-            <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-              Somos una empresa metalmecánica orientada a resolver encargos industriales con ingeniería aplicada, fabricación a medida y comunicación directa con cada cliente.
-            </p>
-            <Link href="/maestranza-santiago" className="mt-5 inline-flex text-sm font-semibold text-blue-700 underline decoration-blue-400/50 underline-offset-4 hover:text-blue-900">
-              Conoce nuestra maestranza en Santiago
-            </Link>
-            <a href="/#contacto" className="mt-8 inline-flex items-center gap-3 text-sm font-semibold text-blue-700 hover:text-blue-900">
-              Conversemos sobre tu proyecto <ArrowRight className="h-4 w-4" />
-            </a>
-            <div className="mt-10 border-t border-slate-200 pt-5">
-              <p className="text-[11px] font-bold tracking-[0.1em] text-slate-500">Áreas atendidas</p>
-              <p className="mt-2 text-sm leading-6 text-slate-700">Minería · Manufactura · Construcción · Industria</p>
+    <section id="nosotros" className="overflow-hidden bg-white py-20 sm:py-28 lg:py-36">
+      <div className="container-custom px-5 sm:px-8 lg:px-10">
+        <div className="grid gap-12 lg:grid-cols-[.88fr_1.12fr] lg:items-center lg:gap-20">
+          <div className="relative min-h-[400px] overflow-hidden bg-[#dedfdd] sm:min-h-[540px]">
+            <Image src={siteAssets.goodBending} alt="Plegado industrial de acero" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 44vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#17191b]/55 via-transparent to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between border-t border-white/35 px-5 py-4 text-white sm:px-7">
+              <p className="text-sm font-medium">Precisión en proceso</p><span className="text-xs text-white/75">N Proyectos</span>
             </div>
+            <span aria-hidden="true" className="absolute left-0 top-0 h-16 w-1 bg-blue-600" />
           </div>
 
-          <div className="grid bg-[#f3f6f8] md:grid-cols-[.9fr_1.1fr]">
-            <div className="flex flex-col justify-center px-6 py-8 sm:px-10 lg:px-12">
-              {principles.map(({ icon: Icon, title, text }, index) => (
-                <article key={title} className="flex gap-5 border-b border-slate-300 py-6 first:pt-0 last:border-b-0 last:pb-0">
-                  <span className="flex h-10 w-10 shrink-0 items-center justify-center border-l-2 border-blue-600 bg-white text-blue-700">
-                    <Icon className="h-5 w-5" strokeWidth={1.7} />
-                  </span>
-                  <div>
-                    <p className="text-[10px] font-bold tracking-[0.1em] text-blue-700">0{index + 1}</p>
-                    <h3 className="mt-1 text-base font-semibold text-slate-950">{title}</h3>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
-                  </div>
-                </article>
-              ))}
+          <div className="py-2 lg:py-10">
+            <p className="eyebrow">Sobre N Proyectos</p>
+            <h2 className="mt-6 max-w-2xl text-balance text-4xl font-semibold leading-[.98] tracking-[-.065em] text-[#17191b] sm:text-5xl lg:text-[4.35rem]">
+              Criterio técnico en cada decisión de fabricación.
+            </h2>
+            <p className="mt-7 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+              Somos una empresa metalmecánica orientada a resolver encargos industriales con ingeniería aplicada, fabricación a medida y comunicación directa con cada cliente.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm">
+              <Link href="/maestranza-santiago" className="font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">Conoce nuestra maestranza en Santiago</Link>
+              <a href="/#contacto" className="inline-flex items-center gap-2 font-semibold text-[#17191b] hover:text-blue-700">Conversemos sobre tu proyecto <ArrowRight className="h-4 w-4" /></a>
             </div>
-            <div className="relative min-h-[380px] md:min-h-full">
-              <Image src={siteAssets.goodBending} alt="Plegado industrial de acero" fill className="object-cover object-center" sizes="(max-width: 768px) 100vw, 35vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#10283e]/55 via-transparent to-transparent" />
-              <p className="absolute bottom-6 left-6 border-l-2 border-white pl-3 text-xs font-semibold text-white">Precisión en proceso</p>
-            </div>
+            <p className="mt-10 border-t border-[#DADDDC] pt-5 text-sm leading-6 text-[#777D81]">Minería · Manufactura · Construcción · Industria</p>
           </div>
+        </div>
+
+        <div className="mt-16 grid border-y border-[#DADDDC] sm:grid-cols-3 lg:mt-24">
+          {principles.map(({ icon: Icon, title, text }, index) => (
+            <article key={title} className="relative border-b border-[#DADDDC] py-6 sm:border-b-0 sm:px-7 sm:py-8 sm:first:pl-0 sm:last:pr-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-[#DADDDC]">
+              <div className="flex items-center gap-4"><span className="text-3xl font-semibold tracking-[-.06em] text-[#c7cbca]">0{index + 1}</span><Icon className="h-5 w-5 text-blue-700" strokeWidth={1.6} /></div>
+              <h3 className="mt-5 text-lg font-semibold text-[#17191b]">{title}</h3>
+              <p className="mt-2 max-w-sm text-sm leading-6 text-[#777D81]">{text}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>

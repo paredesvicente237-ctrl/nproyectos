@@ -75,14 +75,14 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="section-padding bg-[#edf2f5]">
+    <section id="contacto" className="section-padding bg-[#17191b] text-white">
       <div className="container-custom">
         <div className="max-w-3xl">
           <span className="eyebrow">Contacto</span>
-          <h2 className="section-title">
+          <h2 className="section-title !text-white">
             Hablemos de tu próximo proyecto.
           </h2>
-          <p className="section-copy">
+          <p className="section-copy !text-white/70">
             Cuéntanos qué necesitas fabricar. Revisaremos el requerimiento para responder con una propuesta técnica clara.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function Contact() {
         <div className="mt-12">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
             {/* Form Container */}
-            <div className="relative overflow-hidden border border-slate-200 bg-white p-6 sm:p-8 lg:p-10">
+            <div className="relative overflow-hidden bg-white p-6 sm:p-8 lg:p-10">
               
               {/* Success Message Overlay */}
               {feedback === "success" && (
@@ -203,7 +203,7 @@ export default function Contact() {
 
             {/* Contact info sidebar */}
             <div className="flex flex-col gap-3">
-              <div className="bg-[#10283e] p-6 text-white sm:p-7">
+              <div className="bg-[#252a2d] p-6 text-white sm:p-7">
                 <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-300">Contacto comercial</p>
                 <div className="mt-4 flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center border border-white/20 bg-white/10 text-lg font-semibold">A</span>
@@ -226,7 +226,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 border border-slate-200 bg-white p-5">
+              <div className="flex items-start gap-4 border border-white/15 bg-[#252a2d] p-5 text-white">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-blue-50 text-blue-700">
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -234,13 +234,13 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-slate-400">Dirección</p>
-                  <p className="mt-1 text-base font-semibold text-slate-900">{companyInfo.address}</p>
+                  <p className="text-xs font-medium text-white/60">Dirección</p>
+                  <p className="mt-1 text-base font-semibold text-white">{companyInfo.address}</p>
                 </div>
               </div>
 
               {/* Map */}
-              <div className="min-h-[220px] flex-1 overflow-hidden border border-slate-200 bg-white">
+              <div className="min-h-[220px] flex-1 overflow-hidden border border-white/15 bg-white">
                 <iframe
                   src={companyInfo.mapsEmbed}
                   title={`Mapa de ${companyInfo.shortName}`}

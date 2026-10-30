@@ -140,35 +140,16 @@ export default function MaestranzaSantiagoPage() {
       />
       <Navbar />
       <main className="relative z-10">
-        <section className="overflow-hidden border-b border-slate-200 bg-[#f3f6f8] px-5 pb-12 pt-28 sm:px-8 sm:pb-16 lg:px-10">
-          <div className="container-custom grid items-center gap-8 lg:grid-cols-[1fr_.82fr] lg:gap-14">
-            <div>
-            <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-sm text-slate-500">
-              <Link href="/" className="hover:text-blue-700">Inicio</Link>
-              <ChevronRight className="h-4 w-4" />
-              <span className="text-slate-700">Maestranza en Santiago</span>
-            </nav>
-            <p className="eyebrow mt-8">N Proyectos · La Granja</p>
-            <h1 className="mt-4 max-w-4xl text-balance text-4xl font-semibold leading-[1.04] tracking-[-.05em] text-[#172634] sm:text-5xl lg:text-6xl">
-              Maestranza en Santiago para fabricación industrial a medida
-            </h1>
-            <p className="mt-6 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-              Desarrollamos y fabricamos piezas, estructuras y soluciones en acero para minería, manufactura, construcción e industria. Integramos corte, plegado, armado y soldadura en un mismo proyecto.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/#contacto" className="btn-primary">
-                Solicitar cotización <ArrowRight className="h-4 w-4" />
-              </a>
-              <TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn-outline">
-                Cotizar por WhatsApp
-              </TrackedContactLink>
-            </div>
-            </div>
-            <div className="relative min-h-[300px] overflow-hidden bg-slate-200 sm:min-h-[380px]">
-              <Image src={siteAssets.goodWelding} alt="Trabajo de soldadura y fabricación en maestranza de Santiago" fill priority className="object-cover object-center" sizes="(max-width: 1024px) 100vw, 42vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#10283e]/45 via-transparent to-transparent" />
-              <p className="absolute bottom-5 left-5 text-xs font-semibold text-white">N Proyectos · La Granja, Santiago</p>
-            </div>
+        <section className="relative isolate flex min-h-[720px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-12 pt-32 text-white sm:px-8 sm:pb-16 lg:min-h-[78vh] lg:px-10">
+          <Image src={siteAssets.goodWelding} alt="Trabajo de soldadura y fabricación en maestranza de Santiago" fill priority className="-z-10 object-cover object-center" sizes="100vw" />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.88)_0%,rgba(15,17,18,.55)_54%,rgba(15,17,18,.12)_100%)]" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/15" />
+          <div className="container-custom w-full">
+            <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-sm text-white/65"><Link href="/" className="hover:text-white">Inicio</Link><ChevronRight className="h-4 w-4" /><span className="text-white">Maestranza en Santiago</span></nav>
+            <p className="mt-10 flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />N Proyectos · La Granja</p>
+            <h1 className="mt-5 max-w-5xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">Maestranza en Santiago para fabricación industrial a medida</h1>
+            <p className="mt-6 max-w-3xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">Desarrollamos y fabricamos piezas, estructuras y soluciones en acero para minería, manufactura, construcción e industria. Integramos corte, plegado, armado y soldadura en un mismo proyecto.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></a><TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Cotizar por WhatsApp</TrackedContactLink></div>
           </div>
         </section>
 
@@ -183,13 +164,12 @@ export default function MaestranzaSantiagoPage() {
                 Atendemos trabajos unitarios y proyectos a medida desde nuestra ubicación en La Granja. Revisamos la necesidad técnica, los materiales, las dimensiones y la terminación antes de fabricar.
               </p>
             </div>
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-12 grid border-t border-slate-300 sm:grid-cols-2">
               {services.map((service, index) => (
-                <Link key={service.slug} href={`/servicios/${service.slug}`} className="group flex min-h-64 flex-col border-t-2 border-slate-300 bg-white p-6 hover:border-blue-700 hover:bg-slate-50">
-                  <span className="font-mono text-xs font-semibold text-blue-700">0{index + 1}</span>
-                  <h3 className="mt-8 text-xl font-semibold text-slate-950 group-hover:text-blue-800">{service.shortName}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{service.description}</p>
-                  <span className="mt-auto pt-6 text-sm font-semibold text-blue-700">Ver servicio →</span>
+                <Link key={service.slug} href={`/servicios/${service.slug}`} className="group grid min-h-48 grid-cols-[52px_1fr_auto] items-start gap-4 border-b border-slate-300 px-2 py-6 hover:bg-white sm:px-5">
+                  <span className="text-2xl font-semibold tracking-[-.06em] text-slate-300">0{index + 1}</span>
+                  <span><span className="block text-xl font-semibold text-slate-950 group-hover:text-blue-800">{service.shortName}</span><span className="mt-2 block text-sm leading-6 text-slate-600">{service.description}</span></span>
+                  <span className="mt-1 text-blue-700 transition-transform group-hover:translate-x-1">→</span>
                 </Link>
               ))}
             </div>
@@ -198,7 +178,7 @@ export default function MaestranzaSantiagoPage() {
 
         <section className="section-padding bg-slate-50">
           <div className="container-custom grid gap-10 lg:grid-cols-2">
-            <div className="border-t-2 border-blue-700 bg-white p-7 sm:p-9">
+            <div className="border-t border-slate-300 py-7 sm:pr-10 sm:py-9">
               <div className="flex h-12 w-12 items-center justify-center bg-blue-50 text-blue-700"><Ruler className="h-6 w-6" /></div>
               <h2 className="mt-6 text-3xl font-semibold text-slate-950">Trabajos frecuentes</h2>
               <ul className="mt-7 grid gap-4">
@@ -209,7 +189,7 @@ export default function MaestranzaSantiagoPage() {
                 ))}
               </ul>
             </div>
-            <div className="border-t-2 border-slate-400 bg-white p-7 sm:p-9">
+            <div className="border-t border-slate-300 py-7 sm:pl-10 sm:py-9">
               <div className="flex h-12 w-12 items-center justify-center bg-blue-50 text-blue-700"><FileCheck2 className="h-6 w-6" /></div>
               <h2 className="mt-6 text-3xl font-semibold text-slate-950">Materiales que trabajamos</h2>
               <p className="mt-4 text-sm leading-6 text-slate-600">Seleccionamos material, espesor y proceso de acuerdo con el uso y la terminación que necesita cada pieza.</p>
@@ -242,7 +222,7 @@ export default function MaestranzaSantiagoPage() {
           </div>
         </section>
 
-        <section className="section-padding bg-[#06152c]">
+        <section className="section-padding bg-[#17191b]">
           <div className="container-custom flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-300">Cotización de maestranza</p>

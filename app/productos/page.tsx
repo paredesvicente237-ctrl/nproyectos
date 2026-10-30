@@ -234,141 +234,45 @@ const products: Product[] = [
 ];
 
 function ProductCard({ product, index }: { product: Product; index: number }) {
-  const isReversed = index % 2 !== 0;
-
   return (
     <div id={product.id} className="scroll-mt-24">
-      <div
-        className={`grid gap-10 lg:grid-cols-2 lg:items-center ${
-          isReversed ? "lg:[direction:rtl]" : ""
-        }`}
-      >
-        {/* Images */}
-        <div className={isReversed ? "lg:[direction:ltr]" : ""}>
-          {product.images.length === 1 ? (
-            <div className="overflow-hidden rounded-md border border-slate-200">
-              <Image
-                src={product.images[0].src}
-                alt={product.images[0].alt}
-                className="aspect-[4/3] w-full object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
-          ) : product.images.length === 2 ? (
-            <div className="grid grid-cols-2 gap-4">
-              <div className="overflow-hidden rounded-md border border-slate-200">
-                <Image
-                  src={product.images[0].src}
-                  alt={product.images[0].alt}
-                  className="aspect-[3/4] w-full object-cover"
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
-              <div className="overflow-hidden rounded-md border border-slate-200">
-                <Image
-                  src={product.images[1].src}
-                  alt={product.images[1].alt}
-                  className="aspect-[3/4] w-full object-cover"
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-2 overflow-hidden rounded-md border border-slate-200 sm:col-span-1 sm:row-span-2">
-                <Image
-                  src={product.images[0].src}
-                  alt={product.images[0].alt}
-                  className="h-full w-full object-cover sm:aspect-auto sm:min-h-[400px]"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
-              <div className="overflow-hidden rounded-md border border-slate-200">
-                <Image
-                  src={product.images[1].src}
-                  alt={product.images[1].alt}
-                  className="aspect-[4/3] w-full object-cover"
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
-              <div className="overflow-hidden rounded-md border border-slate-200">
-                <Image
-                  src={product.images[2].src}
-                  alt={product.images[2].alt}
-                  className="aspect-[4/3] w-full object-cover"
-                  sizes="(max-width: 1024px) 50vw, 25vw"
-                />
-              </div>
-            </div>
-          )}
+      <header className="mb-8 grid gap-5 border-b border-[#DADDDC] pb-7 sm:grid-cols-[120px_1fr] sm:items-end lg:mb-10 lg:grid-cols-[170px_1fr_auto] lg:pb-9">
+        <span className="text-5xl font-semibold leading-none tracking-[-.08em] text-[#c7cbca] sm:text-6xl">0{index + 1}</span>
+        <div>
+          <p className="text-sm font-semibold text-blue-700">{product.category} <span className="ml-2 text-[#777D81]">{product.code}</span></p>
+          <h2 className="mt-3 text-3xl font-semibold leading-[1.02] tracking-[-.06em] text-[#17191b] sm:text-4xl lg:text-5xl">{product.name}</h2>
         </div>
+        <p className="max-w-xl text-base leading-7 text-[#777D81] lg:justify-self-end">{product.description}</p>
+      </header>
 
-        {/* Info */}
-        <div className={isReversed ? "lg:[direction:ltr]" : ""}>
-          <span className="inline-flex items-center gap-2 border-l-2 border-blue-600 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700">
-            {product.category}
-          </span>
-          <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
-            {product.name}
-          </h2>
-          <p className="mt-1 text-sm font-medium text-slate-400">
-            Código: {product.code}
-          </p>
-          <p className="mt-4 text-lg leading-relaxed text-slate-500">
-            {product.description}
-          </p>
+      <div className={`grid gap-2 ${product.images.length === 1 ? "grid-cols-1" : "grid-cols-12"}`}>
+        {product.images.map((image, imageIndex) => (
+          <div key={image.alt} className={`relative min-h-[240px] overflow-hidden bg-[#dedfdd] sm:min-h-[320px] ${product.images.length === 1 ? "aspect-[16/8] lg:min-h-[440px]" : imageIndex === 0 ? "col-span-12 lg:col-span-7 lg:row-span-2 lg:min-h-[500px]" : "col-span-6 lg:col-span-5 lg:min-h-[246px]"}`}>
+            <Image src={image.src} alt={image.alt} fill className="object-cover" sizes={imageIndex === 0 ? "(max-width: 1024px) 100vw, 58vw" : "(max-width: 1024px) 50vw, 40vw"} />
+          </div>
+        ))}
+      </div>
 
-          {/* Specs */}
-          <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-3">
+      <div className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-14">
+        <div>
+          <p className="text-sm font-semibold text-[#17191b]">Especificaciones</p>
+          <dl className="mt-4 grid grid-cols-2 border-t border-[#DADDDC] sm:grid-cols-3">
             {product.specs.map((spec) => (
-              <div key={spec.label}>
-                <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
-                  {spec.label}
-                </p>
-                <p className="mt-1 text-sm font-semibold text-slate-800">
-                  {spec.value}
-                </p>
+              <div key={spec.label} className="border-b border-[#DADDDC] py-4 pr-4">
+                <dt className="text-xs font-medium text-[#777D81]">{spec.label}</dt>
+                <dd className="mt-1 text-sm font-semibold text-[#17191b]">{spec.value}</dd>
               </div>
             ))}
-          </div>
-
-          {/* Uses */}
-          <div className="mt-8">
-            <p className="text-sm font-bold text-slate-900">Aplicaciones</p>
-            <div className="mt-3 flex flex-wrap gap-2">
-              {product.uses.map((use) => (
-                <span
-                  key={use}
-                  className="border-l border-slate-300 bg-slate-50 px-3.5 py-1.5 text-sm font-medium text-slate-600"
-                >
-                  {use}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* CTA */}
-          <div className="mt-8 flex flex-wrap gap-3">
-            <TrackedContactLink
-              channel="whatsapp"
-              href={`${companyInfo.whatsappHref.replace(
-                "cotizar%20un%20proyecto",
-                `cotizar%20${encodeURIComponent(product.name)}`
-              )}`}
-              className="btn-primary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.913.913l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.319 0-4.478-.671-6.306-1.828l-.452-.279-2.677.897.897-2.677-.279-.452A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
-              </svg>
-              Cotizar este producto
-            </TrackedContactLink>
-            <a href={product.datasheet} download className="btn-outline">
-              <Download className="h-4 w-4" aria-hidden="true" />
-              Descargar ficha técnica
-            </a>
+          </dl>
+        </div>
+        <div>
+          <p className="text-sm font-semibold text-[#17191b]">Aplicaciones</p>
+          <ul className="mt-4 border-t border-[#DADDDC]">
+            {product.uses.map((use) => <li key={use} className="border-b border-[#DADDDC] py-2.5 text-sm text-[#5f6669]">{use}</li>)}
+          </ul>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <TrackedContactLink channel="whatsapp" href={`${companyInfo.whatsappHref.replace("cotizar%20un%20proyecto", `cotizar%20${encodeURIComponent(product.name)}`)}`} className="btn-primary" target="_blank" rel="noopener noreferrer">Cotizar este producto</TrackedContactLink>
+            <a href={product.datasheet} download className="btn-outline"><Download className="h-4 w-4" aria-hidden="true" />Descargar ficha técnica</a>
           </div>
         </div>
       </div>
@@ -382,44 +286,37 @@ export default function ProductosPage() {
       <Navbar />
       <main className="relative z-10">
         {/* Hero */}
-        <section className="overflow-hidden border-b border-slate-200 bg-[#f3f6f8] px-5 pb-12 pt-32 sm:px-8 sm:pb-16 lg:px-10">
-          <div className="container-custom grid items-center gap-8 lg:grid-cols-[1fr_.8fr] lg:gap-14">
-            <div>
-            <span className="eyebrow">Catálogo industrial</span>
-            <h1 className="mt-5 max-w-2xl text-balance text-4xl font-semibold leading-[1.02] tracking-[-.05em] text-[#172634] sm:text-5xl lg:text-6xl">
-              Productos acústicos e industriales.
+        <section className="relative isolate flex min-h-[760px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-12 pt-32 text-white sm:px-8 sm:pb-16 lg:min-h-[78vh] lg:px-10">
+          <Image src={products[1].images[0].src} alt={products[1].images[0].alt} fill priority className="-z-10 object-cover" sizes="100vw" />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.83)_0%,rgba(15,17,18,.48)_58%,rgba(15,17,18,.08)_100%)]" />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/10" />
+          <div className="container-custom w-full">
+            <span className="flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />Catálogo industrial</span>
+            <h1 className="mt-5 max-w-4xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">
+              Nuestros Productos
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">
               Soluciones acústicas e industriales fabricadas a medida. Cada
               producto es diseñado y producido según los requerimientos
               específicos de tu proyecto.
             </p>
 
             {/* Quick nav */}
-            <div className="mx-auto mt-10 flex flex-wrap justify-center gap-3">
-              <a
-                href="#fichas-tecnicas"
-                className="btn-primary !min-h-10 !px-4 !py-2 !text-xs"
-              >
+            <div className="mt-10 flex flex-wrap justify-start gap-x-3 gap-y-2">
+              <a href="#fichas-tecnicas" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
                 Descargar fichas técnicas
               </a>
               {products.map((p) => (
                 <a
                   key={p.id}
                   href={`#${p.id}`}
-                  className="border-b border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-blue-700 hover:text-blue-700"
+                  className="border-b border-white/50 px-3 py-2 text-xs font-semibold text-white/85 transition-colors hover:border-white hover:text-white"
                 >
                   {p.name}
                 </a>
               ))}
             </div>
             </div>
-            <div className="relative min-h-[300px] overflow-hidden bg-slate-200 sm:min-h-[380px]">
-              <Image src={products[1].images[0].src} alt={products[1].images[0].alt} fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 40vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#10283e]/65 via-transparent to-transparent" />
-              <p className="absolute bottom-5 left-5 text-sm font-semibold text-white">Soluciones fabricadas para cada proyecto</p>
-            </div>
-          </div>
         </section>
 
         {/* Technical sheets */}
@@ -439,7 +336,7 @@ export default function ProductosPage() {
                 adjuntar a una solicitud de cotización.
               </p>
               <div className="mt-7 flex items-center gap-3 text-sm font-semibold text-slate-700">
-                <span className="flex h-10 w-10 items-center justify-center rounded-md bg-navy-900 text-white">
+                <span className="flex h-10 w-10 items-center justify-center bg-[#17191b] text-white">
                   <FileText className="h-5 w-5" aria-hidden="true" />
                 </span>
                 {products.length} fichas disponibles
@@ -454,7 +351,7 @@ export default function ProductosPage() {
                   download
                   className="group grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-slate-300 bg-white px-4 py-5 transition-colors hover:bg-navy-50 sm:gap-6 sm:px-6"
                 >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-md border border-navy-200 bg-navy-50 text-[10px] font-bold uppercase tracking-wider text-navy-700">
+                  <span className="flex h-11 w-11 items-center justify-center border border-slate-300 bg-white text-[10px] font-bold uppercase tracking-wider text-blue-800">
                     PDF
                   </span>
                   <span className="min-w-0">
@@ -465,7 +362,7 @@ export default function ProductosPage() {
                       {product.name}
                     </span>
                   </span>
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 text-slate-600 transition-all group-hover:border-navy-600 group-hover:bg-navy-700 group-hover:text-white">
+                  <span className="flex h-10 w-10 items-center justify-center border border-slate-300 text-slate-600 transition-colors group-hover:border-blue-700 group-hover:bg-blue-700 group-hover:text-white">
                     <Download className="h-4 w-4" aria-hidden="true" />
                     <span className="sr-only">
                       Descargar ficha técnica de {product.name}
@@ -482,9 +379,7 @@ export default function ProductosPage() {
           {products.map((product, i) => (
             <section
               key={product.id}
-              className={`section-padding ${
-                i % 2 === 0 ? "bg-white" : "bg-slate-50"
-              }`}
+          className={`section-padding ${i % 2 === 0 ? "bg-white" : "bg-[#F5F5F2]"}`}
             >
               <div className="container-custom">
                 <ProductCard product={product} index={i} />
@@ -494,17 +389,19 @@ export default function ProductosPage() {
         </div>
 
         {/* CTA final */}
-        <section className="section-padding bg-navy-950 relative overflow-hidden">
-          <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-navy-500/10 blur-[100px]" />
-          <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-navy-400/10 blur-[100px]" />
-          <div className="container-custom relative text-center">
-            <h2 className="text-3xl font-semibold text-white sm:text-4xl">
+        <section className="section-padding relative overflow-hidden bg-[#17191b] text-white">
+          <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-1/3 border-l border-white/10 lg:block" />
+          <div className="container-custom relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div>
+            <p className="text-sm font-semibold text-blue-200">Productos acústicos e industriales</p>
+            <h2 className="mt-4 max-w-3xl text-balance text-3xl font-semibold tracking-[-.05em] text-white sm:text-4xl">
               ¿Necesitas un producto a medida?
             </h2>
-            <p className="mx-auto mt-4 max-w-xl text-lg text-slate-400">
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
               Fabricamos según tus especificaciones técnicas. Cuéntanos tu
               proyecto y te entregamos una cotización sin compromiso.
             </p>
+            </div>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
               <TrackedContactLink
                 channel="whatsapp"
@@ -515,7 +412,7 @@ export default function ProductosPage() {
               >
                 Cotizar por WhatsApp
               </TrackedContactLink>
-              <Link href="/#contacto" className="btn-white">
+              <Link href="/#contacto" className="inline-flex min-h-11 items-center justify-center gap-2 border border-white/50 px-5 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">
                 Formulario de contacto
               </Link>
             </div>

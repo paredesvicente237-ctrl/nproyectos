@@ -7,7 +7,7 @@ import { services } from "@/lib/serviceData";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-[#041020]">
+    <footer className="border-t border-white/10 bg-[#17191b]">
       <div className="container-custom px-5 py-12 sm:px-8 lg:px-10">
         <div className="grid gap-10 md:grid-cols-[1.1fr_1fr_0.8fr]">
           <div>
