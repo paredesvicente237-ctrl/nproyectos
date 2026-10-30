@@ -10,63 +10,42 @@ const capabilities = [
 
 export default function Hero() {
   return (
-    <section id="inicio" className="relative overflow-hidden bg-[#041020] pt-[76px]">
-      <div className="absolute inset-0">
-        <Image
-          src="/images/hero-soldadura-nproyectos-clara.webp"
-          alt="Soldador de N Proyectos fabricando una pieza metálica"
-          fill
-          priority
-          fetchPriority="high"
-          className="object-cover object-[78%_center] sm:object-[63%_center] lg:object-center"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(3,12,26,.94)_0%,rgba(3,12,26,.8)_34%,rgba(3,12,26,.34)_62%,rgba(3,12,26,.06)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(3,12,26,.62)_0%,transparent_38%,rgba(3,12,26,.1)_100%)]" />
-        <div className="technical-grid absolute inset-y-0 left-0 w-1/2 opacity-[0.08]" />
-      </div>
-
-      <div className="container-custom relative flex min-h-[720px] items-center px-5 pb-32 pt-16 sm:min-h-[760px] sm:px-8 lg:px-10 lg:pb-36 lg:pt-20">
-        <div className="max-w-[690px]">
-          <p className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.18em] text-blue-300">
-            <span className="h-px w-9 bg-blue-400" /> Maestranza y fabricación industrial
-          </p>
-          <h1 className="mt-7 text-[2.8rem] font-semibold leading-[0.96] tracking-[-0.055em] text-white sm:text-6xl lg:text-[4.85rem]">
-            Acero convertido en <span className="text-blue-300">soluciones precisas.</span>
+    <section id="inicio" className="relative overflow-hidden bg-[#f3f6f8] pt-[76px]">
+      <div className="container-custom grid min-h-[650px] items-stretch lg:min-h-[690px] lg:grid-cols-[.88fr_1.12fr]">
+        <div className="relative z-10 order-2 flex flex-col justify-center px-5 py-12 sm:px-8 sm:py-16 lg:order-1 lg:px-10 lg:py-20">
+          <p className="eyebrow">Maestranza y fabricación industrial</p>
+          <h1 className="text-balance mt-7 max-w-[680px] text-[2.75rem] font-semibold leading-[.99] tracking-[-.06em] text-[#172634] sm:text-6xl lg:text-[4.55rem]">
+            Acero convertido en soluciones precisas.
           </h1>
-          <p className="mt-7 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">
+          <p className="mt-7 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
             Diseñamos, fabricamos y montamos piezas, estructuras y soluciones metalmecánicas para proyectos que no admiten improvisación.
           </p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
-              Solicitar cotización <ArrowRight className="h-4 w-4" />
-            </a>
-            <a href="/#especialidades" className="inline-flex items-center justify-center gap-2 border border-white/40 bg-white/10 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition hover:border-white hover:bg-white hover:text-navy-950">
-              Conocer capacidades <ArrowRight className="h-4 w-4" />
-            </a>
+            <a href="/#contacto" className="btn-primary">Solicitar cotización <ArrowRight className="h-4 w-4" /></a>
+            <a href="/#especialidades" className="inline-flex min-h-12 items-center justify-center gap-2 border border-slate-300 bg-transparent px-6 py-3 text-sm font-semibold text-slate-800 hover:border-blue-700 hover:text-blue-700">Conocer capacidades <ArrowRight className="h-4 w-4" /></a>
           </div>
-          <div className="mt-10 flex max-w-xl items-start gap-4 border-l-2 border-blue-400 pl-4">
-            <p className="text-sm font-medium leading-6 text-slate-300">
-              Ingeniería, fabricación y terminaciones coordinadas en un solo equipo.
-            </p>
+          <div className="mt-12 max-w-lg border-t border-slate-300 pt-5">
+            <p className="text-sm font-medium leading-6 text-slate-600">Ingeniería, fabricación y terminaciones coordinadas en un solo equipo.</p>
           </div>
         </div>
 
-        <div className="absolute bottom-36 right-5 hidden items-end gap-4 text-right text-white lg:flex">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-blue-200">N Proyectos · Santiago</p>
-            <p className="mt-2 text-xs font-medium text-slate-300">Precisión en cada unión</p>
+        <div className="relative order-1 min-h-[245px] overflow-hidden bg-[#152634] sm:min-h-[340px] lg:order-2 lg:min-h-[690px]">
+          <Image src="/images/hero-soldadura-nproyectos-clara.webp" alt="Soldador de N Proyectos fabricando una pieza metálica" fill priority fetchPriority="high" className="object-cover object-[57%_center]" sizes="(max-width: 1024px) 100vw, 56vw" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#172634]/35 via-transparent to-[#0b1c2a]/10" />
+          <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between border-t border-white/50 pt-3 text-white sm:bottom-8 sm:left-8 sm:right-8">
+            <p className="text-xs font-semibold tracking-wide">Fabricación metalmecánica · Santiago</p>
+            <span className="hidden font-mono text-[10px] tracking-wider text-white/75 sm:block">NP / FAB-01</span>
           </div>
-          <span className="border border-white/30 bg-slate-950/30 px-3 py-2 font-mono text-[10px] tracking-wider backdrop-blur-sm">NP / FAB-01</span>
         </div>
       </div>
 
-      <div className="container-custom relative -mt-20 px-5 pb-8 sm:px-8 lg:px-10">
-        <div className="grid border border-slate-200/80 bg-white shadow-[0_24px_70px_rgba(2,8,23,0.28)] sm:grid-cols-2 lg:grid-cols-4">
-          {capabilities.map(({ icon: Icon, title, text }) => (
-            <div key={title} className="flex gap-4 border-b border-r border-slate-200 p-5 last:border-r-0 sm:p-6 lg:border-b-0">
-              <Icon className="mt-0.5 h-7 w-7 shrink-0 text-blue-700" strokeWidth={1.6} />
+      <div className="border-y border-slate-200 bg-white">
+        <div className="container-custom grid sm:grid-cols-2 lg:grid-cols-4">
+          {capabilities.map(({ icon: Icon, title, text }, index) => (
+            <div key={title} className="flex items-start gap-4 border-b border-slate-200 px-5 py-5 last:border-0 sm:px-8 lg:border-b-0 lg:border-r lg:px-6 lg:py-7 lg:last:border-r-0">
+              <span className="mt-0.5 text-blue-700"><Icon className="h-6 w-6" strokeWidth={1.65} /></span>
               <div><p className="text-sm font-semibold text-slate-950">{title}</p><p className="mt-1 text-xs leading-5 text-slate-500">{text}</p></div>
+              <span className="ml-auto hidden font-mono text-[10px] text-slate-300 lg:block">0{index + 1}</span>
             </div>
           ))}
         </div>

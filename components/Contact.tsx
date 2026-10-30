@@ -75,7 +75,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="section-padding technical-grid bg-slate-50">
+    <section id="contacto" className="section-padding bg-[#edf2f5]">
       <div className="container-custom">
         <div className="max-w-3xl">
           <span className="eyebrow">Contacto</span>
@@ -90,7 +90,7 @@ export default function Contact() {
         <div className="mt-12">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
             {/* Form Container */}
-            <div className="relative overflow-hidden border border-slate-200 bg-white p-6 shadow-[0_20px_60px_rgba(15,23,42,0.07)] sm:p-8">
+            <div className="relative overflow-hidden border border-slate-200 bg-white p-6 sm:p-8 lg:p-10">
               
               {/* Success Message Overlay */}
               {feedback === "success" && (
@@ -203,7 +203,7 @@ export default function Contact() {
 
             {/* Contact info sidebar */}
             <div className="flex flex-col gap-3">
-              <div className="border border-blue-200 bg-[#06152c] p-5 text-white shadow-[0_15px_40px_rgba(6,21,44,0.14)]">
+              <div className="bg-[#10283e] p-6 text-white sm:p-7">
                 <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-300">Contacto comercial</p>
                 <div className="mt-4 flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center border border-white/20 bg-white/10 text-lg font-semibold">A</span>
@@ -226,8 +226,8 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div className="card flex items-start gap-4 !p-5">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-navy-50 text-navy-600">
+              <div className="flex items-start gap-4 border border-slate-200 bg-white p-5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-blue-50 text-blue-700">
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
@@ -240,7 +240,7 @@ export default function Contact() {
               </div>
 
               {/* Map */}
-              <div className="flex-1 overflow-hidden rounded-md border border-slate-200">
+              <div className="min-h-[220px] flex-1 overflow-hidden border border-slate-200 bg-white">
                 <iframe
                   src={companyInfo.mapsEmbed}
                   title={`Mapa de ${companyInfo.shortName}`}

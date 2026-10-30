@@ -305,7 +305,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
 
         {/* Info */}
         <div className={isReversed ? "lg:[direction:ltr]" : ""}>
-          <span className="inline-flex items-center gap-2 rounded-full bg-navy-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-navy-600">
+          <span className="inline-flex items-center gap-2 border-l-2 border-blue-600 bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-700">
             {product.category}
           </span>
           <h2 className="mt-4 text-3xl font-semibold sm:text-4xl">
@@ -339,7 +339,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
               {product.uses.map((use) => (
                 <span
                   key={use}
-                  className="rounded-full border border-slate-200 bg-white px-3.5 py-1.5 text-sm font-medium text-slate-600"
+                  className="border-l border-slate-300 bg-slate-50 px-3.5 py-1.5 text-sm font-medium text-slate-600"
                 >
                   {use}
                 </span>
@@ -382,19 +382,14 @@ export default function ProductosPage() {
       <Navbar />
       <main className="relative z-10">
         {/* Hero */}
-        <section className="relative overflow-hidden bg-navy-950 px-5 pb-20 pt-36 sm:px-8 md:pb-28 md:pt-44 lg:px-10">
-          <div className="absolute -left-40 -top-40 h-96 w-96 rounded-full bg-navy-500/10 blur-[120px]" />
-          <div className="absolute -bottom-40 -right-40 h-96 w-96 rounded-full bg-navy-400/10 blur-[120px]" />
-          <div className="container-custom relative text-center">
-            <span className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.15em] text-navy-400">
-              <span className="inline-block h-[3px] w-8 rounded-full bg-navy-400" />
-              Catálogo
-              <span className="inline-block h-[3px] w-8 rounded-full bg-navy-400" />
-            </span>
-            <h1 className="mt-5 text-4xl font-semibold text-white sm:text-5xl lg:text-6xl">
-              Nuestros Productos
+        <section className="overflow-hidden border-b border-slate-200 bg-[#f3f6f8] px-5 pb-12 pt-32 sm:px-8 sm:pb-16 lg:px-10">
+          <div className="container-custom grid items-center gap-8 lg:grid-cols-[1fr_.8fr] lg:gap-14">
+            <div>
+            <span className="eyebrow">Catálogo industrial</span>
+            <h1 className="mt-5 max-w-2xl text-balance text-4xl font-semibold leading-[1.02] tracking-[-.05em] text-[#172634] sm:text-5xl lg:text-6xl">
+              Productos acústicos e industriales.
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-slate-400">
+            <p className="mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
               Soluciones acústicas e industriales fabricadas a medida. Cada
               producto es diseñado y producido según los requerimientos
               específicos de tu proyecto.
@@ -404,7 +399,7 @@ export default function ProductosPage() {
             <div className="mx-auto mt-10 flex flex-wrap justify-center gap-3">
               <a
                 href="#fichas-tecnicas"
-                className="rounded-full border border-navy-400/50 bg-navy-500/15 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:border-navy-300 hover:bg-navy-500/25"
+                className="btn-primary !min-h-10 !px-4 !py-2 !text-xs"
               >
                 Descargar fichas técnicas
               </a>
@@ -412,11 +407,17 @@ export default function ProductosPage() {
                 <a
                   key={p.id}
                   href={`#${p.id}`}
-                  className="rounded-full border border-white/10 bg-white/5 px-5 py-2.5 text-sm font-medium text-slate-300 transition-all hover:border-navy-400/40 hover:bg-navy-500/10 hover:text-white"
+                  className="border-b border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 transition-colors hover:border-blue-700 hover:text-blue-700"
                 >
                   {p.name}
                 </a>
               ))}
+            </div>
+            </div>
+            <div className="relative min-h-[300px] overflow-hidden bg-slate-200 sm:min-h-[380px]">
+              <Image src={products[1].images[0].src} alt={products[1].images[0].alt} fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 40vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#10283e]/65 via-transparent to-transparent" />
+              <p className="absolute bottom-5 left-5 text-sm font-semibold text-white">Soluciones fabricadas para cada proyecto</p>
             </div>
           </div>
         </section>

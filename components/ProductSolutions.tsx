@@ -63,10 +63,10 @@ export default function ProductSolutions() {
           </div>
         </div>
 
-        <div className="mt-12 grid border-l border-t border-slate-300 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product, index) => (
-            <article key={product.code} className="group flex flex-col border-b border-r border-slate-300 bg-white">
-              <Link href={product.href} className="relative block h-64 overflow-hidden bg-slate-100">
+            <article key={product.code} className={`group flex flex-col ${index === 0 ? "lg:col-span-2" : ""}`}>
+              <Link href={product.href} className={`relative block overflow-hidden bg-slate-100 ${index === 0 ? "h-64 sm:h-80" : "h-64"}`}>
                 <Image
                   src={product.image}
                   alt={product.imageAlt}
@@ -74,15 +74,14 @@ export default function ProductSolutions() {
                   className="object-cover transition duration-500 group-hover:scale-[1.025]"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
-                <span className="absolute left-4 top-4 bg-[#06152c] px-3 py-2 font-mono text-[10px] font-semibold tracking-[0.14em] text-white">NP / {product.code}</span>
+                <span className="absolute bottom-0 left-0 bg-[#10283e] px-4 py-3 text-[11px] font-semibold text-white">{product.name} <span className="ml-2 font-normal text-blue-200">{product.code}</span></span>
               </Link>
-              <div className="flex flex-1 flex-col p-6">
+              <div className="flex flex-1 flex-col border-b border-slate-200 py-5">
                 <div className="flex items-start justify-between gap-4">
-                  <h3 className="text-lg font-semibold text-slate-950">{product.name}</h3>
-                  <span className="font-mono text-[10px] text-slate-400">0{index + 1}</span>
+                  <h3 className="text-lg font-semibold text-[#172634]">{product.name}</h3>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{product.description}</p>
-                <p className="mt-4 border-t border-slate-200 pt-4 text-xs font-medium text-slate-500">{product.detail}</p>
+                <p className="mt-4 text-xs font-semibold text-slate-500">{product.detail}</p>
                 <div className="mt-6 flex items-center justify-between">
                   <Link href={product.href} className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.1em] text-blue-700 hover:text-blue-900">
                     Ver producto <ArrowUpRight className="h-4 w-4" />

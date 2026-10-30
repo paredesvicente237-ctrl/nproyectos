@@ -20,7 +20,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className={`fixed inset-x-0 top-0 z-50 border-b border-slate-200 bg-white/95 transition-all backdrop-blur ${isScrolled ? "shadow-[0_8px_30px_rgba(15,23,42,0.06)]" : ""}`}>
+    <nav className={`fixed inset-x-0 top-0 z-50 border-b border-slate-200/90 bg-white/95 transition-all backdrop-blur ${isScrolled ? "shadow-[0_8px_30px_rgba(15,35,55,0.08)]" : ""}`}>
       <div className="container-custom flex h-[76px] items-center justify-between px-5 sm:px-8 lg:px-10">
         <Link href="/" className="flex items-center" aria-label={`Ir al inicio de ${companyInfo.shortName}`}>
           <span className="overflow-hidden bg-white">
@@ -28,11 +28,11 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden items-center gap-6 xl:flex">
+        <div className="hidden items-center gap-5 xl:flex">
           {publicLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="text-[13px] font-medium text-slate-600 hover:text-blue-700">{link.label}</Link>
+            <Link key={link.href} href={link.href} className="text-[12px] font-semibold text-slate-600 hover:text-blue-700">{link.label}</Link>
           ))}
-          <a href="/#contacto" className="btn-primary !min-h-11 !px-5">Cotizar <ArrowRight className="h-4 w-4" /></a>
+          <a href="/#contacto" className="btn-primary !min-h-10 !px-5 !text-xs">Cotizar <ArrowRight className="h-4 w-4" /></a>
         </div>
 
         <button type="button" onClick={() => setIsOpen((value) => !value)} className="inline-flex h-10 w-10 items-center justify-center rounded-sm text-slate-900 hover:bg-slate-100 xl:hidden" aria-expanded={isOpen} aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}>

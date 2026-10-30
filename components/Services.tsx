@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, AudioLines, Boxes, Factory, Ruler } from "lucide-react";
+import { ArrowRight, ArrowUpRight, AudioLines, Boxes, Factory, Ruler } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
 
 const specialties = [
@@ -18,45 +18,46 @@ const highlights = [
 
 export default function Services() {
   return (
-    <section id="especialidades" className="section-padding technical-grid bg-slate-50">
+    <section id="especialidades" className="section-padding bg-[#f3f6f8]">
       <div className="container-custom">
         <div className="grid gap-6 lg:grid-cols-[0.72fr_1fr] lg:items-end">
           <div><span className="eyebrow">Capacidades</span><h2 className="section-title">Un solo equipo para llevar el acero del plano a la obra.</h2></div>
           <p className="section-copy lg:justify-self-end">Integramos desarrollo, suministro y fabricación para reducir coordinaciones y mantener control técnico sobre el resultado.</p>
         </div>
 
-        <div className="mt-12 grid border-l border-t border-slate-300 bg-white sm:grid-cols-2 lg:grid-cols-4">
-          {specialties.map(({ icon: Icon, title, brief, href, code }, index) => (
-            <Link key={title} href={href} className="group relative flex min-h-[285px] flex-col border-b border-r border-slate-300 p-7 transition-colors hover:bg-[#06152c]">
-              <div className="flex items-start justify-between">
-                <Icon className="h-8 w-8 text-blue-700 group-hover:text-blue-300" strokeWidth={1.5} />
-                <span className="font-mono text-[10px] tracking-[0.16em] text-slate-400 group-hover:text-slate-500">NP-{code}/0{index + 1}</span>
-              </div>
-              <div className="mt-auto pt-12">
-                <h3 className="text-xl font-semibold text-slate-950 group-hover:text-white">{title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600 group-hover:text-slate-300">{brief}</p>
-                <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.1em] text-blue-700 group-hover:text-blue-300">Ver capacidad <ArrowUpRight className="h-4 w-4" /></span>
-              </div>
-            </Link>
-          ))}
+        <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_.82fr] lg:gap-16">
+          <div className="border-t border-slate-300">
+            {specialties.map(({ icon: Icon, title, brief, href, code }, index) => (
+              <Link key={title} href={href} className="group grid gap-3 border-b border-slate-300 py-6 sm:grid-cols-[48px_1fr_auto] sm:items-start sm:gap-5">
+                <span className="flex h-10 w-10 items-center justify-center bg-white text-blue-700"><Icon className="h-5 w-5" strokeWidth={1.7} /></span>
+                <div>
+                  <div className="flex flex-wrap items-baseline gap-x-3"><span className="text-[10px] font-bold tracking-[0.1em] text-blue-700">{code}</span><h3 className="text-xl font-semibold text-[#172634] group-hover:text-blue-800">{title}</h3></div>
+                  <p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">{brief}</p>
+                </div>
+                <span className="inline-flex items-center gap-2 pt-1 text-xs font-semibold text-blue-700 sm:justify-self-end">Ver servicio <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></span>
+              </Link>
+            ))}
+          </div>
+          <div className="grid min-h-[450px] grid-rows-[1fr_auto] bg-[#10283e] text-white">
+            <div className="relative min-h-[300px] overflow-hidden">
+              <Image src={highlights[0].image} alt={highlights[0].title} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#10283e]/85 via-transparent to-transparent" />
+              <div className="absolute bottom-5 left-6"><p className="text-xs font-semibold text-blue-200">Procesos destacados</p><p className="mt-1 text-2xl font-semibold text-white">{highlights[0].title}</p></div>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-white/20">
+              {highlights.slice(1).map((item) => (
+                <div key={item.title} className="relative min-h-[140px] overflow-hidden p-5">
+                  <Image src={item.image} alt={item.title} fill className="object-cover opacity-35" sizes="(max-width: 1024px) 50vw, 20vw" />
+                  <div className="absolute inset-0 bg-[#10283e]/35" />
+                  <div className="relative"><p className="text-sm font-semibold text-white">{item.title}</p><p className="mt-1 text-xs text-slate-200">{item.label}</p></div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="mt-14 flex items-end justify-between gap-6">
-          <div><span className="eyebrow">Procesos destacados</span><h3 className="mt-3 text-2xl font-semibold tracking-[-0.025em] text-slate-950">Tecnología aplicada a fabricación real.</h3></div>
-          <Link href="/productos" className="hidden items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-900 sm:inline-flex">Ver productos <ArrowUpRight className="h-4 w-4" /></Link>
-        </div>
-        <div className="mt-7 grid gap-4 md:grid-cols-3">
-          {highlights.map((item, index) => (
-            <article key={item.title} className="group relative min-h-[340px] overflow-hidden bg-slate-950">
-              <Image src={item.image} alt={item.title} fill className="object-cover opacity-85 transition duration-500 group-hover:scale-[1.03] group-hover:opacity-100" sizes="(max-width: 768px) 100vw, 33vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#06152c] via-[#06152c]/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-6">
-                <p className="font-mono text-[10px] tracking-[0.18em] text-blue-300">PROCESO / 0{index + 1}</p>
-                <h4 className="mt-2 text-xl font-semibold text-white">{item.title}</h4>
-                <p className="mt-1 text-sm text-slate-300">{item.label}</p>
-              </div>
-            </article>
-          ))}
+        <div className="mt-8 flex justify-end">
+          <Link href="/productos" className="inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-900">Explorar productos industriales <ArrowRight className="h-4 w-4" /></Link>
         </div>
       </div>
     </section>

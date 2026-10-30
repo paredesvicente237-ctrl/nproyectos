@@ -140,38 +140,34 @@ export default function MaestranzaSantiagoPage() {
       />
       <Navbar />
       <main className="relative z-10">
-        <section className="relative overflow-hidden bg-slate-950 px-5 pb-20 pt-32 sm:px-8 md:pb-24 md:pt-40 lg:px-10">
-          <Image
-            src={siteAssets.goodWelding}
-            alt="Trabajo de soldadura y fabricación en maestranza de Santiago"
-            fill
-            priority
-            className="object-cover object-center opacity-30"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,14,26,.99)_0%,rgba(6,14,26,.9)_55%,rgba(6,14,26,.55)_100%)]" />
-          <div className="container-custom relative">
-            <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-sm text-slate-400">
-              <Link href="/" className="hover:text-white">Inicio</Link>
+        <section className="overflow-hidden border-b border-slate-200 bg-[#f3f6f8] px-5 pb-12 pt-28 sm:px-8 sm:pb-16 lg:px-10">
+          <div className="container-custom grid items-center gap-8 lg:grid-cols-[1fr_.82fr] lg:gap-14">
+            <div>
+            <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-sm text-slate-500">
+              <Link href="/" className="hover:text-blue-700">Inicio</Link>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-slate-200">Maestranza en Santiago</span>
+              <span className="text-slate-700">Maestranza en Santiago</span>
             </nav>
-            <p className="mt-10 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.12em] text-blue-300">
-              <span className="h-px w-8 bg-blue-400" /> N Proyectos · La Granja
-            </p>
-            <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-[1.06] text-white sm:text-5xl lg:text-6xl">
+            <p className="eyebrow mt-8">N Proyectos · La Granja</p>
+            <h1 className="mt-4 max-w-4xl text-balance text-4xl font-semibold leading-[1.04] tracking-[-.05em] text-[#172634] sm:text-5xl lg:text-6xl">
               Maestranza en Santiago para fabricación industrial a medida
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
+            <p className="mt-6 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
               Desarrollamos y fabricamos piezas, estructuras y soluciones en acero para minería, manufactura, construcción e industria. Integramos corte, plegado, armado y soldadura en un mismo proyecto.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
+              <a href="/#contacto" className="btn-primary">
                 Solicitar cotización <ArrowRight className="h-4 w-4" />
               </a>
-              <TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn-white">
+              <TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn-outline">
                 Cotizar por WhatsApp
               </TrackedContactLink>
+            </div>
+            </div>
+            <div className="relative min-h-[300px] overflow-hidden bg-slate-200 sm:min-h-[380px]">
+              <Image src={siteAssets.goodWelding} alt="Trabajo de soldadura y fabricación en maestranza de Santiago" fill priority className="object-cover object-center" sizes="(max-width: 1024px) 100vw, 42vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#10283e]/45 via-transparent to-transparent" />
+              <p className="absolute bottom-5 left-5 text-xs font-semibold text-white">N Proyectos · La Granja, Santiago</p>
             </div>
           </div>
         </section>
@@ -189,7 +185,7 @@ export default function MaestranzaSantiagoPage() {
             </div>
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {services.map((service, index) => (
-                <Link key={service.slug} href={`/servicios/${service.slug}`} className="group flex min-h-64 flex-col border border-slate-200 p-6 hover:border-blue-300 hover:bg-slate-50">
+                <Link key={service.slug} href={`/servicios/${service.slug}`} className="group flex min-h-64 flex-col border-t-2 border-slate-300 bg-white p-6 hover:border-blue-700 hover:bg-slate-50">
                   <span className="font-mono text-xs font-semibold text-blue-700">0{index + 1}</span>
                   <h3 className="mt-8 text-xl font-semibold text-slate-950 group-hover:text-blue-800">{service.shortName}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{service.description}</p>
@@ -202,7 +198,7 @@ export default function MaestranzaSantiagoPage() {
 
         <section className="section-padding bg-slate-50">
           <div className="container-custom grid gap-10 lg:grid-cols-2">
-            <div className="border border-slate-200 bg-white p-7 sm:p-9">
+            <div className="border-t-2 border-blue-700 bg-white p-7 sm:p-9">
               <div className="flex h-12 w-12 items-center justify-center bg-blue-50 text-blue-700"><Ruler className="h-6 w-6" /></div>
               <h2 className="mt-6 text-3xl font-semibold text-slate-950">Trabajos frecuentes</h2>
               <ul className="mt-7 grid gap-4">
@@ -213,7 +209,7 @@ export default function MaestranzaSantiagoPage() {
                 ))}
               </ul>
             </div>
-            <div className="border border-slate-200 bg-white p-7 sm:p-9">
+            <div className="border-t-2 border-slate-400 bg-white p-7 sm:p-9">
               <div className="flex h-12 w-12 items-center justify-center bg-blue-50 text-blue-700"><FileCheck2 className="h-6 w-6" /></div>
               <h2 className="mt-6 text-3xl font-semibold text-slate-950">Materiales que trabajamos</h2>
               <p className="mt-4 text-sm leading-6 text-slate-600">Seleccionamos material, espesor y proceso de acuerdo con el uso y la terminación que necesita cada pieza.</p>

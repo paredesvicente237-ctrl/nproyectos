@@ -19,11 +19,11 @@ export default function Process() {
           {steps.map(({ icon: Icon, title, text }, index) => (
             <article key={title} className="relative border-l border-slate-200 px-6 py-4 first:border-l-0 sm:first:border-l lg:first:border-l">
               <div className="flex items-center justify-between text-blue-700">
-                <span className="font-mono text-sm font-semibold">0{index + 1}</span>
-                <Icon className="h-7 w-7" strokeWidth={1.5} />
+                <span className="text-xs font-bold text-slate-400">ETAPA 0{index + 1}</span>
+                <Icon className="h-6 w-6" strokeWidth={1.6} />
               </div>
-              <h3 className="mt-6 text-base font-semibold text-slate-950">{title}</h3>
-              <p className="mt-2 text-xs leading-5 text-slate-500">{text}</p>
+              <h3 className="mt-6 text-base font-semibold text-[#172634]">{title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
               {index < steps.length - 1 && <ArrowRight className="absolute -right-2.5 top-1/2 z-10 hidden h-5 w-5 -translate-y-1/2 bg-white text-slate-300 lg:block" />}
             </article>
           ))}

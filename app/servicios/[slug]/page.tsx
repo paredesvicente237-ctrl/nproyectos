@@ -100,35 +100,25 @@ export default async function ServicePage({ params }: ServicePageProps) {
       />
       <Navbar />
       <main className="relative z-10">
-        <section className="relative overflow-hidden bg-slate-950 px-5 pb-20 pt-32 sm:px-8 md:pb-24 md:pt-40 lg:px-10">
-          <Image
-            src={service.image}
-            alt={service.imageAlt}
-            fill
-            priority
-            className="object-cover opacity-25"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(6,14,26,.98)_0%,rgba(6,14,26,.88)_55%,rgba(6,14,26,.58)_100%)]" />
-          <div className="container-custom relative">
-            <nav aria-label="Migas de pan" className="flex flex-wrap items-center gap-1.5 text-sm text-slate-400">
-              <Link href="/" className="hover:text-white">Inicio</Link>
+        <section className="overflow-hidden border-b border-slate-200 bg-[#f3f6f8] px-5 pb-12 pt-28 sm:px-8 sm:pb-16 lg:px-10">
+          <div className="container-custom grid items-center gap-8 lg:grid-cols-[1fr_.82fr] lg:gap-14">
+            <div>
+            <nav aria-label="Migas de pan" className="flex flex-wrap items-center gap-1.5 text-sm text-slate-500">
+              <Link href="/" className="hover:text-blue-700">Inicio</Link>
               <ChevronRight className="h-4 w-4" />
-              <Link href="/#especialidades" className="hover:text-white">Servicios</Link>
+              <Link href="/#especialidades" className="hover:text-blue-700">Servicios</Link>
               <ChevronRight className="h-4 w-4" />
-              <span className="text-slate-200">{service.shortName}</span>
+              <span className="text-slate-700">{service.shortName}</span>
             </nav>
-            <p className="mt-10 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.12em] text-blue-300">
-              <span className="h-px w-8 bg-blue-400" /> {service.eyebrow}
-            </p>
-            <h1 className="mt-5 max-w-4xl text-4xl font-semibold leading-[1.08] text-white sm:text-5xl lg:text-6xl">
+            <p className="eyebrow mt-8">{service.eyebrow}</p>
+            <h1 className="mt-4 max-w-4xl text-balance text-4xl font-semibold leading-[1.04] tracking-[-.05em] text-[#172634] sm:text-5xl lg:text-6xl">
               {service.title}
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-7 text-slate-300 sm:text-lg">
+            <p className="mt-6 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
               {service.summary}
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
+              <a href="/#contacto" className="btn-primary">
                 Solicitar cotización <ArrowRight className="h-4 w-4" />
               </a>
               <TrackedContactLink
@@ -136,10 +126,16 @@ export default async function ServicePage({ params }: ServicePageProps) {
                 href={companyInfo.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-white"
+                className="btn-outline"
               >
                 Consultar por WhatsApp
               </TrackedContactLink>
+            </div>
+            </div>
+            <div className="relative min-h-[300px] overflow-hidden bg-slate-200 sm:min-h-[380px]">
+              <Image src={service.image} alt={service.imageAlt} fill priority className="object-cover" sizes="(max-width: 1024px) 100vw, 42vw" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#10283e]/45 via-transparent to-transparent" />
+              <p className="absolute bottom-5 left-5 text-xs font-semibold text-white">{service.shortName}</p>
             </div>
           </div>
         </section>
@@ -154,14 +150,14 @@ export default async function ServicePage({ params }: ServicePageProps) {
               </p>
               <ul className="mt-8 grid gap-4 sm:grid-cols-2">
                 {service.benefits.map((benefit) => (
-                  <li key={benefit} className="flex items-start gap-3 rounded-md border border-slate-200 p-4 text-sm leading-6 text-slate-700">
+                  <li key={benefit} className="flex items-start gap-3 border-l-2 border-blue-600 bg-slate-50 p-4 text-sm leading-6 text-slate-700">
                     <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-navy-600" />
                     {benefit}
                   </li>
                 ))}
               </ul>
             </div>
-            <aside className="rounded-md bg-slate-50 p-6 sm:p-8">
+            <aside className="border-t-2 border-blue-700 bg-slate-50 p-6 sm:p-8">
               <h2 className="text-xl font-semibold">Aplicaciones frecuentes</h2>
               <ul className="mt-5 divide-y divide-slate-200 border-y border-slate-200">
                 {service.applications.map((application) => (
@@ -173,7 +169,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
               <h3 className="mt-8 text-sm font-semibold uppercase tracking-wider text-slate-900">Materiales y soluciones</h3>
               <div className="mt-4 flex flex-wrap gap-2">
                 {service.materials.map((material) => (
-                  <span key={material} className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-sm text-slate-600">
+                <span key={material} className="border-b border-slate-300 bg-white px-3 py-1.5 text-sm text-slate-600">
                     {material}
                   </span>
                 ))}
@@ -186,7 +182,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
           <div className="container-custom">
             <span className="eyebrow !text-blue-300 before:!bg-blue-400">Cómo trabajamos</span>
             <h2 className="section-title text-white">Del requerimiento a una solución fabricable.</h2>
-            <div className="mt-12 grid gap-px overflow-hidden rounded-md bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-12 grid gap-px overflow-hidden border border-white/15 bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
               {service.process.map((step, index) => (
                 <article key={step.title} className="bg-slate-950 p-6 sm:p-7">
                   <span className="text-sm font-semibold text-blue-400">{String(index + 1).padStart(2, "0")}</span>
@@ -211,7 +207,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </div>
             <div className="mt-10 grid gap-5 lg:grid-cols-3">
               {relatedServices.map((item) => (
-                <Link key={item.slug} href={`/servicios/${item.slug}`} className="group rounded-md border border-slate-200 p-6 hover:border-navy-300 hover:bg-slate-50">
+                <Link key={item.slug} href={`/servicios/${item.slug}`} className="group border-t-2 border-slate-300 p-6 hover:border-blue-700 hover:bg-slate-50">
                   <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">{item.eyebrow}</p>
                   <h3 className="mt-3 text-xl font-semibold group-hover:text-navy-700">{item.shortName}</h3>
                   <p className="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>
@@ -225,7 +221,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </section>
 
         <section className="section-padding bg-navy-50">
-          <div className="container-custom flex flex-col gap-7 rounded-md bg-white p-7 shadow-sm sm:p-10 lg:flex-row lg:items-center lg:justify-between">
+          <div className="container-custom flex flex-col gap-7 border-t-2 border-blue-600 bg-white p-7 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
             <div>
               <h2 className="text-3xl font-semibold">¿Tienes planos, medidas o una idea?</h2>
               <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
