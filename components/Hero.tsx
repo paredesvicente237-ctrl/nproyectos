@@ -3,7 +3,7 @@ import { ArrowDown, ArrowRight } from "lucide-react";
 
 export default function Hero() {
   return (
-    <section id="inicio" className="relative isolate flex min-h-[700px] flex-col justify-end overflow-hidden bg-[#17191b] pt-[76px] text-white lg:min-h-[92vh]">
+    <section id="inicio" className="relative isolate flex min-h-[700px] flex-col justify-end overflow-hidden bg-[#17191b] pt-[76px] text-white lg:min-h-[90vh]">
       <div className="absolute inset-0 -z-10">
         <Image
           src="/images/hero-soldadura-nproyectos-clara.webp"
@@ -14,16 +14,16 @@ export default function Hero() {
           className="object-cover object-[59%_center]"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,15,17,.88)_0%,rgba(12,15,17,.64)_42%,rgba(12,15,17,.16)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(12,15,17,.84)_0%,rgba(12,15,17,.08)_60%,rgba(12,15,17,.16)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,15,17,.78)_0%,rgba(12,15,17,.42)_42%,rgba(12,15,17,.04)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(12,15,17,.68)_0%,rgba(12,15,17,.08)_54%,rgba(12,15,17,.1)_100%)]" />
       </div>
 
-      <div className="container-custom relative flex w-full flex-1 flex-col justify-end px-5 pb-10 pt-20 sm:px-8 sm:pb-14 lg:px-10 lg:pb-16">
+      <div className="container-custom relative flex w-full flex-1 flex-col justify-end px-5 pb-24 pt-20 sm:px-8 sm:pb-14 lg:px-10 lg:pb-16">
         <div className="mb-7 flex items-center gap-3 text-xs font-semibold text-white/85 sm:text-sm">
           <span className="h-px w-9 bg-blue-400" />
           Maestranza y fabricación industrial
         </div>
-        <h1 className="text-balance max-w-[1120px] text-[clamp(3.35rem,9.1vw,8.4rem)] font-semibold leading-[.86] tracking-[-.075em] text-white">
+        <h1 className="text-balance max-w-[1080px] text-[clamp(2.65rem,7.6vw,7.25rem)] font-semibold leading-[.9] tracking-[-.065em] text-white">
           Acero convertido<br className="hidden sm:block" /> en soluciones precisas.
         </h1>
         <div className="mt-8 grid items-end gap-8 border-t border-white/30 pt-6 lg:grid-cols-[1fr_auto] lg:pt-7">

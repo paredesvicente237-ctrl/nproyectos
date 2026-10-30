@@ -12,21 +12,21 @@ const materials = ["Acero carbono", "Acero inoxidable", "Galvanizado", "Aluminio
 
 export default function Equipment() {
   return (
-    <section id="equipamiento" className="bg-white py-20 sm:py-28 lg:py-36">
+    <section id="equipamiento" className="bg-white py-16 sm:py-20 lg:py-28">
       <div className="container-custom px-5 sm:px-8 lg:px-10">
-        <div className="relative min-h-[350px] overflow-hidden bg-[#202426] sm:min-h-[500px] lg:min-h-[610px]">
-          <Image src={siteAssets.fotobuenax1} alt="Equipo de corte láser en taller metalmecánico" fill className="object-cover" sizes="100vw" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#17191b]/65 via-[#17191b]/10 to-transparent" />
+        <div className="relative min-h-[330px] overflow-hidden bg-[#202426] sm:min-h-[440px] lg:min-h-[520px]">
+          <Image src={siteAssets.fotobuenax2} alt="Equipo de fabricación industrial en taller metalmecánico" fill className="object-cover object-[50%_55%]" sizes="100vw" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#17191b]/70 via-[#17191b]/28 to-transparent" />
           <div className="absolute bottom-0 left-0 max-w-3xl p-6 text-white sm:p-10 lg:p-14">
             <p className="text-sm font-semibold text-blue-200">Equipamiento y materiales</p>
-            <h2 className="mt-4 text-balance text-4xl font-semibold leading-[.98] tracking-[-.06em] text-white sm:text-5xl lg:text-[4.25rem]">Capacidad para resolver proyectos diversos.</h2>
+            <h2 className="mt-4 text-balance text-4xl font-semibold leading-[.98] tracking-[-.06em] text-white sm:text-5xl lg:text-[3.75rem]">Capacidad para resolver proyectos diversos.</h2>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8">Combinamos equipamiento industrial, personal calificado y experiencia en distintos materiales para responder a cada geometría.</p>
             <p className="mt-6 border-l-2 border-blue-400 pl-4 text-sm font-medium text-white">Corte láser para geometrías precisas y fabricación repetible.</p>
           </div>
           <span aria-hidden="true" className="absolute right-6 top-6 hidden border border-white/50 bg-[#17191b]/20 px-3 py-2 text-xs text-white backdrop-blur-sm sm:block">Producción industrial</span>
         </div>
 
-        <div className="grid gap-10 border-b border-[#DADDDC] bg-[#F5F5F2] p-6 sm:p-9 lg:grid-cols-[.55fr_1.45fr] lg:gap-16 lg:p-12">
+        <div className="grid gap-8 border-b border-[#DADDDC] bg-[#F5F5F2] p-6 sm:p-8 lg:grid-cols-[.55fr_1.45fr] lg:gap-12 lg:p-10">
           <div>
             <p className="text-sm font-semibold text-[#17191b]">Procesos disponibles</p>
             <p className="mt-2 text-sm leading-6 text-[#777D81]">Capacidades de fabricación</p>

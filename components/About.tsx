@@ -11,10 +11,10 @@ const principles = [
 
 export default function About() {
   return (
-    <section id="nosotros" className="overflow-hidden bg-white py-20 sm:py-28 lg:py-36">
+    <section id="nosotros" className="overflow-hidden bg-white pb-16 pt-12 sm:pb-20 sm:pt-16 lg:py-28">
       <div className="container-custom px-5 sm:px-8 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-[.88fr_1.12fr] lg:items-center lg:gap-20">
-          <div className="relative min-h-[400px] overflow-hidden bg-[#dedfdd] sm:min-h-[540px]">
+          <div className="relative min-h-[340px] overflow-hidden bg-[#dedfdd] sm:min-h-[480px] lg:min-h-[520px]">
             <Image src={siteAssets.goodBending} alt="Plegado industrial de acero" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 44vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#17191b]/55 via-transparent to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between border-t border-white/35 px-5 py-4 text-white sm:px-7">
@@ -25,7 +25,7 @@ export default function About() {
 
           <div className="py-2 lg:py-10">
             <p className="eyebrow">Sobre N Proyectos</p>
-            <h2 className="mt-6 max-w-2xl text-balance text-4xl font-semibold leading-[.98] tracking-[-.065em] text-[#17191b] sm:text-5xl lg:text-[4.35rem]">
+            <h2 className="mt-6 max-w-2xl text-balance text-4xl font-semibold leading-[.98] tracking-[-.065em] text-[#17191b] sm:text-5xl lg:text-[3.75rem]">
               Criterio técnico en cada decisión de fabricación.
             </h2>
             <p className="mt-7 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
@@ -39,7 +39,7 @@ export default function About() {
           </div>
         </div>
 
-        <div className="mt-16 grid border-y border-[#DADDDC] sm:grid-cols-3 lg:mt-24">
+        <div className="mt-14 grid border-y border-[#DADDDC] sm:grid-cols-3 lg:mt-20">
           {principles.map(({ icon: Icon, title, text }, index) => (
             <article key={title} className="relative border-b border-[#DADDDC] py-6 sm:border-b-0 sm:px-7 sm:py-8 sm:first:pl-0 sm:last:pr-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:border-[#DADDDC]">
               <div className="flex items-center gap-4"><span className="text-3xl font-semibold tracking-[-.06em] text-[#c7cbca]">0{index + 1}</span><Icon className="h-5 w-5 text-blue-700" strokeWidth={1.6} /></div>

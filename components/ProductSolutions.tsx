@@ -13,10 +13,10 @@ const products = [
 export default function ProductSolutions() {
   const [featured, ...others] = products;
   return (
-    <section id="soluciones" className="bg-[#F5F5F2] py-20 sm:py-28 lg:py-36">
+    <section id="soluciones" className="bg-[#F5F5F2] py-16 sm:py-20 lg:py-28">
       <div className="container-custom px-5 sm:px-8 lg:px-10">
         <div className="mb-10 flex flex-col justify-between gap-6 lg:mb-14 lg:flex-row lg:items-end">
-          <div><p className="eyebrow">Productos</p><h2 className="mt-5 max-w-3xl text-balance text-4xl font-semibold leading-[.98] tracking-[-.065em] text-[#17191b] sm:text-5xl lg:text-[4rem]">Soluciones listas para tu proyecto.</h2></div>
+          <div><p className="eyebrow">Productos</p><h2 className="mt-5 max-w-3xl text-balance text-4xl font-semibold leading-[.98] tracking-[-.065em] text-[#17191b] sm:text-5xl lg:text-[3.5rem]">Soluciones listas para tu proyecto.</h2></div>
           <div className="max-w-lg lg:pb-1"><p className="text-base leading-7 text-[#777D81]">Nuestra línea acústica e industrial cuenta con fichas técnicas descargables para revisar materiales, dimensiones y aplicaciones.</p><Link href="/productos#fichas-tecnicas" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-blue-700 hover:text-blue-900">Ver catálogo y fichas técnicas <ArrowUpRight className="h-4 w-4" /></Link></div>
         </div>
 
