@@ -6,7 +6,7 @@ export default function Hero() {
     <section id="inicio" className="relative isolate flex min-h-[700px] flex-col justify-end overflow-hidden bg-[#17191b] pt-[76px] text-white lg:min-h-[90vh]">
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/images/hero-soldadura-nproyectos-clara.webp"
+          src="/images/hero-soldadura-nproyectos-premium.webp"
           alt="Soldador de N Proyectos fabricando una pieza metálica"
           fill
           priority
