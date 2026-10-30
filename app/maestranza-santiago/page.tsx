@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, ChevronRight, FileCheck2, MapPin, Ruler } fro
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import TrackedContactLink from "@/components/TrackedContactLink";
 import { siteAssets } from "@/components/siteAssets";
 import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
@@ -168,9 +169,9 @@ export default function MaestranzaSantiagoPage() {
               <a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
                 Solicitar cotización <ArrowRight className="h-4 w-4" />
               </a>
-              <a href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn-white">
+              <TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="btn-white">
                 Cotizar por WhatsApp
-              </a>
+              </TrackedContactLink>
             </div>
           </div>
         </section>

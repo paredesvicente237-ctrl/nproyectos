@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteAssets } from "@/components/siteAssets";
 import { companyInfo, salesContact } from "@/components/siteData";
+import TrackedContactLink from "@/components/TrackedContactLink";
 import { services } from "@/lib/serviceData";
 
 export default function Footer() {
@@ -41,7 +42,7 @@ export default function Footer() {
             <div className="mt-4 flex flex-col gap-2 text-sm text-slate-500">
               <p className="font-semibold text-slate-300">{salesContact.name} · {salesContact.role}</p>
               <a href={salesContact.phoneHref} className="hover:text-white">{salesContact.phoneDisplay}</a>
-              <a href={salesContact.emailHref} className="hover:text-white">{salesContact.email}</a>
+              <TrackedContactLink channel="email" href={salesContact.emailHref} className="hover:text-white">{salesContact.email}</TrackedContactLink>
               <span>{companyInfo.address}, Chile</span>
             </div>
           </div>

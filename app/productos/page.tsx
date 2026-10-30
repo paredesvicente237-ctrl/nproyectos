@@ -7,6 +7,7 @@ import { companyInfo } from "@/components/siteData";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import TrackedContactLink from "@/components/TrackedContactLink";
 
 export const metadata: Metadata = {
   title: "Productos acústicos e industriales",
@@ -348,7 +349,8 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
 
           {/* CTA */}
           <div className="mt-8 flex flex-wrap gap-3">
-            <a
+            <TrackedContactLink
+              channel="whatsapp"
               href={`${companyInfo.whatsappHref.replace(
                 "cotizar%20un%20proyecto",
                 `cotizar%20${encodeURIComponent(product.name)}`
@@ -362,7 +364,7 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
                 <path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.75.75 0 00.913.913l4.458-1.495A11.952 11.952 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.319 0-4.478-.671-6.306-1.828l-.452-.279-2.677.897.897-2.677-.279-.452A9.953 9.953 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
               </svg>
               Cotizar este producto
-            </a>
+            </TrackedContactLink>
             <a href={product.datasheet} download className="btn-outline">
               <Download className="h-4 w-4" aria-hidden="true" />
               Descargar ficha técnica
@@ -503,14 +505,15 @@ export default function ProductosPage() {
               proyecto y te entregamos una cotización sin compromiso.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <a
+              <TrackedContactLink
+                channel="whatsapp"
                 href={companyInfo.whatsappHref}
                 className="btn-primary"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 Cotizar por WhatsApp
-              </a>
+              </TrackedContactLink>
               <Link href="/#contacto" className="btn-white">
                 Formulario de contacto
               </Link>

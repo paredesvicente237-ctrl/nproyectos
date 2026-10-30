@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useState } from "react";
 import { companyInfo, salesContact } from "@/components/siteData";
+import TrackedContactLink from "@/components/TrackedContactLink";
 
 const services = [
   "Área Servicios",
@@ -212,16 +213,16 @@ export default function Contact() {
                   </div>
                 </div>
                 <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  <a href={salesContact.whatsappHref} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center border border-blue-400/40 bg-blue-600 px-3 text-xs font-semibold text-white hover:bg-blue-500">
+                  <TrackedContactLink channel="whatsapp" href={salesContact.whatsappHref} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center border border-blue-400/40 bg-blue-600 px-3 text-xs font-semibold text-white hover:bg-blue-500">
                     WhatsApp
-                  </a>
-                  <a href={salesContact.emailHref} className="flex min-h-11 items-center justify-center border border-white/20 px-3 text-xs font-semibold text-white hover:bg-white/10">
+                  </TrackedContactLink>
+                  <TrackedContactLink channel="email" href={salesContact.emailHref} className="flex min-h-11 items-center justify-center border border-white/20 px-3 text-xs font-semibold text-white hover:bg-white/10">
                     Enviar correo
-                  </a>
+                  </TrackedContactLink>
                 </div>
                 <div className="mt-4 space-y-1 text-sm text-slate-300">
                   <a href={salesContact.phoneHref} className="block hover:text-white">{salesContact.phoneDisplay}</a>
-                  <a href={salesContact.emailHref} className="block break-all hover:text-white">{salesContact.email}</a>
+                  <TrackedContactLink channel="email" href={salesContact.emailHref} className="block break-all hover:text-white">{salesContact.email}</TrackedContactLink>
                 </div>
               </div>
 

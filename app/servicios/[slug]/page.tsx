@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2, ChevronRight } from "lucide-react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import TrackedContactLink from "@/components/TrackedContactLink";
 import { companyInfo } from "@/components/siteData";
 import { services, servicesBySlug } from "@/lib/serviceData";
 
@@ -130,14 +131,15 @@ export default async function ServicePage({ params }: ServicePageProps) {
               <a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
                 Solicitar cotización <ArrowRight className="h-4 w-4" />
               </a>
-              <a
+              <TrackedContactLink
+                channel="whatsapp"
                 href={companyInfo.whatsappHref}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-white"
               >
                 Consultar por WhatsApp
-              </a>
+              </TrackedContactLink>
             </div>
           </div>
         </section>
