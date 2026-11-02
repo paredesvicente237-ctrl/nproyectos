@@ -35,6 +35,20 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       title: `${service.name} | ${companyInfo.shortName}`,
       description: service.description,
       siteName: companyInfo.shortName,
+      images: [
+        {
+          url: "/images/hero-soldadura-nproyectos-premium.webp",
+          width: 1672,
+          height: 941,
+          alt: `${service.shortName} en N Proyectos`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${service.name} | ${companyInfo.shortName}`,
+      description: service.description,
+      images: ["/images/hero-soldadura-nproyectos-premium.webp"],
     },
   };
 }

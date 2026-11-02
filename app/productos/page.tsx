@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import { Download, FileText } from "lucide-react";
+import { ChevronRight, Download, FileText } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
 import { companyInfo } from "@/components/siteData";
 import Navbar from "@/components/Navbar";
@@ -21,6 +21,22 @@ export const metadata: Metadata = {
     title: "Productos acústicos e industriales | N Proyectos",
     description:
       "Silenciadores de escape, paneles acústicos, espuma acústica, splitters, celosías y pantallas móviles fabricados según cada proyecto.",
+    siteName: companyInfo.shortName,
+    images: [
+      {
+        url: "/images/hero-soldadura-nproyectos-premium.webp",
+        width: 1672,
+        height: 941,
+        alt: "Fabricación industrial de N Proyectos",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Productos acústicos e industriales | N Proyectos",
+    description:
+      "Silenciadores, paneles acústicos, espuma, splitters, celosías y pantallas industriales fabricados a medida.",
+    images: ["/images/hero-soldadura-nproyectos-premium.webp"],
   },
 };
 
@@ -281,8 +297,34 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
 }
 
 export default function ProductosPage() {
+  const pageUrl = `${companyInfo.website}/productos`;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: companyInfo.website,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Productos",
+        item: pageUrl,
+      },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Navbar />
       <main className="relative z-10">
         {/* Hero */}
@@ -291,6 +333,11 @@ export default function ProductosPage() {
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.83)_0%,rgba(15,17,18,.48)_58%,rgba(15,17,18,.08)_100%)]" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/10" />
           <div className="container-custom w-full">
+            <nav aria-label="Migas de pan" className="mb-8 flex items-center gap-1.5 text-sm text-white/65">
+              <Link href="/" className="hover:text-white">Inicio</Link>
+              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              <span aria-current="page" className="text-white">Productos</span>
+            </nav>
             <span className="flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />Catálogo industrial</span>
             <h1 className="mt-5 max-w-4xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">
               Nuestros Productos

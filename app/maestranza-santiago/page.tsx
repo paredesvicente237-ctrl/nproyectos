@@ -14,14 +14,6 @@ export const metadata: Metadata = {
   title: "Maestranza en Santiago para fabricación industrial",
   description:
     "Maestranza en Santiago ubicada en La Granja. Fabricación metalmecánica, corte y plegado, soldadura MIG/TIG, acero inoxidable y soluciones a medida.",
-  keywords: [
-    "maestranza en Santiago",
-    "maestranza La Granja",
-    "empresa metalmecánica Santiago",
-    "fabricación acero inoxidable Santiago",
-    "fabricación estructuras metálicas Santiago",
-    "servicios metalmecánicos Chile",
-  ],
   alternates: { canonical: "/maestranza-santiago" },
   openGraph: {
     type: "website",
@@ -31,6 +23,21 @@ export const metadata: Metadata = {
     description:
       "Fabricación metalmecánica, corte, plegado y soldadura para proyectos industriales desde La Granja, Santiago.",
     siteName: companyInfo.shortName,
+    images: [
+      {
+        url: "/images/hero-soldadura-nproyectos-premium.webp",
+        width: 1672,
+        height: 941,
+        alt: "Fabricación metalmecánica de N Proyectos en Santiago",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Maestranza en Santiago para fabricación industrial | N Proyectos",
+    description:
+      "Fabricación metalmecánica, corte, plegado y soldadura para proyectos industriales desde La Granja, Santiago.",
+    images: ["/images/hero-soldadura-nproyectos-premium.webp"],
   },
 };
 

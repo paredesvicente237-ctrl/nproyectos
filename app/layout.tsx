@@ -26,18 +26,6 @@ export const metadata: Metadata = {
   },
   description:
     "Maestranza en Santiago para fabricación en acero, corte y plegado de planchas, soldadura MIG/TIG y control acústico industrial. Cotiza tu proyecto a medida.",
-  keywords: [
-    "metalmecánica Santiago",
-    "fabricación en acero Santiago",
-    "corte y plegado de planchas",
-    "soldadura MIG TIG Santiago",
-    "control acústico industrial",
-    "maestranza Santiago",
-    "maestranza La Granja",
-    "fabricación acero inoxidable Santiago",
-    "estructuras metálicas Santiago",
-    "N Proyectos Ltda",
-  ],
   applicationName: companyInfo.shortName,
   authors: [{ name: companyInfo.legalName, url: companyInfo.website }],
   creator: companyInfo.legalName,
@@ -61,7 +49,7 @@ export const metadata: Metadata = {
       "Fabricación en acero, corte y plegado, soldadura MIG/TIG y control acústico para proyectos industriales en Santiago.",
     images: [
       {
-        url: "/images/hero-soldadura-nproyectos-clara.webp",
+        url: "/images/hero-soldadura-nproyectos-premium.webp",
         width: 1672,
         height: 941,
         alt: "Soldadura y fabricación metalmecánica de N Proyectos",
@@ -73,7 +61,7 @@ export const metadata: Metadata = {
     title: "Maestranza y fabricación en acero | N Proyectos",
     description:
       "Fabricación en acero, corte y plegado, soldadura y control acústico en Santiago.",
-    images: ["/images/hero-soldadura-nproyectos-clara.webp"],
+    images: ["/images/hero-soldadura-nproyectos-premium.webp"],
   },
   robots: {
     index: true,
@@ -94,7 +82,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${outfit.variable} ${dmSans.variable}`}>
+    <html lang="es-CL" className={`${outfit.variable} ${dmSans.variable}`}>
       <body className="antialiased">
         {children}
         <Analytics />
