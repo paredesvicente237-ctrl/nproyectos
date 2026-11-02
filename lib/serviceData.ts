@@ -19,10 +19,10 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "fabricacion-metalmecanica",
-    name: "Fabricación metalmecánica y estructuras metálicas",
+    name: "Fabricación metalmecánica en Chile",
     shortName: "Fabricación metalmecánica",
     eyebrow: "Fabricación industrial",
-    title: "Fabricación metalmecánica y estructuras metálicas para proyectos industriales",
+    title: "Fabricación metalmecánica para proyectos industriales",
     description:
       "Fabricación metalmecánica y de estructuras metálicas en Santiago para minería, manufactura, construcción e industria. Desarrollamos piezas, soportes y equipos en acero a medida.",
     summary:
@@ -56,7 +56,7 @@ export const services: Service[] = [
     name: "Corte y plegado de planchas en Santiago",
     shortName: "Corte y plegado de planchas",
     eyebrow: "Conformado de metales",
-    title: "Corte y plegado de planchas metálicas a medida",
+    title: "Corte y plegado de planchas metálicas en Santiago",
     description:
       "Servicio de corte láser, corte con guillotina y plegado de planchas en Santiago. Trabajamos acero carbono, inoxidable, galvanizado y otros metales.",
     summary:
@@ -90,7 +90,7 @@ export const services: Service[] = [
     name: "Soldadura MIG y TIG en Santiago",
     shortName: "Soldadura MIG/TIG",
     eyebrow: "Armado y soldadura",
-    title: "Soldadura MIG y TIG para fabricación industrial",
+    title: "Soldadura industrial MIG y TIG en Santiago",
     description:
       "Servicios de soldadura MIG y TIG en Santiago para acero carbono, acero inoxidable y fabricación industrial. Armado de piezas, estructuras y equipos a medida.",
     summary:
@@ -124,9 +124,9 @@ export const services: Service[] = [
     name: "Control acústico industrial en Chile",
     shortName: "Control acústico industrial",
     eyebrow: "Acústica y ruido",
-    title: "Soluciones de control acústico para industria y edificación",
+    title: "Soluciones de control acústico industrial a medida",
     description:
-      "Diseño y fabricación de soluciones de control acústico industrial: splitters, celosías, paneles perforados, pantallas, cabinas y atenuadores a medida.",
+      "Diseño y fabricación de soluciones de control acústico y control de ruido industrial: splitters, celosías, paneles perforados, pantallas, cabinas y atenuadores a medida.",
     summary:
       "Diseñamos y fabricamos soluciones metálicas para reducir o controlar la propagación de ruido en sistemas de ventilación, salas de máquinas, fachadas y recintos industriales. Cada elemento se desarrolla según el espacio disponible, el flujo de aire, la forma de instalación y las necesidades del proyecto.",
     image: siteAssets.fotobuenax2,

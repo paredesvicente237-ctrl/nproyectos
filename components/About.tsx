@@ -29,10 +29,10 @@ export default function About() {
               Criterio técnico en cada decisión de fabricación.
             </h2>
             <p className="mt-7 max-w-xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
-              Somos una empresa metalmecánica orientada a resolver encargos industriales con ingeniería aplicada, fabricación a medida y comunicación directa con cada cliente.
+              Somos una empresa de fabricación metalmecánica en La Granja, Santiago. Resolvemos encargos industriales con ingeniería aplicada, fabricación a medida y comunicación directa con cada cliente.
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm">
-              <Link href="/maestranza-santiago" className="font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">Conoce nuestra maestranza en Santiago</Link>
+              <Link href="/maestranza-santiago" className="font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">Conoce la maestranza industrial en Santiago</Link>
               <Link href="/#contacto" className="inline-flex items-center gap-2 font-semibold text-[#17191b] hover:text-blue-700">Conversemos sobre tu proyecto <ArrowRight className="h-4 w-4" /></Link>
             </div>
             <p className="mt-10 border-t border-[#DADDDC] pt-5 text-sm leading-6 text-[#777D81]">Minería · Manufactura · Construcción · Industria</p>

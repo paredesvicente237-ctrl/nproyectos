@@ -10,7 +10,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import TrackedContactLink from "@/components/TrackedContactLink";
 
 export const metadata: Metadata = {
-  title: "Productos acústicos e industriales",
+  title: "Productos acústicos e industriales a medida",
   description:
     "Productos acústicos e industriales fabricados a medida en Chile: silenciadores de escape, paneles acústicos, espuma acústica, splitters, celosías y pantallas móviles.",
   alternates: { canonical: "/productos" },
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_CL",
     url: "/productos",
-    title: "Productos acústicos e industriales | N Proyectos",
+    title: "Productos acústicos e industriales a medida | N Proyectos",
     description:
       "Silenciadores de escape, paneles acústicos, espuma acústica, splitters, celosías y pantallas móviles fabricados según cada proyecto.",
     siteName: companyInfo.shortName,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Productos acústicos e industriales | N Proyectos",
+    title: "Productos acústicos e industriales a medida | N Proyectos",
     description:
       "Silenciadores, paneles acústicos, espuma, splitters, celosías y pantallas industriales fabricados a medida.",
     images: ["/images/hero-soldadura-nproyectos-premium.webp"],
@@ -340,7 +340,7 @@ export default function ProductosPage() {
             </nav>
             <span className="flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />Catálogo industrial</span>
             <h1 className="mt-5 max-w-4xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">
-              Nuestros Productos
+              Productos acústicos e industriales a medida
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">
               Soluciones acústicas e industriales fabricadas a medida. Cada

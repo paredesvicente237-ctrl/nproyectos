@@ -22,7 +22,7 @@ export default function Hero() {
       <div className="container-custom relative flex w-full flex-1 flex-col justify-end px-5 pb-24 pt-20 sm:px-8 sm:pb-14 lg:px-10 lg:pb-16">
         <div className="mb-7 flex items-center gap-3 text-xs font-semibold text-white/85 sm:text-sm">
           <span className="h-px w-9 bg-blue-400" />
-          Maestranza y fabricación industrial
+          Maestranza en Santiago · fabricación metalmecánica
         </div>
         <h1 className="text-balance max-w-[1080px] text-[clamp(2.65rem,7.6vw,7.25rem)] font-semibold leading-[.9] tracking-[-.065em] text-white">
           Acero convertido<br className="hidden sm:block" /> en soluciones precisas.

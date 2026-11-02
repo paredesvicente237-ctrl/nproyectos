@@ -11,17 +11,17 @@ import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
 export const metadata: Metadata = {
-  title: "Maestranza en Santiago para fabricación industrial",
+  title: "Maestranza industrial en Santiago",
   description:
-    "Maestranza en Santiago ubicada en La Granja. Fabricación metalmecánica, corte y plegado, soldadura MIG/TIG, acero inoxidable y soluciones a medida.",
+    "Servicios de maestranza industrial en La Granja, Santiago: fabricación metalmecánica, corte y plegado, soldadura MIG/TIG y soluciones para empresas.",
   alternates: { canonical: "/maestranza-santiago" },
   openGraph: {
     type: "website",
     locale: "es_CL",
     url: "/maestranza-santiago",
-    title: "Maestranza en Santiago para fabricación industrial | N Proyectos",
+    title: "Maestranza industrial en Santiago | N Proyectos",
     description:
-      "Fabricación metalmecánica, corte, plegado y soldadura para proyectos industriales desde La Granja, Santiago.",
+      "Fabricación metalmecánica, corte, plegado y soldadura para empresas desde La Granja, Santiago.",
     siteName: companyInfo.shortName,
     images: [
       {
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Maestranza en Santiago para fabricación industrial | N Proyectos",
+    title: "Maestranza industrial en Santiago | N Proyectos",
     description:
-      "Fabricación metalmecánica, corte, plegado y soldadura para proyectos industriales desde La Granja, Santiago.",
+      "Fabricación metalmecánica, corte, plegado y soldadura para empresas desde La Granja, Santiago.",
     images: ["/images/hero-soldadura-nproyectos-premium.webp"],
   },
 };
@@ -154,7 +154,7 @@ export default function MaestranzaSantiagoPage() {
           <div className="container-custom w-full">
             <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-sm text-white/65"><Link href="/" className="hover:text-white">Inicio</Link><ChevronRight className="h-4 w-4" /><span className="text-white">Maestranza en Santiago</span></nav>
             <p className="mt-10 flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />N Proyectos · La Granja</p>
-            <h1 className="mt-5 max-w-5xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">Maestranza en Santiago para fabricación industrial a medida</h1>
+            <h1 className="mt-5 max-w-5xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">Maestranza industrial en Santiago para proyectos a medida</h1>
             <p className="mt-6 max-w-3xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">Desarrollamos y fabricamos piezas, estructuras y soluciones en acero para minería, manufactura, construcción e industria. Integramos corte, plegado, armado y soldadura en un mismo proyecto.</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link><TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Cotizar por WhatsApp</TrackedContactLink></div>
           </div>
