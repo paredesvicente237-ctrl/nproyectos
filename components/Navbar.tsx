@@ -32,7 +32,7 @@ export default function Navbar() {
           {publicLinks.map((link) => (
             <Link key={link.href} href={link.href} className={`whitespace-nowrap text-[11px] font-semibold 2xl:text-xs ${transparentHome ? "text-white/90 hover:text-white" : "text-slate-600 hover:text-blue-700"}`}>{link.label}</Link>
           ))}
-          <a href="/#contacto" className={`inline-flex min-h-10 shrink-0 items-center justify-center gap-2 px-4 text-xs font-semibold ${transparentHome ? "bg-white text-[#17191b] hover:bg-blue-50" : "btn-primary !min-h-10 !px-4 !text-xs"}`}>Cotizar <ArrowRight className="h-4 w-4" /></a>
+          <Link href="/#contacto" className={`inline-flex min-h-10 shrink-0 items-center justify-center gap-2 px-4 text-xs font-semibold ${transparentHome ? "bg-white text-[#17191b] hover:bg-blue-50" : "btn-primary !min-h-10 !px-4 !text-xs"}`}>Cotizar <ArrowRight className="h-4 w-4" /></Link>
         </div>
 
         <button type="button" onClick={() => setIsOpen((value) => !value)} className={`inline-flex h-10 w-10 items-center justify-center xl:hidden ${transparentHome ? "text-white hover:bg-white/10" : "text-slate-900 hover:bg-slate-100"}`} aria-expanded={isOpen} aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}>
@@ -44,7 +44,7 @@ export default function Navbar() {
         <div className="border-t border-slate-200 bg-white px-5 pb-6 pt-3 xl:hidden">
           <div className="container-custom flex flex-col">
             {publicLinks.map((link) => <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className="border-b border-slate-100 py-3 text-sm font-medium text-slate-700">{link.label}</Link>)}
-            <a href="/#contacto" onClick={() => setIsOpen(false)} className="btn-primary mt-5">Solicitar cotización <ArrowRight className="h-4 w-4" /></a>
+            <Link href="/#contacto" onClick={() => setIsOpen(false)} className="btn-primary mt-5">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link>
             <a href={companyInfo.phoneHref} className="btn-outline mt-4"><Phone className="h-4 w-4" /> {companyInfo.phoneDisplay}</a>
           </div>
         </div>

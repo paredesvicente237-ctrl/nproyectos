@@ -156,7 +156,7 @@ export default function MaestranzaSantiagoPage() {
             <p className="mt-10 flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />N Proyectos · La Granja</p>
             <h1 className="mt-5 max-w-5xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">Maestranza en Santiago para fabricación industrial a medida</h1>
             <p className="mt-6 max-w-3xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">Desarrollamos y fabricamos piezas, estructuras y soluciones en acero para minería, manufactura, construcción e industria. Integramos corte, plegado, armado y soldadura en un mismo proyecto.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></a><TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Cotizar por WhatsApp</TrackedContactLink></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link><TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Cotizar por WhatsApp</TrackedContactLink></div>
           </div>
         </section>
 
@@ -236,7 +236,7 @@ export default function MaestranzaSantiagoPage() {
               <h2 className="mt-4 max-w-3xl text-3xl font-semibold text-white sm:text-4xl">Envíanos tus planos, medidas o fotografías.</h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">Revisaremos el material, las cantidades, los procesos necesarios y el plazo para preparar una propuesta técnica.</p>
             </div>
-            <a href="/#contacto" className="btn-white shrink-0">Cotizar proyecto <ArrowRight className="h-4 w-4" /></a>
+            <Link href="/#contacto" className="btn-white shrink-0">Cotizar proyecto <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </section>
       </main>

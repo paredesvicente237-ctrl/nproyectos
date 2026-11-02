@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowDown, ArrowRight } from "lucide-react";
 
 export default function Hero() {
@@ -32,8 +33,8 @@ export default function Hero() {
               Diseñamos, fabricamos y montamos piezas, estructuras y soluciones metalmecánicas para proyectos que no admiten improvisación.
             </p>
             <div className="flex flex-wrap gap-3">
-              <a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></a>
-              <a href="/#especialidades" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-[#17191b]">Explorar capacidades <ArrowDown className="h-4 w-4" /></a>
+              <Link href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link>
+              <Link href="/#especialidades" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-[#17191b]">Explorar capacidades <ArrowDown className="h-4 w-4" /></Link>
             </div>
           </div>
           <div className="hidden items-center gap-3 whitespace-nowrap text-right text-xs text-white/80 lg:flex">

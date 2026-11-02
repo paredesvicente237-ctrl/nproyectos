@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json({ message: "Email enviado con éxito", data });
-  } catch (err) {
+  } catch {
     return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 }

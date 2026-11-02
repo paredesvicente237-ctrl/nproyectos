@@ -1,19 +1,20 @@
 import type { Metadata } from "next";
-import { Outfit, DM_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import { companyInfo } from "@/components/siteData";
+import GoogleAnalyticsConsent from "@/components/GoogleAnalyticsConsent";
 import "./globals.css";
 
-const outfit = Outfit({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+const outfit = localFont({
+  src: "./fonts/outfit-latin.woff2",
+  weight: "400 800",
   variable: "--font-outfit",
   display: "swap",
 });
 
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
+const dmSans = localFont({
+  src: "./fonts/dm-sans-latin.woff2",
+  weight: "400 600",
   variable: "--font-dm-sans",
   display: "swap",
 });
@@ -86,6 +87,7 @@ export default function RootLayout({
       <body className="antialiased">
         {children}
         <Analytics />
+        <GoogleAnalyticsConsent />
       </body>
     </html>
   );

@@ -33,7 +33,7 @@ export default function About() {
             </p>
             <div className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-sm">
               <Link href="/maestranza-santiago" className="font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900">Conoce nuestra maestranza en Santiago</Link>
-              <a href="/#contacto" className="inline-flex items-center gap-2 font-semibold text-[#17191b] hover:text-blue-700">Conversemos sobre tu proyecto <ArrowRight className="h-4 w-4" /></a>
+              <Link href="/#contacto" className="inline-flex items-center gap-2 font-semibold text-[#17191b] hover:text-blue-700">Conversemos sobre tu proyecto <ArrowRight className="h-4 w-4" /></Link>
             </div>
             <p className="mt-10 border-t border-[#DADDDC] pt-5 text-sm leading-6 text-[#777D81]">Minería · Manufactura · Construcción · Industria</p>
           </div>

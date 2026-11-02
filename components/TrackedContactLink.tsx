@@ -1,6 +1,7 @@
 "use client";
 
 import type { AnchorHTMLAttributes, MouseEvent } from "react";
+import { trackGaEvent } from "@/lib/analytics";
 
 type ContactChannel = "whatsapp" | "email";
 
@@ -12,6 +13,11 @@ export default function TrackedContactLink({ channel, onClick, ...props }: Track
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(event);
     if (event.defaultPrevented) return;
+
+    trackGaEvent("contact_click", {
+      contact_method: channel,
+      page_path: window.location.pathname,
+    });
 
     void fetch("/api/contact-click", {
       method: "POST",

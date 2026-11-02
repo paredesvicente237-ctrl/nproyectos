@@ -126,7 +126,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             <h1 className="mt-5 max-w-5xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">{service.title}</h1>
             <p className="mt-6 max-w-3xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">{service.summary}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></a>
+              <Link href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link>
               <TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Consultar por WhatsApp</TrackedContactLink>
             </div>
           </div>
@@ -221,7 +221,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
                 Cuéntanos qué necesitas fabricar y revisaremos los antecedentes para preparar una propuesta técnica.
               </p>
             </div>
-            <a href="/#contacto" className="btn-primary shrink-0">Cotizar proyecto</a>
+            <Link href="/#contacto" className="btn-primary shrink-0">Cotizar proyecto</Link>
           </div>
         </section>
       </main>

@@ -19,14 +19,14 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "fabricacion-metalmecanica",
-    name: "Fabricación metalmecánica en Santiago",
+    name: "Fabricación metalmecánica y estructuras metálicas",
     shortName: "Fabricación metalmecánica",
     eyebrow: "Fabricación industrial",
-    title: "Fabricación metalmecánica para proyectos industriales",
+    title: "Fabricación metalmecánica y estructuras metálicas para proyectos industriales",
     description:
-      "Fabricación metalmecánica en Santiago para minería, manufactura, construcción e industria. Desarrollamos piezas, estructuras y equipos en acero a medida.",
+      "Fabricación metalmecánica y de estructuras metálicas en Santiago para minería, manufactura, construcción e industria. Desarrollamos piezas, soportes y equipos en acero a medida.",
     summary:
-      "Transformamos planos, prototipos o requerimientos funcionales en piezas, partes y soluciones industriales fabricables. Integramos revisión técnica, selección de materiales, corte, conformado, armado y soldadura para reducir coordinaciones y mantener visible cada decisión del proyecto.",
+      "Fabricamos piezas, soportes y estructuras metálicas para proyectos industriales a partir de planos, prototipos o requerimientos funcionales. Integramos revisión técnica, selección de materiales, corte, conformado, armado y soldadura para definir una solución fabricable.",
     image: siteAssets.goodSparks,
     imageAlt: "Trabajo de fabricación metalmecánica y soldadura en acero",
     benefits: [

@@ -3,13 +3,15 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { companyInfo, salesContact } from "@/components/siteData";
 import TrackedContactLink from "@/components/TrackedContactLink";
+import { trackGaEvent } from "@/lib/analytics";
 
 const services = [
-  "Área Servicios",
-  "Área Fabricación",
-  "Área Acústica y Ruido",
-  "Área Proyectos",
-  "Múltiples requerimientos",
+  "Fabricación metalmecánica",
+  "Corte y plegado de planchas",
+  "Soldadura MIG/TIG",
+  "Estructuras y soportes metálicos",
+  "Control acústico industrial",
+  "Otro requerimiento industrial",
 ];
 
 type FormState = {
@@ -61,13 +63,18 @@ export default function Contact() {
       });
 
       if (response.ok) {
+        trackGaEvent("generate_lead", {
+          form_id: "contacto",
+          lead_method: "web_form",
+          service_type: form.service || "no_especificado",
+        });
         setFeedback("success");
         setForm(initialState);
       } else {
         const errorData = await response.json();
         setFeedback(errorData.error?.message || "Hubo un error al enviar el formulario. Inténtalo más tarde.");
       }
-    } catch (error) {
+    } catch {
       setFeedback("Error de conexión. Por favor, revisa tu internet o intenta más tarde.");
     } finally {
       setIsSubmitting(false);
@@ -121,6 +128,8 @@ export default function Contact() {
                       id="name" name="name" value={form.name}
                       onChange={onChange} className="form-input"
                       placeholder="Nombre completo"
+                      autoComplete="name"
+                      required
                       disabled={isSubmitting}
                     />
                   </div>
@@ -130,6 +139,7 @@ export default function Contact() {
                       id="company" name="company" value={form.company}
                       onChange={onChange} className="form-input"
                       placeholder="Razón social"
+                      autoComplete="organization"
                       disabled={isSubmitting}
                     />
                   </div>
@@ -142,15 +152,18 @@ export default function Contact() {
                       id="email" name="email" type="email" value={form.email}
                       onChange={onChange} className="form-input"
                       placeholder="correo@empresa.cl"
+                      autoComplete="email"
+                      required
                       disabled={isSubmitting}
                     />
                   </div>
                   <div>
                     <label htmlFor="phone" className="form-label">Teléfono</label>
                     <input
-                      id="phone" name="phone" value={form.phone}
+                      id="phone" name="phone" type="tel" value={form.phone}
                       onChange={onChange} className="form-input"
                       placeholder="+56 9 ..."
+                      autoComplete="tel"
                       disabled={isSubmitting}
                     />
                   </div>
@@ -176,6 +189,7 @@ export default function Contact() {
                     id="message" name="message" rows={4} value={form.message}
                     onChange={onChange} className="form-input resize-none"
                     placeholder="Describe piezas, cantidades, material, espesores, plazos..."
+                    required
                     disabled={isSubmitting}
                   />
                 </div>
@@ -192,7 +206,7 @@ export default function Contact() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                     )}
                   </svg>
-                  {isSubmitting ? "Enviando..." : "Contactar"}
+                  {isSubmitting ? "Enviando..." : "Solicitar cotización"}
                 </button>
 
                 {feedback && (

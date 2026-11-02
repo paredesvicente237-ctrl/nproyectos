@@ -3,6 +3,7 @@ import BrandLogo from "@/components/BrandLogo";
 import { companyInfo, salesContact } from "@/components/siteData";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import { services } from "@/lib/serviceData";
+import AnalyticsPreferencesButton from "@/components/AnalyticsPreferencesButton";
 
 export default function Footer() {
   return (
@@ -44,17 +45,20 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="mt-8 flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-slate-600 sm:flex-row sm:items-center sm:justify-between">
           <p>&copy; {new Date().getFullYear()} {companyInfo.legalName}. Todos los derechos reservados.</p>
-          <p>
-            Creado por{" "}
-            <a
-              href="https://viselix.cl"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-slate-400 transition-colors hover:text-white"
-            >
-              VISELIX
-            </a>
-          </p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+            <AnalyticsPreferencesButton />
+            <p>
+              Creado por{" "}
+              <a
+                href="https://viselix.cl"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-semibold text-slate-400 transition-colors hover:text-white"
+              >
+                VISELIX
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
