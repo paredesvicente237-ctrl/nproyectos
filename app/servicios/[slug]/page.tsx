@@ -60,6 +60,9 @@ export default async function ServicePage({ params }: ServicePageProps) {
   if (!service) notFound();
 
   const pageUrl = `${companyInfo.website}/servicios/${service.slug}`;
+  const whatsappHref = `${companyInfo.whatsappHref.split("?")[0]}?text=${encodeURIComponent(
+    `Hola Américo, quiero cotizar ${service.shortName.toLowerCase()} con N Proyectos.`,
+  )}`;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -127,7 +130,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             <p className="mt-6 max-w-3xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">{service.summary}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link>
-              <TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Consultar por WhatsApp</TrackedContactLink>
+              <TrackedContactLink channel="whatsapp" href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Consultar por WhatsApp</TrackedContactLink>
             </div>
           </div>
         </section>
@@ -166,6 +169,20 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   </span>
                 ))}
               </div>
+              {service.slug === "control-acustico-industrial" && (
+                <div className="mt-8 border-t border-slate-300 pt-5">
+                  <h3 className="text-sm font-semibold text-slate-900">Productos y fichas técnicas</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    Revisa los productos acústicos disponibles y descarga sus especificaciones.
+                  </p>
+                  <Link
+                    href="/productos#fichas-tecnicas"
+                    className="mt-3 inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
+                  >
+                    Ver productos y fichas técnicas <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              )}
             </aside>
           </div>
         </section>

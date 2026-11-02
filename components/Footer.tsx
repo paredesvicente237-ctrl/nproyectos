@@ -35,7 +35,7 @@ export default function Footer() {
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-300">Contacto</p>
             <div className="mt-4 flex flex-col gap-2 text-sm text-slate-500">
               <p className="font-semibold text-slate-300">{salesContact.name} · {salesContact.role}</p>
-              <a href={salesContact.phoneHref} className="hover:text-white">{salesContact.phoneDisplay}</a>
+              <TrackedContactLink channel="phone" href={salesContact.phoneHref} className="hover:text-white">{salesContact.phoneDisplay}</TrackedContactLink>
               <TrackedContactLink channel="email" href={salesContact.emailHref} className="hover:text-white">{salesContact.email}</TrackedContactLink>
               <span>{companyInfo.address}, Chile</span>
             </div>

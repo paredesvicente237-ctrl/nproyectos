@@ -235,7 +235,7 @@ export default function Contact() {
                   </TrackedContactLink>
                 </div>
                 <div className="mt-4 space-y-1 text-sm text-slate-300">
-                  <a href={salesContact.phoneHref} className="block hover:text-white">{salesContact.phoneDisplay}</a>
+                  <TrackedContactLink channel="phone" href={salesContact.phoneHref} className="block hover:text-white">{salesContact.phoneDisplay}</TrackedContactLink>
                   <TrackedContactLink channel="email" href={salesContact.emailHref} className="block break-all hover:text-white">{salesContact.email}</TrackedContactLink>
                 </div>
               </div>

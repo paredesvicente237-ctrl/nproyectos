@@ -6,6 +6,7 @@ import { ArrowRight, Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import BrandLogo from "@/components/BrandLogo";
 import { companyInfo, navLinks } from "@/components/siteData";
+import TrackedContactLink from "@/components/TrackedContactLink";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,7 +46,7 @@ export default function Navbar() {
           <div className="container-custom flex flex-col">
             {publicLinks.map((link) => <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className="border-b border-slate-100 py-3 text-sm font-medium text-slate-700">{link.label}</Link>)}
             <Link href="/#contacto" onClick={() => setIsOpen(false)} className="btn-primary mt-5">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link>
-            <a href={companyInfo.phoneHref} className="btn-outline mt-4"><Phone className="h-4 w-4" /> {companyInfo.phoneDisplay}</a>
+            <TrackedContactLink channel="phone" href={companyInfo.phoneHref} className="btn-outline mt-4"><Phone className="h-4 w-4" /> {companyInfo.phoneDisplay}</TrackedContactLink>
           </div>
         </div>
       )}

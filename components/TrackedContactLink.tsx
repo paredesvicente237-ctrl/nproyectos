@@ -3,7 +3,7 @@
 import type { AnchorHTMLAttributes, MouseEvent } from "react";
 import { trackGaEvent } from "@/lib/analytics";
 
-type ContactChannel = "whatsapp" | "email";
+type ContactChannel = "whatsapp" | "email" | "phone";
 
 type TrackedContactLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   channel: ContactChannel;
@@ -19,14 +19,16 @@ export default function TrackedContactLink({ channel, onClick, ...props }: Track
       page_path: window.location.pathname,
     });
 
-    void fetch("/api/contact-click", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ channel, path: window.location.pathname }),
-      keepalive: true,
-    }).catch(() => {
-      // El enlace de contacto debe seguir funcionando aunque el aviso falle.
-    });
+    if (channel !== "phone") {
+      void fetch("/api/contact-click", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ channel, path: window.location.pathname }),
+        keepalive: true,
+      }).catch(() => {
+        // El enlace de contacto debe seguir funcionando aunque el aviso falle.
+      });
+    }
   };
 
   return <a {...props} onClick={handleClick} />;
