@@ -51,6 +51,11 @@ export async function POST(request: Request) {
   const path = rawPath.startsWith("/") && !rawPath.startsWith("//")
     ? rawPath.replace(/[\r\n]/g, "").slice(0, 160)
     : "/";
+
+  if (process.env.VERCEL_ENV !== "production") {
+    return new NextResponse(null, { status: 204, headers: { "Cache-Control": "no-store" } });
+  }
+
   const apiKey = process.env.RESEND_API_KEY ?? process.env.Resend;
   if (!apiKey) return NextResponse.json({ error: "El servicio de avisos no está configurado." }, { status: 503 });
 

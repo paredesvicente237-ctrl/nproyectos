@@ -9,9 +9,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:public": "node scripts/test-public-site.mjs",
+    "security:secrets": "node scripts/check-staged-secrets.mjs"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^4.0.107",
     "@ai-sdk/react": "^4.0.165",
     "@neondatabase/serverless": "^1.1.0",
     "@vercel/analytics": "^2.0.1",

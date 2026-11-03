@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: companyInfo.website },
     { url: `${companyInfo.website}/productos` },
     { url: `${companyInfo.website}/maestranza-santiago` },
+    { url: `${companyInfo.website}/privacidad` },
     ...servicePages,
   ];
 }
