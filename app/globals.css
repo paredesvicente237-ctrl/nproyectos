@@ -98,8 +98,15 @@
 .npa-header button:hover { transform: translateY(-1px); }
 
 .npa-hint {
+  right: max(12px, env(safe-area-inset-right));
+  bottom: calc(5.5rem + 56px + 16px + env(safe-area-inset-bottom));
+  width: min(320px, calc(100vw - 32px));
+  max-width: 320px;
   border-color: #d5e0e9;
   border-radius: 14px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.45;
   box-shadow: 0 16px 42px rgba(8, 30, 50, .18);
 }
 
@@ -302,6 +309,12 @@
 @media (min-width: 640px) {
   .npa-shell { right: max(24px, env(safe-area-inset-right)); bottom: calc(5.75rem + 4.5rem + env(safe-area-inset-bottom)); }
   .npa-launcher { right: max(24px, env(safe-area-inset-right)); bottom: calc(5.75rem + env(safe-area-inset-bottom)); }
+  .npa-hint { right: max(24px, env(safe-area-inset-right)); bottom: calc(5.75rem + 56px + 16px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 767px) {
+  .npa-launcher { width: 56px; height: 56px; padding: 0; }
+  .npa-launcher-label { display: none; }
 }
 
 @media (max-width: 639px) {
@@ -310,12 +323,14 @@
     min-height: min(430px, calc(100dvh - 12.25rem - env(safe-area-inset-bottom)));
     border-radius: 19px;
   }
-  .npa-launcher { width: 56px; height: 56px; padding: 0; }
-  .npa-launcher-label { display: none; }
   .npa-header { min-height: 76px; padding: 12px 14px; }
   .npa-log { padding-right: 13px; padding-left: 13px; }
   .npa-quick-actions { padding-left: 0; }
   .npa-completion { padding: 24px 18px; }
+}
+
+@media (max-height: 600px) and (max-width: 767px) {
+  .npa-hint { display: none; }
 }
 
 @media (max-height: 680px) and (max-width: 639px) {

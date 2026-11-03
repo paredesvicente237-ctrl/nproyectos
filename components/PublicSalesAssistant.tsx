@@ -398,7 +398,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   return (
     <>
       {isProactiveHintVisible && !isOpen && (
-        <div className="npa-hint fixed bottom-[7.25rem] right-4 z-[59] flex max-w-[18rem] items-start gap-3 border border-slate-200 bg-white px-4 py-3 text-sm leading-5 text-slate-700 shadow-lg sm:bottom-[7.75rem] sm:right-6">
+        <div className="npa-hint fixed z-[59] flex items-start gap-3 border border-slate-200 bg-white text-sm leading-5 text-slate-700 shadow-lg">
           <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
           <p>{proactiveCopy}</p>
           <button type="button" onClick={dismissProactiveHint} className="-mr-1 -mt-1 p-1 text-slate-500 hover:text-slate-900" aria-label="Cerrar sugerencia">
@@ -671,7 +671,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
         ref={launcherRef}
         aria-label={isOpen ? "Minimizar asesor comercial" : "Abrir asesor comercial de N Proyectos"}
         title="Asesor comercial N Proyectos"
-        className="npa-launcher fixed bottom-[5.5rem] right-3 z-[60] flex h-12 w-12 items-center justify-center border border-white/20 bg-[#173c5c] text-white shadow-lg transition-colors hover:bg-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 sm:bottom-[5.75rem] sm:right-6 sm:h-14 sm:w-14"
+        className="npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
       >
         {isOpen ? <ChevronDown className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="npa-launcher-icon h-5 w-5" aria-hidden="true" />}
         {!isOpen && <span className="npa-launcher-label">Asesor comercial</span>}
