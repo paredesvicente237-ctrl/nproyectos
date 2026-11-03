@@ -39,9 +39,13 @@ No hay credenciales de OpenAI en el entorno local. En Vercel, ambas variables de
 
 ## Evaluación y estado
 
-Los 30 casos están descritos en `docs/asesor-comercial-ia-evaluacion.md`. Aún no se ejecutan contra OpenAI: las variables están preparadas para Preview, pero el código con la conexión directa sigue local y no se ha generado un despliegue Preview actualizado. No se hicieron envíos de prueba a ventas. Las pruebas deben usar solicitudes ficticias; el endpoint de cotización en Preview simula la entrega. La validez de Resend y la conexión a Neon requieren verificación separada, sin enviar correos comerciales.
+Los 30 casos de `docs/asesor-comercial-ia-evaluacion.md` se ejecutaron en Vercel Preview con llamadas reales a OpenAI y datos ficticios. Se hicieron 36 solicitudes exitosas en total, contando las repeticiones de los casos 3, 13, 21–24 y 30; los registros no muestran errores del modelo. Las llamadas utilizaron 94.598 tokens de entrada y 1.759 de salida. Con las tarifas publicadas de `gpt-6-luna`, el costo estimado de todas las pruebas es **US$0,0104**, muy por debajo del máximo autorizado de US$1.
 
-En esta revisión se incorporó `@ai-sdk/openai`. Lint, TypeScript y build pasan; aún no se hizo ninguna llamada facturable al modelo. La auditoría encontró 0 vulnerabilidades en dependencias de producción y 18 moderadas en el árbol completo, asociadas a herramientas de desarrollo/ESLint; no se aplicaron actualizaciones mayores automáticas. La configuración de Preview está lista, pendiente de una rama/código desplegado para probar el flujo. Production no se modificó. Antes de publicar, completar las pruebas y revisar la política de privacidad de N Proyectos.
+El caso 30 inicialmente insinuó que se podía fabricar una parrilla a medida, aunque eso no está en el catálogo. Se endureció la instrucción del asesor en el commit `a600b92` y el retest respondió que las parrillas no aparecen en el catálogo y que no puede confirmar fabricación ni stock. El caso 3 fue seguro pero parcial: pidió plano o croquis y omitió otros antecedentes útiles en la primera respuesta. El caso 13 se repitió y confirmó que el sitio no publica tarifa por m²; no inventó precio.
+
+El flujo de cotización se probó en Preview con datos ficticios y respondió que la prueba se completó sin enviar correo. No se envió ninguna solicitud real a ventas. La clave/modelo de OpenAI solo están en Preview; Production no fue modificada. El despliegue de revisión está en `codex/openai-direct-preview` (`a600b92`): https://nproyectos-iddytdf3r-paredesvicente237-4079s-projects.vercel.app/.
+
+Lint, TypeScript y build pasan. Vercel registra cero errores de ejecución en las llamadas revisadas. No se comprobó la conectividad de Neon en Production ni la validez/remitente de Resend; en Preview el control de frecuencia usa memoria temporal porque `DATABASE_URL` solo está configurada en Production. Antes de publicar, revisar la política de privacidad y probar en forma controlada la conexión a Neon y la configuración de Resend, sin enviar correos comerciales reales.
 
 ## Referencias
 
