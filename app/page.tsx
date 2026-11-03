@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import IndustrialProcesses from "@/components/IndustrialProcesses";
 import Navbar from "@/components/Navbar";
+import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import Process from "@/components/Process";
 import ProductSolutions from "@/components/ProductSolutions";
 import Services from "@/components/Services";
@@ -97,6 +98,7 @@ export default function Home() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <PublicSalesAssistant />
     </>
   );
 }

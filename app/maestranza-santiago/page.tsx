@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, ChevronRight, FileCheck2, MapPin, Ruler } from "lucide-react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import { siteAssets } from "@/components/siteAssets";
@@ -242,6 +243,7 @@ export default function MaestranzaSantiagoPage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <PublicSalesAssistant initialService="Maestranza industrial" />
     </>
   );
 }

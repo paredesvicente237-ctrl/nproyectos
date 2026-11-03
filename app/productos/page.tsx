@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image, { StaticImageData } from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { ChevronRight, Download, FileText } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
@@ -7,7 +7,37 @@ import { companyInfo } from "@/components/siteData";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import TrackedContactLink from "@/components/TrackedContactLink";
+import { products, type Product } from "@/lib/productData";
+
+type ProductImage = { src: StaticImageData; alt: string };
+type ProductWithImages = Product & { images: ProductImage[] };
+
+const productImages: Record<string, ProductImage[]> = {
+  "espuma-acustica": [
+    { src: siteAssets.espumaAcustica, alt: "Espuma acústica NFonoAB primer plano" },
+    { src: siteAssets.espumaAplicacion, alt: "Espuma acústica instalada en cielo" },
+    { src: siteAssets.espumaEstudio, alt: "Espuma acústica en estudio de grabación" },
+  ],
+  "panel-acustico-naislanpanel": [
+    { src: siteAssets.naislanPanelProducto, alt: "Panel acústico NAislanPANEL galvanizado" },
+    { src: siteAssets.naislanPanelAplicacion, alt: "Encierro industrial construido con paneles acústicos NAislanPANEL" },
+  ],
+  splitter: [{ src: siteAssets.splitter, alt: "Splitter acústico de acero galvanizado" }],
+  celosia: [{ src: siteAssets.celosia, alt: "Celosía acústica instalada en fachada" }],
+  "silenciador-escape-gases": [{ src: siteAssets.silenciadorEscapeGases, alt: "Silenciador de escape de gases NSilenSE" }],
+  "panel-perforado": [
+    { src: siteAssets.panelPerforado, alt: "Panel perforado metálico" },
+    { src: siteAssets.panelAplicacion, alt: "Panel perforado instalado en cielo" },
+  ],
+  "pantalla-movil": [{ src: siteAssets.pantallaMovil, alt: "Pantalla móvil plegable para soldadura" }],
+};
+
+const productCards: ProductWithImages[] = products.map((product) => ({
+  ...product,
+  images: productImages[product.id] ?? [],
+}));
 
 export const metadata: Metadata = {
   title: "Productos acústicos e industriales a medida",
@@ -40,216 +70,7 @@ export const metadata: Metadata = {
   },
 };
 
-type ProductSpec = { label: string; value: string };
-type ProductImage = { src: StaticImageData; alt: string };
-
-type Product = {
-  id: string;
-  name: string;
-  code: string;
-  category: string;
-  description: string;
-  datasheet: string;
-  specs: ProductSpec[];
-  uses: string[];
-  images: ProductImage[];
-};
-
-const products: Product[] = [
-  {
-    id: "espuma-acustica",
-    name: "Espuma Acústica",
-    code: "NFonoAB",
-    category: "Acústica",
-    datasheet: "/fichas-tecnicas/espuma-acustica-nfonoab.pdf",
-    description:
-      "Acondicionamiento acústico para espacios donde el control de ruido y reverberación es crítico. Ideal para estudios, salas de conferencias y recintos industriales.",
-    specs: [
-      { label: "Dimensión", value: "60 x 60 cm" },
-      { label: "Espesores", value: "4 cm / 6 cm" },
-      { label: "Densidad", value: "20 kg/m³" },
-      { label: "Color", value: "Gris" },
-      { label: "Tratamiento", value: "Ignífugo retardante de llama" },
-      { label: "Instalación", value: "Con adhesivo" },
-    ],
-    uses: [
-      "Estudios de grabación",
-      "Teatros y cines",
-      "Salas de conferencias",
-      "Home studio",
-      "Oficinas y aulas",
-      "Sistemas de ventilación",
-    ],
-    images: [
-      { src: siteAssets.espumaAcustica, alt: "Espuma acústica NFonoAB primer plano" },
-      { src: siteAssets.espumaAplicacion, alt: "Espuma acústica instalada en cielo" },
-      { src: siteAssets.espumaEstudio, alt: "Espuma acústica en estudio de grabación" },
-    ],
-  },
-  {
-    id: "panel-acustico-naislanpanel",
-    name: "Panel Acústico",
-    code: "NAislanPANEL",
-    category: "Control acústico",
-    datasheet: "/fichas-tecnicas/panel-acustico-naislanpanel.pdf",
-    description:
-      "Panel acústico modular con terminación en metal galvanizado, diseñado para reducir la transmisión de ruido y formar encierros o barreras resistentes para instalaciones industriales.",
-    specs: [
-      { label: "Dimensión", value: "97 x 300 cm" },
-      { label: "Espesores", value: "5 cm / 10 cm" },
-      { label: "Aislación", value: "35 a 45 Rw" },
-      { label: "Terminación", value: "Metal galvanizado" },
-      { label: "Propiedades", value: "Ignífugo y resistente a la corrosión" },
-      { label: "Fabricación", value: "Medidas especiales a pedido" },
-    ],
-    uses: [
-      "Salas de bombas",
-      "Salas de máquinas",
-      "Grupos electrógenos",
-      "Plantas de tratamiento de aguas",
-      "Encierros de equipos",
-      "Galpones",
-      "Pantallas y barreras",
-    ],
-    images: [
-      { src: siteAssets.naislanPanelProducto, alt: "Panel acústico NAislanPANEL galvanizado" },
-      { src: siteAssets.naislanPanelAplicacion, alt: "Encierro industrial construido con paneles acústicos NAislanPANEL" },
-    ],
-  },
-  {
-    id: "splitter",
-    name: "Splitter Acústico",
-    code: "NSplitter",
-    category: "Acústica",
-    datasheet: "/fichas-tecnicas/splitter-acustico-nsplitter.pdf",
-    description:
-      "Atenuador acústico tipo splitter para sistemas de ventilación y ductos industriales. Reduce el ruido generado por el flujo de aire manteniendo la eficiencia del sistema.",
-    specs: [
-      { label: "Material", value: "Acero galvanizado" },
-      { label: "Relleno", value: "Lana mineral / Espuma" },
-      { label: "Largo", value: "Hasta 3.000 mm" },
-      { label: "Distancia entre splitters", value: "30 a 90 mm" },
-      { label: "Fabricación", value: "A medida" },
-      { label: "Aplicación", value: "Ductos de ventilación" },
-    ],
-    uses: [
-      "Sistemas HVAC",
-      "Ductos industriales",
-      "Salas de máquinas",
-      "Recintos hospitalarios",
-      "Edificios comerciales",
-    ],
-    images: [
-      { src: siteAssets.splitter, alt: "Splitter acústico de acero galvanizado" },
-    ],
-  },
-  {
-    id: "celosia",
-    name: "Celosía Acústica",
-    code: "NCelosía",
-    category: "Acústica",
-    datasheet: "/fichas-tecnicas/celosia-acustica-ncelosia.pdf",
-    description:
-      "Celosías metálicas diseñadas para ventilación con atenuación acústica. Permiten el paso de aire controlando la transmisión de ruido en fachadas e instalaciones industriales.",
-    specs: [
-      { label: "Material", value: "Acero galvanizado / Inoxidable" },
-      { label: "Tipo", value: "Láminas inclinadas" },
-      { label: "Fabricación", value: "A medida" },
-      { label: "Montaje", value: "Empotrado o sobrepuesto" },
-      { label: "Acabado", value: "Galvanizado / Pintura" },
-    ],
-    uses: [
-      "Fachadas industriales",
-      "Salas de generadores",
-      "Subestaciones eléctricas",
-      "Sistemas de ventilación",
-      "Recintos con equipos ruidosos",
-    ],
-    images: [
-      { src: siteAssets.celosia, alt: "Celosía acústica instalada en fachada" },
-    ],
-  },
-  {
-    id: "silenciador-escape-gases",
-    name: "Silenciador de Escape de Gases",
-    code: "NSilenSE",
-    category: "Control acústico industrial",
-    datasheet: "/fichas-tecnicas/silenciador-escape-gases-nsilense.pdf",
-    description:
-      "Silenciador diseñado para controlar el ruido en admisiones y escapes de motores de combustión interna, sopladores y bombas de vacío, con fabricación según los requerimientos de cada instalación.",
-    specs: [
-      { label: "Grado industrial", value: "12 a 18 dBA N.R." },
-      { label: "Grado residencial", value: "20 a 25 dBA N.R." },
-      { label: "Grado crítico", value: "25 a 32 dBA N.R." },
-      { label: "Grado súper crítico", value: "30 a 38 dBA N.R." },
-      { label: "Grado hospitalario", value: "35 a 50 dBA N.R." },
-      { label: "Fabricación", value: "A medida; accesorios disponibles" },
-    ],
-    uses: [
-      "Admisiones y escapes de motores de combustión interna",
-      "Admisiones y descargas de sopladores",
-      "Descargas de bombas de vacío",
-    ],
-    images: [
-      { src: siteAssets.silenciadorEscapeGases, alt: "Silenciador de escape de gases NSilenSE" },
-    ],
-  },
-  {
-    id: "panel-perforado",
-    name: "Panel Perforado",
-    code: "NPerfAB",
-    category: "Acústica",
-    datasheet: "/fichas-tecnicas/panel-perforado-nperfab.pdf",
-    description:
-      "Paneles metálicos perforados para revestimiento acústico de muros y cielos. Combinan absorción acústica con estética industrial, utilizados en conjunto con material absorbente.",
-    specs: [
-      { label: "Material", value: "Acero galvanizado / Inoxidable" },
-      { label: "Perforación", value: "Circular / Según diseño" },
-      { label: "Fabricación", value: "A medida" },
-      { label: "Espesor plancha", value: "0,5 a 1,5 mm" },
-      { label: "Acabado", value: "Galvanizado / Pintura" },
-    ],
-    uses: [
-      "Revestimiento de muros",
-      "Cielos acústicos",
-      "Salas de máquinas",
-      "Recintos industriales",
-      "Edificios comerciales",
-    ],
-    images: [
-      { src: siteAssets.panelPerforado, alt: "Panel perforado metálico" },
-      { src: siteAssets.panelAplicacion, alt: "Panel perforado instalado en cielo" },
-    ],
-  },
-  {
-    id: "pantalla-movil",
-    name: "Pantalla Móvil",
-    code: "NMóvil",
-    category: "Seguridad Industrial",
-    datasheet: "/fichas-tecnicas/pantalla-movil-nmovil.pdf",
-    description:
-      "Pantalla móvil plegable con ruedas para protección en trabajos de soldadura y esmerilado. Estructura metálica robusta con paneles translúcidos que permiten visibilidad controlada.",
-    specs: [
-      { label: "Material", value: "Acero con pintura epóxica" },
-      { label: "Paneles", value: "3 cuerpos plegables" },
-      { label: "Ruedas", value: "Con freno" },
-      { label: "Tipo", value: "Translúcido / Opaco" },
-      { label: "Fabricación", value: "A medida" },
-    ],
-    uses: [
-      "Talleres de soldadura",
-      "Zonas de esmerilado",
-      "Áreas de trabajo industrial",
-      "Separación de espacios",
-      "Protección visual y de partículas",
-    ],
-    images: [
-      { src: siteAssets.pantallaMovil, alt: "Pantalla móvil plegable para soldadura" },
-    ],
-  },
-];
-
-function ProductCard({ product, index }: { product: Product; index: number }) {
+function ProductCard({ product, index }: { product: ProductWithImages; index: number }) {
   return (
     <div id={product.id} className="scroll-mt-24">
       <header className="mb-8 grid gap-5 border-b border-[#DADDDC] pb-7 sm:grid-cols-[120px_1fr] sm:items-end lg:mb-10 lg:grid-cols-[170px_1fr_auto] lg:pb-9">
@@ -329,7 +150,7 @@ export default function ProductosPage() {
       <main className="relative z-10">
         {/* Hero */}
         <section className="relative isolate flex min-h-[760px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-12 pt-32 text-white sm:px-8 sm:pb-16 lg:min-h-[78vh] lg:px-10">
-          <Image src={products[1].images[0].src} alt={products[1].images[0].alt} fill priority className="-z-10 object-cover" sizes="100vw" />
+          <Image src={productCards[1].images[0].src} alt={productCards[1].images[0].alt} fill priority className="-z-10 object-cover" sizes="100vw" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.83)_0%,rgba(15,17,18,.48)_58%,rgba(15,17,18,.08)_100%)]" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/10" />
           <div className="container-custom w-full">
@@ -423,7 +244,7 @@ export default function ProductosPage() {
 
         {/* Products */}
         <div className="divide-y divide-slate-100">
-          {products.map((product, i) => (
+          {productCards.map((product, i) => (
             <section
               key={product.id}
           className={`section-padding ${i % 2 === 0 ? "bg-white" : "bg-[#F5F5F2]"}`}
@@ -468,6 +289,7 @@ export default function ProductosPage() {
       </main>
       <Footer />
       <WhatsAppButton />
+      <PublicSalesAssistant initialService="Productos acústicos e industriales" />
     </>
   );
 }
