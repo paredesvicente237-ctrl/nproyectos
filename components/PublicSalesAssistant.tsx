@@ -21,6 +21,7 @@ import {
   X,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { salesContact } from "@/components/siteData";
 import { trackGaEvent } from "@/lib/analytics";
@@ -564,7 +565,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
 
                 <label className="flex items-start gap-2.5 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-600">
                   <input type="checkbox" checked={privacyConsent} onChange={(event) => setPrivacyConsent(event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-blue-700" />
-                  <span>Autorizo compartir esta solicitud y mis datos de contacto con el equipo comercial de N Proyectos para que pueda responderme. El chat no se guarda; enviaré el resumen que acabo de revisar.</span>
+                  <span>Autorizo compartir esta solicitud y mis datos de contacto con el equipo comercial de N Proyectos para que pueda responderme. El chat no se guarda; enviaré el resumen que acabo de revisar. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Lee la política de privacidad</Link>.</span>
                 </label>
 
                 {leadError && <p role="alert" className="border-l-2 border-red-600 bg-red-50 px-3 py-2 text-sm leading-5 text-red-800">{leadError}</p>}
@@ -584,11 +585,11 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                 <div className="mb-4 border-l-2 border-blue-700 bg-white px-3 py-2.5 text-xs leading-5 text-slate-600">
                   <div className="flex items-start gap-2">
                     <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
-                    <p>OpenAI procesa tus mensajes mediante su API para generar respuestas. La web no guarda el contenido del chat ni lo envía a analítica. OpenAI indica que los datos de API no se usan para entrenar sus modelos salvo autorización, y que sus registros de prevención de abuso pueden conservar contenido hasta 30 días. No incluyas datos confidenciales. Solo enviaremos a ventas la solicitud que revises, autorices y confirmes.</p>
+                    <p>Al continuar, tus mensajes se enviarán a OpenAI mediante su API para generar respuestas. N Proyectos no guarda el contenido del chat ni lo envía a analítica. OpenAI indica que los datos de API no se usan para entrenar modelos salvo autorización y que sus registros de prevención de abuso pueden conservar contenido hasta 30 días. No incluyas datos confidenciales. Solo enviaremos a ventas la solicitud que revises, autorices y confirmes. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Política de privacidad</Link>.</p>
                   </div>
                   {!aiNoticeAccepted && (
                     <button type="button" onClick={() => setAiNoticeAccepted(true)} className="mt-2 inline-flex min-h-8 items-center gap-1.5 font-semibold text-blue-800 hover:text-blue-950">
-                      Entiendo, continuar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      Acepto y continuar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
                   )}
                 </div>

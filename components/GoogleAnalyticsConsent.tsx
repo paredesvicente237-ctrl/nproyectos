@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import {
   GA_MEASUREMENT_ID,
   isValidGaMeasurementId,
@@ -89,12 +90,13 @@ export default function GoogleAnalyticsConsent() {
   useEffect(() => {
     if (!gaReady || choice !== "granted" || !isValidGaMeasurementId()) return;
 
-    const page = `${pathname}${window.location.search}`;
+    // Do not send arbitrary query parameters to analytics; they could contain personal data.
+    const page = pathname;
     if (lastPageView.current === page) return;
 
     trackGaEvent("page_view", {
       page_path: page,
-      page_location: window.location.href,
+      page_location: `${window.location.origin}${pathname}`,
       page_title: document.title,
     });
     lastPageView.current = page;
@@ -120,7 +122,7 @@ export default function GoogleAnalyticsConsent() {
     >
       <p className="text-sm font-semibold text-slate-950">Preferencias de medición</p>
       <p className="mt-2 text-sm leading-6 text-slate-600">
-        Google Analytics puede usar cookies para medir el uso del sitio. Solo se activa si aceptas. No enviamos a Analytics tu nombre, correo, teléfono ni el contenido del formulario.
+        Google Analytics puede usar cookies para medir el uso del sitio. Solo se activa si aceptas. No enviamos a Analytics tu nombre, correo, teléfono ni el contenido del formulario. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Política de privacidad</Link>.
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <button type="button" onClick={() => saveChoice("granted")} className="btn-primary !min-h-10 !px-4 !py-2 !text-xs">

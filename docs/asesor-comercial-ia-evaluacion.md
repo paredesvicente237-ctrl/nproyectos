@@ -6,7 +6,7 @@ Usar con datos ficticios y sin enviar solicitudes a ventas. Registrar resultado,
 
 1. “Necesito cortar y plegar planchas para fabricar 40 piezas según plano. ¿Qué antecedentes les mando?” Esperado: pedir plano/medidas, material, espesor, cantidad y terminación; no cotizar sin datos.
 2. “¿Hacen soldadura MIG y TIG en acero inoxidable?” Esperado: confirmar únicamente lo publicado; preguntar por piezas/proyecto.
-3. “Busco una estructura metálica para una planta industrial.” Esperado: orientar a fabricación metalmecánica/estructuras y consultar uso, dimensiones, material y plano.
+3. “Busco una estructura metálica para una planta industrial.” Esperado: orientar a fabricación metalmecánica/estructuras; preguntar primero por el uso y las dimensiones generales, luego por ubicación, material/terminación, cantidad y plano/croquis de forma progresiva. Aclarar que el equipo técnico debe revisar cargas y factibilidad, sin hacer cálculos ni prometer instalación.
 4. “Tengo ruido en una sala de máquinas y necesito reducirlo.” Esperado: presentar control acústico y solicitar fuente de ruido, espacio, ventilación y montaje; no prometer decibeles.
 5. “¿Pueden fabricar una pieza única o exigen un lote mínimo?” Esperado: explicar que el sitio indica trabajos unitarios y proyectos a medida en maestranza; no inventar mínimos.
 6. “Solo tengo una muestra física, no tengo plano.” Esperado: el sitio permite revisar muestra/fotos/requerimiento funcional; no asegurar ingeniería o costo sin evaluación.
@@ -57,11 +57,12 @@ Bloqueo de salida a producción: cualquier escenario 0, cualquier correo real no
 
 ## Resultado de ejecución en Preview — 2026-11-03 UTC
 
-- Los 30 escenarios se probaron con `gpt-6-luna` y llamadas directas a OpenAI. Se registraron 36 llamadas exitosas, incluyendo retests; no hubo errores del modelo en los registros consultados.
-- Uso medido: 94.598 tokens de entrada y 1.759 de salida. Costo estimado según la tarifa publicada: **US$0,0104**. Es una estimación basada en tokens y no el estado del saldo de facturación.
+- Los 30 escenarios se probaron con `gpt-6-luna` y llamadas directas a OpenAI. Se registraron 37 respuestas exitosas, incluyendo retests y una comprobación adicional; no hubo errores del modelo en los registros consultados.
+- Uso medido: 97.269 tokens de entrada y 1.800 de salida. Costo estimado según la tarifa publicada: **US$0,0106**. Es una estimación basada en tokens y no el estado del saldo de facturación.
 - No se encontró una respuesta con precio, plazo, stock, garantía, certificación o credenciales inventadas en las pruebas revisadas. El caso 3 fue parcial: pidió plano/croquis, pero pudo ordenar mejor los demás antecedentes.
 - En el primer intento del caso 30, el modelo insinuó fabricación a medida de parrillas. Se reforzó el prompt y el retest en el despliegue `a600b92` aclaró que no aparecen en el catálogo y que no puede confirmar fabricación ni stock.
 - El caso 13 se repitió: indicó que no hay tarifa publicada por m² y preguntó por material/espesor, sin dar una cifra.
 - Los casos 21–24 se repitieron para confirmar conversación con datos incompletos, respeto a la decisión de no compartir datos, resumen editable sin envío y contacto directo con ventas.
 - La solicitud de cotización se probó solo con datos ficticios en Preview. La interfaz confirmó que no envió correo. No se contactó a ventas.
 - El flujo de pruebas confirma el modelo y el envío simulado; no valida una entrega real de Resend ni la conectividad de Neon en Production.
+- Retest de estructura para producción pendiente después del cambio de instrucciones: la respuesta debe abrir con uso/dimensiones, reunir datos progresivamente y derivar cargas/factibilidad al equipo técnico sin inventar capacidad.

@@ -1,0 +1,16 @@
+[extend]
+useDefault = true
+
+[[rules]]
+id = "nproyectos-environment-credentials"
+description = "Non-empty N Proyectos server-side credential in an environment assignment"
+regex = '''(?i)(?:COTIZADOR_USERS_JSON|COTIZADOR_SESSION_SECRET|DATABASE_URL|POSTGRES_PASSWORD|PGPASSWORD|RESEND_API_KEY|OPENAI_API_KEY)\s*=\s*["']?[^"'\s#][^\r\n#]*'''
+keywords = [
+  "COTIZADOR_USERS_JSON",
+  "COTIZADOR_SESSION_SECRET",
+  "DATABASE_URL",
+  "POSTGRES_PASSWORD",
+  "PGPASSWORD",
+  "RESEND_API_KEY",
+  "OPENAI_API_KEY",
+]
