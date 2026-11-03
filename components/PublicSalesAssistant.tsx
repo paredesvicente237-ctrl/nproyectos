@@ -8,7 +8,6 @@ import {
   Check,
   ChevronDown,
   FileCheck2,
-  LockKeyhole,
   MessageCircle,
   Minus,
   Phone,
@@ -147,7 +146,6 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isLeadFormOpen, setIsLeadFormOpen] = useState(false);
-  const [aiNoticeAccepted, setAiNoticeAccepted] = useState(false);
   const [lead, setLead] = useState<LeadForm>(EMPTY_LEAD);
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [website, setWebsite] = useState("");
@@ -224,8 +222,8 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   }, []);
 
   useEffect(() => {
-    if (isOpen && !isLeadFormOpen && !whatsAppMessage && aiNoticeAccepted) inputRef.current?.focus();
-  }, [isOpen, isLeadFormOpen, whatsAppMessage, aiNoticeAccepted]);
+    if (isOpen && !isLeadFormOpen && !whatsAppMessage) inputRef.current?.focus();
+  }, [isOpen, isLeadFormOpen, whatsAppMessage]);
 
   useEffect(() => {
     if (wasOpenRef.current && !isOpen) launcherRef.current?.focus();
@@ -272,7 +270,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
 
   const submitChatMessage = (text: string) => {
     const message = text.trim();
-    if (!message || status === "submitted" || status === "streaming" || !aiNoticeAccepted) return;
+    if (!message || status === "submitted" || status === "streaming") return;
     trackVisitorMessage(message);
     setInput("");
     if (status === "error") clearError();
@@ -564,17 +562,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
           ) : (
             <>
               <div className="npa-log flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4 sm:px-5" role="log" aria-label="Conversación con el asesor" aria-live="polite" aria-relevant="additions text">
-                {!aiNoticeAccepted && (
-                  <div className="npa-privacy mb-3 text-xs leading-5 text-slate-600">
-                    <div className="flex items-start gap-2">
-                      <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
-                      <p>Al continuar, tus mensajes se procesan con OpenAI. N Proyectos no guarda el chat ni lo envía a analítica. Evita compartir datos confidenciales. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Ver privacidad</Link>.</p>
-                    </div>
-                    <button type="button" onClick={() => setAiNoticeAccepted(true)} className="mt-2 inline-flex min-h-8 items-center gap-1.5 font-semibold text-blue-800 hover:text-blue-950">
-                      Aceptar y continuar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
-                    </button>
-                  </div>
-                )}
+                <p className="npa-privacy mb-2 text-[11px] leading-4 text-slate-500">OpenAI procesa tus mensajes para responder. <Link href="/privacidad" className="font-medium text-blue-800 underline underline-offset-2">Privacidad</Link></p>
 
                 {messages.map((message) => {
                   const text = messageText(message);
@@ -603,11 +591,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                   </div>
                 )}
 
-                {!aiNoticeAccepted && (
-                  <p className="mb-3 text-xs text-slate-500">También puedes dejar una solicitud sin iniciar una conversación con IA.</p>
-                )}
-
-                {messages.filter((message) => message.role === "user").length === 0 && aiNoticeAccepted && (
+                {messages.filter((message) => message.role === "user").length === 0 && (
                   <div className="npa-quick-actions mt-1 flex flex-wrap gap-2">
                     {quickActions.map((action) => (
                       <button key={action} type="button" onClick={() => submitChatMessage(action)} className="npa-suggestion border border-slate-300 bg-white px-3 py-2 text-left text-xs font-medium leading-4 text-slate-700 hover:border-blue-700 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700">
@@ -637,8 +621,8 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                     value={input}
                     onChange={(event) => setInput(event.target.value)}
                     maxLength={1_800}
-                    disabled={!aiNoticeAccepted || status === "submitted" || status === "streaming"}
-                    placeholder={aiNoticeAccepted ? "Escribe tu consulta…" : "Confirma para iniciar el chat"}
+                    disabled={status === "submitted" || status === "streaming"}
+                    placeholder="Escribe tu consulta…"
                     className="npa-input min-h-11 min-w-0 flex-1 border border-slate-300 bg-[#f8f9fa] px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-blue-700 focus:ring-2 focus:ring-blue-100 disabled:cursor-not-allowed disabled:bg-slate-100"
                   />
                   {status === "submitted" || status === "streaming" ? (
@@ -646,7 +630,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                       <Square className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
                   ) : (
-                    <button type="submit" disabled={!aiNoticeAccepted || !input.trim()} className="npa-send flex h-11 w-11 shrink-0 items-center justify-center bg-blue-700 text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300" aria-label="Enviar consulta">
+                    <button type="submit" disabled={!input.trim()} className="npa-send flex h-11 w-11 shrink-0 items-center justify-center bg-blue-700 text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:bg-slate-300" aria-label="Enviar consulta">
                       <Send className="h-4 w-4" aria-hidden="true" />
                     </button>
                   )}
