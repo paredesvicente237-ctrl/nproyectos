@@ -51,7 +51,32 @@ const WELCOME_MESSAGE: UIMessage = {
 };
 
 const CHAT_SESSION_STORAGE_KEY = "nproyectos-ai-chat-session-v1";
+const ASSISTANT_HINT_SHOWN_STORAGE_KEY = "nproyectos-ai-assistant-hint-shown";
+const ASSISTANT_HINT_SOUND_STORAGE_KEY = "nproyectos-ai-assistant-hint-sound-played";
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+function playAssistantHintChime(context: AudioContext) {
+  if (context.state !== "running") return;
+
+  const notes = [660, 880];
+  const now = context.currentTime;
+
+  notes.forEach((frequency, index) => {
+    const startAt = now + index * 0.095;
+    const oscillator = context.createOscillator();
+    const volume = context.createGain();
+
+    oscillator.type = "sine";
+    oscillator.frequency.setValueAtTime(frequency, startAt);
+    volume.gain.setValueAtTime(0.0001, startAt);
+    volume.gain.exponentialRampToValueAtTime(0.045, startAt + 0.018);
+    volume.gain.exponentialRampToValueAtTime(0.0001, startAt + 0.19);
+    oscillator.connect(volume);
+    volume.connect(context.destination);
+    oscillator.start(startAt);
+    oscillator.stop(startAt + 0.2);
+  });
+}
 
 const EMPTY_LEAD: LeadForm = {
   name: "",
@@ -151,6 +176,8 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   const [whatsAppMessage, setWhatsAppMessage] = useState("");
   const [leadError, setLeadError] = useState("");
   const [isProactiveHintVisible, setIsProactiveHintVisible] = useState(false);
+  const notificationAudioContextRef = useRef<AudioContext | null>(null);
+  const hintSoundPlayedRef = useRef(false);
   const chatSessionIdRef = useRef("");
   const userStartedRef = useRef(false);
   const quoteIntentTrackedRef = useRef(false);
@@ -168,6 +195,65 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   });
   const serviceType = serviceTypeForPath(pathname, initialService);
   const hasConversation = messages.some((message) => message.role === "user");
+
+  useEffect(() => {
+    let unlocked = false;
+    const unlockNotificationSound = () => {
+      if (unlocked) return;
+      unlocked = true;
+      window.removeEventListener("pointerdown", unlockNotificationSound);
+      window.removeEventListener("keydown", unlockNotificationSound);
+
+      try {
+        const context = new AudioContext();
+        notificationAudioContextRef.current = context;
+        void context.resume().catch(() => {
+          notificationAudioContextRef.current = null;
+        });
+      } catch {
+        // Audio is optional; the assistant remains fully usable without it.
+      }
+    };
+
+    window.addEventListener("pointerdown", unlockNotificationSound, { once: true, passive: true });
+    window.addEventListener("keydown", unlockNotificationSound, { once: true });
+
+    return () => {
+      window.removeEventListener("pointerdown", unlockNotificationSound);
+      window.removeEventListener("keydown", unlockNotificationSound);
+      const context = notificationAudioContextRef.current;
+      notificationAudioContextRef.current = null;
+      if (context && context.state !== "closed") void context.close().catch(() => {});
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isProactiveHintVisible || isOpen || hintSoundPlayedRef.current) return;
+
+    try {
+      if (sessionStorage.getItem(ASSISTANT_HINT_SOUND_STORAGE_KEY) === "1") {
+        hintSoundPlayedRef.current = true;
+        return;
+      }
+    } catch {
+      // Sound remains optional if browser storage is unavailable.
+    }
+
+    const context = notificationAudioContextRef.current;
+    if (!context || context.state !== "running" || document.visibilityState !== "visible") return;
+
+    hintSoundPlayedRef.current = true;
+    try {
+      sessionStorage.setItem(ASSISTANT_HINT_SOUND_STORAGE_KEY, "1");
+    } catch {
+      // The component ref still prevents repeated playback on this page.
+    }
+    try {
+      playAssistantHintChime(context);
+    } catch {
+      // A sound failure must never interrupt the invitation or chat.
+    }
+  }, [isOpen, isProactiveHintVisible]);
 
   const getChatSessionId = () => {
     if (chatSessionIdRef.current) return chatSessionIdRef.current;
@@ -194,7 +280,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
 
   useEffect(() => {
     try {
-      if (sessionStorage.getItem("nproyectos-ai-assistant-hint-shown")) return;
+      if (sessionStorage.getItem(ASSISTANT_HINT_SHOWN_STORAGE_KEY)) return;
     } catch {
       // The hint remains available even if session storage is blocked.
     }
@@ -202,7 +288,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     const timer = window.setTimeout(() => {
       if (isOpenRef.current) return;
       try {
-        sessionStorage.setItem("nproyectos-ai-assistant-hint-shown", "1");
+        sessionStorage.setItem(ASSISTANT_HINT_SHOWN_STORAGE_KEY, "1");
       } catch {
         // The welcome invitation is shown only once per page visit if storage is blocked.
       }
@@ -350,7 +436,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   const dismissProactiveHint = () => {
     setIsProactiveHintVisible(false);
     try {
-      sessionStorage.setItem("nproyectos-ai-assistant-hint-shown", "1");
+      sessionStorage.setItem(ASSISTANT_HINT_SHOWN_STORAGE_KEY, "1");
     } catch {
       // This preference is optional and does not affect the assistant.
     }
@@ -360,7 +446,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     setIsOpen(true);
     setIsProactiveHintVisible(false);
     try {
-      sessionStorage.setItem("nproyectos-ai-assistant-hint-shown", "1");
+      sessionStorage.setItem(ASSISTANT_HINT_SHOWN_STORAGE_KEY, "1");
     } catch {
       // No visitor or conversation data is stored in session storage.
     }
