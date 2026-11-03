@@ -80,7 +80,7 @@ function checkLocalRateLimit(key: string, maxHits: number, windowSeconds: number
 
 export async function isPublicApiRateLimited(
   request: Request,
-  scope: "chat" | "chat-session" | "lead",
+  scope: "chat" | "chat-session" | "lead" | "contact",
   maxHits: number,
   windowSeconds: number,
   identity?: string,

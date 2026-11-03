@@ -21,6 +21,7 @@ import {
   X,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { salesContact } from "@/components/siteData";
 import { trackGaEvent } from "@/lib/analytics";
@@ -68,6 +69,27 @@ const EMPTY_LEAD: LeadForm = {
   deadline: "",
   location: "",
 };
+
+function createWhatsAppQuoteMessage(lead: LeadForm, pagePath: string) {
+  const details = [
+    "Hola, Américo. Quiero solicitar una cotización con N Proyectos.",
+    "",
+    `Nombre: ${lead.name.trim().slice(0, 100)}`,
+    lead.company.trim() ? `Empresa: ${lead.company.trim().slice(0, 100)}` : "",
+    lead.email.trim() ? `Correo: ${lead.email.trim().slice(0, 180)}` : "",
+    lead.phone.trim() ? `Teléfono: ${lead.phone.trim().slice(0, 30)}` : "",
+    lead.service.trim() ? `Servicio o producto: ${lead.service.trim().slice(0, 120)}` : "",
+    `Resumen: ${lead.projectSummary.trim().slice(0, 1_200)}`,
+    lead.material.trim() ? `Material: ${lead.material.trim().slice(0, 120)}` : "",
+    lead.dimensions.trim() ? `Medidas: ${lead.dimensions.trim().slice(0, 120)}` : "",
+    lead.quantity.trim() ? `Cantidad: ${lead.quantity.trim().slice(0, 80)}` : "",
+    lead.deadline.trim() ? `Plazo deseado: ${lead.deadline.trim().slice(0, 80)}` : "",
+    lead.location.trim() ? `Ubicación: ${lead.location.trim().slice(0, 80)}` : "",
+    `Página de origen: ${pagePath.slice(0, 160)}`,
+  ];
+
+  return details.filter(Boolean).join("\n");
+}
 
 const serviceOptions = [
   "Fabricación metalmecánica",
@@ -117,10 +139,6 @@ function hasQuoteIntent(value: string) {
   return /cotiz|presupuest|precio|valor|comprar/.test(text);
 }
 
-function createSubmissionId() {
-  return globalThis.crypto.randomUUID();
-}
-
 export default function PublicSalesAssistant({ initialService = "" }: PublicSalesAssistantProps) {
   const pathname = usePathname();
   const transport = useMemo(
@@ -133,17 +151,14 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   const [aiNoticeAccepted, setAiNoticeAccepted] = useState(false);
   const [lead, setLead] = useState<LeadForm>(EMPTY_LEAD);
   const [privacyConsent, setPrivacyConsent] = useState(false);
-  const [submissionId, setSubmissionId] = useState("");
   const [website, setWebsite] = useState("");
+  const [whatsAppMessage, setWhatsAppMessage] = useState("");
   const [leadError, setLeadError] = useState("");
-  const [isSubmittingLead, setIsSubmittingLead] = useState(false);
-  const [leadSent, setLeadSent] = useState(false);
-  const [leadDelivery, setLeadDelivery] = useState<"sent" | "simulated" | null>(null);
   const [isProactiveHintVisible, setIsProactiveHintVisible] = useState(false);
   const chatSessionIdRef = useRef("");
   const userStartedRef = useRef(false);
   const quoteIntentTrackedRef = useRef(false);
-  const leadSentRef = useRef(false);
+  const requestPreparedRef = useRef(false);
   const trackedServicesRef = useRef(new Set<string>());
   const inputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -210,8 +225,8 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   }, []);
 
   useEffect(() => {
-    if (isOpen && !isLeadFormOpen && !leadSent && aiNoticeAccepted) inputRef.current?.focus();
-  }, [isOpen, isLeadFormOpen, leadSent, aiNoticeAccepted]);
+    if (isOpen && !isLeadFormOpen && !whatsAppMessage && aiNoticeAccepted) inputRef.current?.focus();
+  }, [isOpen, isLeadFormOpen, whatsAppMessage, aiNoticeAccepted]);
 
   useEffect(() => {
     if (wasOpenRef.current && !isOpen) launcherRef.current?.focus();
@@ -282,9 +297,8 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     });
     setPrivacyConsent(false);
     setLeadError("");
-    setSubmissionId(createSubmissionId());
-    setLeadSent(false);
-    setLeadDelivery(null);
+    setWhatsAppMessage("");
+    requestPreparedRef.current = false;
     setIsLeadFormOpen(true);
     if (initialService) {
       const detectedService = serviceTypeForText(initialService);
@@ -297,89 +311,47 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   };
 
   const clearConversation = () => {
-    if (hasConversation && !leadSentRef.current) {
+    if (hasConversation && !requestPreparedRef.current) {
       trackGaEvent("assistant_conversation_closed_without_lead", { service_type: serviceType });
     }
     setMessages([WELCOME_MESSAGE]);
     setInput("");
     setLead(EMPTY_LEAD);
     setLeadError("");
-    setLeadSent(false);
-    setLeadDelivery(null);
+    setWhatsAppMessage("");
     setIsLeadFormOpen(false);
     userStartedRef.current = false;
     quoteIntentTrackedRef.current = false;
-    leadSentRef.current = false;
+    requestPreparedRef.current = false;
     trackedServicesRef.current.clear();
   };
 
   const updateLead = (field: keyof LeadForm, value: string) => {
     setLead((current) => ({ ...current, [field]: value }));
+    setPrivacyConsent(false);
     if (leadError) {
       setLeadError("");
-      setSubmissionId(createSubmissionId());
     }
   };
 
-  const submitLead = async (event: FormEvent<HTMLFormElement>) => {
+  const submitLead = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLeadError("");
 
     if (!privacyConsent) {
-      setLeadError("Confirma que autorizas compartir esta solicitud con el equipo comercial.");
-      return;
-    }
-    if (!lead.email.trim() && !lead.phone.trim()) {
-      setLeadError("Indica un correo o teléfono para que el equipo pueda responderte.");
+      setLeadError("Confirma que autorizas continuar a WhatsApp con los datos de esta solicitud.");
       return;
     }
 
-    setIsSubmittingLead(true);
-    try {
-      const response = await fetch("/api/assistant/lead", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...lead,
-          privacyConsent,
-          submissionId,
-          pagePath: pathname,
-          website,
-        }),
-      });
-      const result: unknown = await response.json().catch(() => null);
-      const resultRecord = typeof result === "object" && result !== null
-        ? result as Record<string, unknown>
-        : {};
+    requestPreparedRef.current = true;
+    setWhatsAppMessage(createWhatsAppQuoteMessage(lead, pathname));
+    setIsLeadFormOpen(false);
+  };
 
-      if (!response.ok || resultRecord.sent !== true) {
-        setLeadError(typeof resultRecord.error === "string"
-          ? resultRecord.error
-          : "No fue posible enviar la solicitud. Inténtalo nuevamente o contacta a ventas.");
-        return;
-      }
-
-      const delivery = resultRecord.simulated === true ? "simulated" : "sent";
-      leadSentRef.current = true;
-      setLeadSent(true);
-      setLeadDelivery(delivery);
-      setIsLeadFormOpen(false);
-      setLead(EMPTY_LEAD);
-      setPrivacyConsent(false);
-      setMessages([WELCOME_MESSAGE]);
-      setInput("");
-      if (delivery === "sent") {
-        trackGaEvent("generate_lead", {
-          form_id: "asesor_comercial_ia",
-          lead_method: "assistant",
-          service_type: serviceTypeForText(lead.service) || serviceType,
-        });
-      }
-    } catch {
-      setLeadError("No hubo conexión para enviar la solicitud. Revisa tu conexión e inténtalo nuevamente.");
-    } finally {
-      setIsSubmittingLead(false);
-    }
+  const returnToLeadForm = () => {
+    setWhatsAppMessage("");
+    setPrivacyConsent(false);
+    setIsLeadFormOpen(true);
   };
 
   const handleChatSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -455,7 +427,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-1">
-              {hasConversation && !isLeadFormOpen && !leadSent && (
+              {hasConversation && !isLeadFormOpen && !whatsAppMessage && (
                 <button type="button" onClick={clearConversation} className="flex h-9 w-9 items-center justify-center text-white/70 hover:bg-white/10 hover:text-white" aria-label="Terminar y borrar conversación" title="Terminar y borrar conversación">
                   <Trash2 className="h-4 w-4" aria-hidden="true" />
                 </button>
@@ -466,21 +438,33 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
             </div>
           </header>
 
-          {leadSent ? (
+          {whatsAppMessage ? (
             <div className="flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto px-6 py-8 text-center">
               <span className="flex h-14 w-14 items-center justify-center border border-blue-200 bg-blue-50 text-blue-700">
                 <Check className="h-7 w-7" aria-hidden="true" />
               </span>
-              <h3 className="mt-5 text-xl font-semibold text-slate-950">
-                {leadDelivery === "simulated" ? "Prueba completada" : "Solicitud recibida"}
-              </h3>
+              <h3 className="mt-5 text-xl font-semibold text-slate-950">Solicitud preparada</h3>
               <p className="mt-3 max-w-sm text-sm leading-6 text-slate-600">
-                {leadDelivery === "simulated"
-                  ? "Esta vista de prueba no envió ningún correo. En producción, una solicitud confirmada se envía al equipo comercial."
-                  : "El equipo comercial recibió tu solicitud. Américo Véliz puede responderte usando el contacto que compartiste."}
+                N Proyectos aún no ha recibido nada. WhatsApp se abrirá con el resumen; revísalo allí y pulsa <strong>Enviar</strong> para compartirlo con Américo.
               </p>
-              <button type="button" onClick={clearConversation} className="mt-6 inline-flex min-h-11 items-center gap-2 bg-[#17191b] px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">
-                Iniciar otra conversación <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <div className="mt-4 max-h-44 w-full max-w-sm overflow-y-auto border border-slate-200 bg-white p-3 text-left text-xs leading-5 text-slate-700">
+                <p className="mb-1 font-semibold text-slate-900">Vista previa del mensaje</p>
+                <p className="whitespace-pre-wrap">{whatsAppMessage}</p>
+              </div>
+              <a
+                href={`https://wa.me/${salesContact.phoneInternational.replace(/\D/g, "")}?text=${encodeURIComponent(whatsAppMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackGaEvent("assistant_whatsapp_opened", { service_type: serviceTypeForText(lead.service) || serviceType })}
+                className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 bg-[#128c7e] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0d756a]"
+              >
+                <MessageCircle className="h-4 w-4" aria-hidden="true" /> Abrir WhatsApp con mi solicitud
+              </a>
+              <button type="button" onClick={returnToLeadForm} className="mt-3 min-h-9 text-sm font-semibold text-blue-800 underline underline-offset-4 hover:text-blue-950">
+                Volver a revisar o editar
+              </button>
+              <button type="button" onClick={clearConversation} className="mt-2 min-h-9 text-xs text-slate-500 underline underline-offset-4 hover:text-slate-800">
+                Terminar y borrar esta solicitud preparada
               </button>
             </div>
           ) : isLeadFormOpen ? (
@@ -516,7 +500,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                     <input id="assistant-phone" type="tel" autoComplete="tel" value={lead.phone} onChange={(event) => updateLead("phone", event.target.value)} maxLength={30} className="min-h-10 w-full border border-slate-300 bg-white px-3 text-sm outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100" />
                   </div>
                 </div>
-                <p className="-mt-2 text-xs text-slate-500">Indica al menos un medio de contacto: correo o teléfono.</p>
+                <p className="-mt-2 text-xs text-slate-500">Correo y teléfono son opcionales; también podrán responderte por WhatsApp.</p>
 
                 <div>
                   <label htmlFor="assistant-service" className="mb-1 block text-xs font-semibold text-slate-700">Servicio o producto</label>
@@ -564,18 +548,18 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
 
                 <label className="flex items-start gap-2.5 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-600">
                   <input type="checkbox" checked={privacyConsent} onChange={(event) => setPrivacyConsent(event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-blue-700" />
-                  <span>Autorizo compartir esta solicitud y mis datos de contacto con el equipo comercial de N Proyectos para que pueda responderme. El chat no se guarda; enviaré el resumen que acabo de revisar.</span>
+                  <span>Autorizo abrir WhatsApp con este mensaje para compartirlo con el equipo comercial de N Proyectos. Meta/WhatsApp procesará el mensaje cuando lo envíe; N Proyectos solo lo recibirá si pulso “Enviar” allí. El chat no se guarda. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Lee la política de privacidad</Link>.</span>
                 </label>
 
                 {leadError && <p role="alert" className="border-l-2 border-red-600 bg-red-50 px-3 py-2 text-sm leading-5 text-red-800">{leadError}</p>}
               </div>
 
               <div className="shrink-0 border-t border-slate-200 bg-white px-4 py-3 sm:px-5">
-                <button type="submit" disabled={isSubmittingLead} className="inline-flex min-h-11 w-full items-center justify-center gap-2 bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-wait disabled:opacity-60">
-                  {isSubmittingLead ? "Enviando a ventas…" : "Confirmar y enviar solicitud"}
-                  {!isSubmittingLead && <ArrowRight className="h-4 w-4" aria-hidden="true" />}
+                <button type="submit" className="inline-flex min-h-11 w-full items-center justify-center gap-2 bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">
+                  Revisar y preparar WhatsApp
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
-                <p className="mt-2 text-center text-[11px] leading-4 text-slate-500">No es una cotización definitiva. El equipo revisará tu requerimiento.</p>
+                <p className="mt-2 text-center text-[11px] leading-4 text-slate-500">No es una cotización definitiva. El mensaje no se enviará hasta que lo confirmes en WhatsApp.</p>
               </div>
             </form>
           ) : (
@@ -584,11 +568,11 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                 <div className="mb-4 border-l-2 border-blue-700 bg-white px-3 py-2.5 text-xs leading-5 text-slate-600">
                   <div className="flex items-start gap-2">
                     <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
-                    <p>OpenAI procesa tus mensajes mediante su API para generar respuestas. La web no guarda el contenido del chat ni lo envía a analítica. OpenAI indica que los datos de API no se usan para entrenar sus modelos salvo autorización, y que sus registros de prevención de abuso pueden conservar contenido hasta 30 días. No incluyas datos confidenciales. Solo enviaremos a ventas la solicitud que revises, autorices y confirmes.</p>
+                    <p>Al continuar, tus mensajes se enviarán a OpenAI mediante su API para generar respuestas. N Proyectos no guarda el contenido del chat ni lo envía a analítica. OpenAI indica que los datos de API no se usan para entrenar modelos salvo autorización y que sus registros de prevención de abuso pueden conservar contenido hasta 30 días. No incluyas datos confidenciales. Si preparas una solicitud, podrás revisarla antes de abrir WhatsApp; solo llegará a N Proyectos si luego pulsas “Enviar” allí. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Política de privacidad</Link>.</p>
                   </div>
                   {!aiNoticeAccepted && (
                     <button type="button" onClick={() => setAiNoticeAccepted(true)} className="mt-2 inline-flex min-h-8 items-center gap-1.5 font-semibold text-blue-800 hover:text-blue-950">
-                      Entiendo, continuar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      Acepto y continuar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
                   )}
                 </div>

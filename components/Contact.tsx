@@ -1,6 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent, useState } from "react";
+import Link from "next/link";
 import { companyInfo, salesContact } from "@/components/siteData";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import { trackGaEvent } from "@/lib/analytics";
@@ -35,7 +36,9 @@ const initialState: FormState = {
 export default function Contact() {
   const [form, setForm] = useState<FormState>(initialState);
   const [feedback, setFeedback] = useState("");
-
+  const [privacyConsent, setPrivacyConsent] = useState(false);
+  const [submissionId, setSubmissionId] = useState("");
+  const [website, setWebsite] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onChange = (
@@ -43,6 +46,7 @@ export default function Contact() {
   ) => {
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
+    setSubmissionId("");
   };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -51,28 +55,39 @@ export default function Contact() {
       setFeedback("Completa nombre, correo y el detalle del requerimiento.");
       return;
     }
+    if (!privacyConsent) {
+      setFeedback("Autoriza el envío de tus datos para que ventas pueda responderte.");
+      return;
+    }
 
     setIsSubmitting(true);
     setFeedback("Enviando cotización...");
+    const currentSubmissionId = submissionId || globalThis.crypto.randomUUID();
+    setSubmissionId(currentSubmissionId);
 
     try {
       const response = await fetch("/api/send", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, privacyConsent, submissionId: currentSubmissionId, website }),
       });
+      const result = await response.json().catch(() => null) as { sent?: unknown; simulated?: unknown; error?: unknown } | null;
 
-      if (response.ok) {
-        trackGaEvent("generate_lead", {
-          form_id: "contacto",
-          lead_method: "web_form",
-          service_type: form.service || "no_especificado",
-        });
-        setFeedback("success");
+      if (response.ok && result?.sent === true) {
+        if (result.simulated !== true) {
+          trackGaEvent("generate_lead", {
+            form_id: "contacto",
+            lead_method: "web_form",
+            service_type: form.service || "no_especificado",
+          });
+        }
+        setFeedback(result.simulated === true ? "simulated" : "success");
         setForm(initialState);
+        setPrivacyConsent(false);
+        setSubmissionId("");
+        setWebsite("");
       } else {
-        const errorData = await response.json();
-        setFeedback(errorData.error?.message || "Hubo un error al enviar el formulario. Inténtalo más tarde.");
+        setFeedback(typeof result?.error === "string" ? result.error : "Hubo un error al enviar el formulario. Inténtalo más tarde.");
       }
     } catch {
       setFeedback("Error de conexión. Por favor, revisa tu internet o intenta más tarde.");
@@ -100,16 +115,18 @@ export default function Contact() {
             <div className="relative overflow-hidden bg-white p-6 sm:p-8 lg:p-10">
               
               {/* Success Message Overlay */}
-              {feedback === "success" && (
+              {(feedback === "success" || feedback === "simulated") && (
                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/95 p-8 text-center animate-in fade-in zoom-in duration-500">
                   <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-md bg-green-50 text-green-700">
                     <svg className="h-10 w-10" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-semibold text-slate-900">Mensaje enviado</h3>
+                  <h3 className="text-2xl font-semibold text-slate-900">{feedback === "simulated" ? "Prueba completada" : "Mensaje enviado"}</h3>
                   <p className="mt-2 text-lg text-slate-600">
-                    Gracias por contactarnos. Hemos recibido tu requerimiento y te contactaremos a la brevedad.
+                    {feedback === "simulated"
+                      ? "Esta vista no envió ningún correo. En producción, tu requerimiento se enviará al equipo comercial."
+                      : "Gracias por contactarnos. Hemos recibido tu requerimiento y te contactaremos a la brevedad."}
                   </p>
                   <button 
                     onClick={() => setFeedback("")}
@@ -126,7 +143,7 @@ export default function Contact() {
                     <label htmlFor="name" className="form-label">Nombre *</label>
                     <input
                       id="name" name="name" value={form.name}
-                      onChange={onChange} className="form-input"
+                      onChange={onChange} className="form-input" maxLength={100}
                       placeholder="Nombre completo"
                       autoComplete="name"
                       required
@@ -137,7 +154,7 @@ export default function Contact() {
                     <label htmlFor="company" className="form-label">Empresa</label>
                     <input
                       id="company" name="company" value={form.company}
-                      onChange={onChange} className="form-input"
+                      onChange={onChange} className="form-input" maxLength={120}
                       placeholder="Razón social"
                       autoComplete="organization"
                       disabled={isSubmitting}
@@ -150,7 +167,7 @@ export default function Contact() {
                     <label htmlFor="email" className="form-label">Correo *</label>
                     <input
                       id="email" name="email" type="email" value={form.email}
-                      onChange={onChange} className="form-input"
+                      onChange={onChange} className="form-input" maxLength={254}
                       placeholder="correo@empresa.cl"
                       autoComplete="email"
                       required
@@ -161,7 +178,7 @@ export default function Contact() {
                     <label htmlFor="phone" className="form-label">Teléfono</label>
                     <input
                       id="phone" name="phone" type="tel" value={form.phone}
-                      onChange={onChange} className="form-input"
+                      onChange={onChange} className="form-input" maxLength={30}
                       placeholder="+56 9 ..."
                       autoComplete="tel"
                       disabled={isSubmitting}
@@ -187,12 +204,22 @@ export default function Contact() {
                   <label htmlFor="message" className="form-label">Detalle del proyecto *</label>
                   <textarea
                     id="message" name="message" rows={4} value={form.message}
-                    onChange={onChange} className="form-input resize-none"
+                    onChange={onChange} className="form-input resize-none" maxLength={5000}
                     placeholder="Describe piezas, cantidades, material, espesores, plazos..."
                     required
                     disabled={isSubmitting}
                   />
                 </div>
+
+                <div aria-hidden="true" className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden">
+                  <label htmlFor="contact-website">Dejar vacío</label>
+                  <input id="contact-website" tabIndex={-1} autoComplete="off" value={website} onChange={(event) => setWebsite(event.target.value)} />
+                </div>
+
+                <label className="flex items-start gap-2.5 text-sm leading-6 text-slate-600">
+                  <input type="checkbox" required checked={privacyConsent} onChange={(event) => setPrivacyConsent(event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-blue-700" />
+                  <span>Autorizo enviar estos datos al equipo comercial de N Proyectos para que responda mi consulta. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Lee la política de privacidad</Link>.</span>
+                </label>
 
                 <button 
                   type="submit" 

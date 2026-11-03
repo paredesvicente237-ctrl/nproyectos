@@ -9,7 +9,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test:public": "node scripts/test-public-site.mjs",
+    "security:secrets": "node scripts/check-staged-secrets.mjs"
   },
   "dependencies": {
     "@ai-sdk/openai": "^4.0.107",

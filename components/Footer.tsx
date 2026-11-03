@@ -47,6 +47,9 @@ export default function Footer() {
           <p>&copy; {new Date().getFullYear()} {companyInfo.legalName}. Todos los derechos reservados.</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <AnalyticsPreferencesButton />
+            <Link href="/privacidad" className="text-xs text-slate-500 underline underline-offset-4 hover:text-white">
+              Privacidad
+            </Link>
             <p>
               Creado por{" "}
               <a

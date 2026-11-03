@@ -12,10 +12,12 @@
 
 - Asistente únicamente en páginas públicas: inicio, productos, maestranza en Santiago y páginas públicas de servicios. No se monta en cotizador ni intranet.
 - Responde en español usando los datos publicados en `lib/productData.ts`, `lib/serviceData.ts` y la ficha de empresa. No inventa precios, stock, plazos, garantías ni capacidades.
-- La web no guarda el texto de las conversaciones; conserva un UUID aleatorio en `sessionStorage` para aplicar la cuota por pestaña. No se envían mensajes a Google Analytics.
+- La web no guarda el texto de las conversaciones; conserva un UUID aleatorio en `sessionStorage` para aplicar la cuota por pestaña. No se envían mensajes a Google Analytics ni parámetros arbitrarios de URL.
 - OpenAI declara que los datos de API no se usan para entrenar sus modelos salvo autorización. Aun así, los registros de abuso pueden retener contenido por hasta 30 días salvo que la organización tenga controles de retención distintos aprobados.
-- El visitante revisa/edita el resumen, completa sus datos, autoriza compartirlos y confirma. Solo producción intenta enviar la solicitud a ventas mediante Resend. Preview/local simula el envío y no usa la clave de Resend.
-- `generate_lead` solo se registra tras un envío real confirmado por Resend y con consentimiento de analítica.
+- El visitante revisa/edita el resumen, completa sus datos y autoriza abrir WhatsApp con el mensaje. La solicitud solo llega a ventas si el visitante pulsa “Enviar” en WhatsApp; la aplicación no afirma haberla recibido ni guarda el resumen.
+- El asesor no registra `generate_lead` al preparar o abrir WhatsApp, ya que la aplicación no puede confirmar que el visitante envió el mensaje. `assistant_whatsapp_opened` representa solo el clic y no incluye datos personales.
+- El formulario general de contacto aplica la misma política: consentimiento explícito, validación en servidor, límite de tamaño/frecuencia, honeypot y una clave de idempotencia de Resend. En Preview/local se simula la respuesta. Los avisos por clic en WhatsApp/correo tampoco envían emails desde Preview/local.
+- La política pública está en `/privacidad`. Es un borrador técnico; requiere revisión jurídica y aprobación de N Proyectos, especialmente el plazo de conservación de los correos de ventas, transferencias internacionales y su actualización antes de la entrada en vigor de la Ley 21.719.
 
 ## Controles de seguridad y costos
 
@@ -33,19 +35,26 @@
 | `OPENAI_API_KEY` | Clave de proyecto OpenAI, secreta | Vercel Preview (ya configurada); Production solo tras autorización de publicación |
 | `OPENAI_MODEL` | `gpt-6-luna` | Vercel Preview (ya configurada); Production solo tras autorización de publicación |
 | `DATABASE_URL` | Conexión de Neon | Ya aparece en Vercel Production; no se comprobó conectividad |
-| `RESEND_API_KEY` | Clave secreta de Resend | Ya aparece en Vercel Preview/Production; no se verificó su validez ni el remitente |
+| `RESEND_API_KEY` | Clave secreta de Resend | Se usa en el formulario general de contacto; la cotización del asesor usa WhatsApp mientras el remitente no esté verificado |
 
 No hay credenciales de OpenAI en el entorno local. En Vercel, ambas variables de OpenAI quedaron configuradas únicamente para Preview: `OPENAI_API_KEY` como Secret y `OPENAI_MODEL` como Config (`gpt-6-luna`). La clave pertenece al proyecto OpenAI “N Proyectos”, solo puede solicitar respuestas de modelo y vence el 2 de diciembre de 2026. Production no fue modificada. El panel muestra `DATABASE_URL` solo en Production y `RESEND_API_KEY` en Preview y Production; no se descifraron esos secretos ni se probó su conectividad.
 
 ## Evaluación y estado
 
-Los 30 casos de `docs/asesor-comercial-ia-evaluacion.md` se ejecutaron en Vercel Preview con llamadas reales a OpenAI y datos ficticios. Se hicieron 36 solicitudes exitosas en total, contando las repeticiones de los casos 3, 13, 21–24 y 30; los registros no muestran errores del modelo. Las llamadas utilizaron 94.598 tokens de entrada y 1.759 de salida. Con las tarifas publicadas de `gpt-6-luna`, el costo estimado de todas las pruebas es **US$0,0104**, muy por debajo del máximo autorizado de US$1.
+Los 30 casos de `docs/asesor-comercial-ia-evaluacion.md` se ejecutaron en Vercel Preview con llamadas reales a OpenAI y datos ficticios. Se registraron 37 respuestas exitosas, incluyendo repeticiones y una comprobación adicional; los registros revisados no muestran errores del modelo. El uso medido fue de 97.269 tokens de entrada y 1.800 de salida. Con las tarifas publicadas de `gpt-6-luna`, el costo estimado es **US$0,0106**, muy por debajo del máximo autorizado de US$1.
 
 El caso 30 inicialmente insinuó que se podía fabricar una parrilla a medida, aunque eso no está en el catálogo. Se endureció la instrucción del asesor en el commit `a600b92` y el retest respondió que las parrillas no aparecen en el catálogo y que no puede confirmar fabricación ni stock. El caso 3 fue seguro pero parcial: pidió plano o croquis y omitió otros antecedentes útiles en la primera respuesta. El caso 13 se repitió y confirmó que el sitio no publica tarifa por m²; no inventó precio.
 
 El flujo de cotización se probó en Preview con datos ficticios y respondió que la prueba se completó sin enviar correo. No se envió ninguna solicitud real a ventas. La clave/modelo de OpenAI solo están en Preview; Production no fue modificada. El despliegue de revisión está en `codex/openai-direct-preview` (`a600b92`): https://nproyectos-iddytdf3r-paredesvicente237-4079s-projects.vercel.app/.
 
-Lint, TypeScript y build pasan. Vercel registra cero errores de ejecución en las llamadas revisadas. No se comprobó la conectividad de Neon en Production ni la validez/remitente de Resend; en Preview el control de frecuencia usa memoria temporal porque `DATABASE_URL` solo está configurada en Production. Antes de publicar, revisar la política de privacidad y probar en forma controlada la conexión a Neon y la configuración de Resend, sin enviar correos comerciales reales.
+### Revisión final de producción — 2026-11-03
+
+- **OpenAI:** la integración sigue directa y el Preview anterior completó los 30 casos comerciales; se registraron 37 respuestas con datos ficticios y costo estimado de US$0,0106. Vercel muestra la clave de Production como secreto configurado y `OPENAI_MODEL` está definido para `gpt-6-luna`. La consola de OpenAI muestra el límite de gasto mensual de US$5 como “Limit enforced”; no se activaron recargas.
+- **Neon:** se creó la rama temporal `nproyectos-ai-qa-20261103` desde el esquema de producción, sin copiar datos comerciales. Se probaron límite por sesión, slots de concurrencia, bloqueo duplicado, liberación de slot vencido y carrera entre dos conexiones; los registros ficticios se eliminaron. La API Preview todavía no fue apuntada a esa rama, por lo que queda pendiente validar la ruta desplegada contra Neon.
+- **Resend y canal de cotización:** la zona autoritativa usa Cloudflare, pero la cuenta disponible no contiene `nproyectos.cl`; el subdominio `cotizaciones.nproyectos.cl` no está verificado. No se cambió DNS ni se envió correo. El asesor no depende de Resend para cotizaciones mientras tanto: el resumen se revisa y se prepara para WhatsApp `+56 9 5010 7432`; solo se recibe si el cliente pulsa “Enviar” en WhatsApp. El endpoint de correo del asesor responde `410`. El formulario general de contacto conserva su flujo Resend independiente.
+- **Seguridad:** `.env.example` usa valores sensibles vacíos y GitHub Push Protection está activado. El escaneo del historial todavía deja valores antiguos que no se pueden confirmar como ficticios o revocados; no se cambiaron credenciales del Cotizador VA ni se reescribió el historial. La conexión principal de Neon sigue siendo compartida con las funciones existentes y requiere una ventana de rotación separada.
+- **Pruebas de esta revisión:** `npm run lint`, `tsc --noEmit` y `npm run build` pasan. El test completo por HTTP no pudo arrancar el servidor local por restricción de red del entorno (`listen EPERM`); se debe validar el nuevo flujo en el Preview antes de fusionar a `main`. No se enviaron correos ni mensajes reales.
+- **Pendientes operacionales:** recuperar acceso a la zona Cloudflare para activar Resend en el futuro; validar jurídicamente la política de privacidad; realizar Preview final del botón y mensaje de WhatsApp. La publicación no debe afirmar que una solicitud fue recibida hasta que el visitante la envíe por WhatsApp.
 
 ## Referencias
 
