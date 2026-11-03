@@ -14,7 +14,6 @@ import {
   Send,
   ShieldCheck,
   Square,
-  Sparkles,
   Trash2,
   X,
 } from "lucide-react";
@@ -193,12 +192,6 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     return sessionId;
   };
 
-  const proactiveCopy = initialService
-    ? `¿Estás revisando ${initialService.toLowerCase()}? Puedo ayudarte a preparar la solicitud.`
-    : pathname.startsWith("/productos")
-      ? "¿Buscas un producto industrial o acústico? Te ayudo a orientarte."
-      : "¿Tienes un proyecto industrial? Te ayudo a ordenar la cotización.";
-
   useEffect(() => {
     try {
       if (sessionStorage.getItem("nproyectos-ai-assistant-hint-shown")) return;
@@ -207,13 +200,11 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     }
 
     const timer = window.setTimeout(() => {
-      if (isOpenRef.current) {
-        try {
-          sessionStorage.setItem("nproyectos-ai-assistant-hint-shown", "1");
-        } catch {
-          // No visitor or conversation data is stored in session storage.
-        }
-        return;
+      if (isOpenRef.current) return;
+      try {
+        sessionStorage.setItem("nproyectos-ai-assistant-hint-shown", "1");
+      } catch {
+        // The welcome invitation is shown only once per page visit if storage is blocked.
       }
       setIsProactiveHintVisible(true);
     }, 12_000);
@@ -396,13 +387,26 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   return (
     <>
       {isProactiveHintVisible && !isOpen && (
-        <div className="npa-hint fixed z-[59] flex items-start gap-3 border border-slate-200 bg-white text-sm leading-5 text-slate-700 shadow-lg">
-          <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
-          <p>{proactiveCopy}</p>
-          <button type="button" onClick={dismissProactiveHint} className="-mr-1 -mt-1 p-1 text-slate-500 hover:text-slate-900" aria-label="Cerrar sugerencia">
+        <aside className="npa-hint fixed z-[59]" aria-label="Invitación para conversar con el asesor comercial">
+          <button
+            type="button"
+            onClick={handleOpen}
+            aria-label="Abrir el asesor comercial de N Proyectos"
+            className="npa-hint-main"
+          >
+            <span className="npa-hint-heading">
+              <span className="npa-hint-icon" aria-hidden="true">
+                <MessageCircle className="h-4 w-4" />
+              </span>
+              <span className="npa-hint-title">¿Tienes un proyecto en mente?</span>
+            </span>
+            <span className="npa-hint-description">Cuéntanos tu idea y te ayudamos a encontrar la mejor solución para hacerla realidad.</span>
+            <span className="npa-hint-action">Conversemos <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></span>
+          </button>
+          <button type="button" onClick={dismissProactiveHint} className="npa-hint-close" aria-label="Cerrar invitación">
             <X className="h-4 w-4" aria-hidden="true" />
           </button>
-        </div>
+        </aside>
       )}
 
       {isOpen && (
@@ -653,12 +657,13 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
         aria-expanded={isOpen}
         aria-controls="nproyectos-sales-assistant"
         ref={launcherRef}
-        aria-label={isOpen ? "Minimizar asesor comercial" : "Abrir asesor comercial de N Proyectos"}
-        title="Asesor comercial N Proyectos"
+        aria-label={isOpen ? "Minimizar asesor comercial" : "Abrir asesor comercial de IA de N Proyectos"}
+        title={isOpen ? "Minimizar asesor comercial" : "Conversemos con el asesor comercial"}
         className="npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
       >
         {isOpen ? <ChevronDown className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="npa-launcher-icon h-5 w-5" aria-hidden="true" />}
-        {!isOpen && <span className="npa-launcher-label">Asesor comercial</span>}
+        {!isOpen && <span className="npa-launcher-label">Conversemos</span>}
+        {!isOpen && <ArrowRight className="npa-launcher-arrow h-4 w-4" aria-hidden="true" />}
       </button>
     </>
   );
