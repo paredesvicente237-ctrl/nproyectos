@@ -121,15 +121,12 @@
 }
 
 .npa-privacy {
-  border: 1px solid #dce5ec;
-  border-left: 3px solid #1976d2;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(16, 40, 61, .035);
-  padding: 12px 13px;
+  border-left: 2px solid #cbd5e1;
+  padding: 0 0 0 10px;
 }
 .npa-privacy p { line-height: 1.55; }
 .npa-privacy a { color: #1459a1; }
-.npa-privacy button { min-height: 36px; border-radius: 8px; }
+.npa-privacy button { min-height: 32px; }
 
 .npa-message-row { gap: 8px; align-items: flex-start; }
 .npa-message-row-assistant::before {

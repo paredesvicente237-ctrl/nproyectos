@@ -564,17 +564,17 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
           ) : (
             <>
               <div className="npa-log flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-4 sm:px-5" role="log" aria-label="Conversación con el asesor" aria-live="polite" aria-relevant="additions text">
-                <div className="npa-privacy mb-4 border-l-2 border-blue-700 bg-white px-3 py-2.5 text-xs leading-5 text-slate-600">
-                  <div className="flex items-start gap-2">
-                    <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
-                    <p>Al continuar, tus mensajes se enviarán a OpenAI mediante su API para generar respuestas. N Proyectos no guarda el contenido del chat ni lo envía a analítica. OpenAI indica que los datos de API no se usan para entrenar modelos salvo autorización y que sus registros de prevención de abuso pueden conservar contenido hasta 30 días. No incluyas datos confidenciales. Si preparas una solicitud, podrás revisarla antes de abrir WhatsApp; solo llegará a N Proyectos si luego pulsas “Enviar” allí. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Política de privacidad</Link>.</p>
-                  </div>
-                  {!aiNoticeAccepted && (
+                {!aiNoticeAccepted && (
+                  <div className="npa-privacy mb-3 text-xs leading-5 text-slate-600">
+                    <div className="flex items-start gap-2">
+                      <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
+                      <p>Al continuar, tus mensajes se procesan con OpenAI. N Proyectos no guarda el chat ni lo envía a analítica. Evita compartir datos confidenciales. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Ver privacidad</Link>.</p>
+                    </div>
                     <button type="button" onClick={() => setAiNoticeAccepted(true)} className="mt-2 inline-flex min-h-8 items-center gap-1.5 font-semibold text-blue-800 hover:text-blue-950">
-                      Acepto y continuar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                      Aceptar y continuar <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 {messages.map((message) => {
                   const text = messageText(message);
