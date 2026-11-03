@@ -317,6 +317,10 @@
   .npa-launcher-label { display: none; }
 }
 
+@media (max-width: 360px) {
+  .npa-hint { display: none; }
+}
+
 @media (max-width: 639px) {
   .npa-shell {
     height: min(680px, calc(100dvh - 12.25rem - env(safe-area-inset-bottom)));
