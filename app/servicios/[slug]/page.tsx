@@ -6,7 +6,6 @@ import { ArrowRight, CheckCircle2, ChevronRight } from "lucide-react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import { companyInfo } from "@/components/siteData";
 import { services, servicesBySlug } from "@/lib/serviceData";
@@ -244,7 +243,6 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
       <PublicSalesAssistant initialService={service.shortName} />
     </>
   );

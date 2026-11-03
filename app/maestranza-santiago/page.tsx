@@ -5,7 +5,6 @@ import { ArrowRight, CheckCircle2, ChevronRight, FileCheck2, MapPin, Ruler } fro
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import { siteAssets } from "@/components/siteAssets";
 import { companyInfo } from "@/components/siteData";
@@ -242,7 +241,6 @@ export default function MaestranzaSantiagoPage() {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
       <PublicSalesAssistant initialService="Maestranza industrial" />
     </>
   );

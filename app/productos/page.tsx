@@ -6,7 +6,6 @@ import { siteAssets } from "@/components/siteAssets";
 import { companyInfo } from "@/components/siteData";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import { products, type Product } from "@/lib/productData";
@@ -288,7 +287,6 @@ export default function ProductosPage() {
         </section>
       </main>
       <Footer />
-      <WhatsAppButton />
       <PublicSalesAssistant initialService="Productos acústicos e industriales" />
     </>
   );

@@ -11,7 +11,6 @@ import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import Process from "@/components/Process";
 import ProductSolutions from "@/components/ProductSolutions";
 import Services from "@/components/Services";
-import WhatsAppButton from "@/components/WhatsAppButton";
 import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
@@ -97,7 +96,6 @@ export default function Home() {
         <Contact />
       </main>
       <Footer />
-      <WhatsAppButton />
       <PublicSalesAssistant />
     </>
   );
