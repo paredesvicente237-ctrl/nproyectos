@@ -1,10 +1,45 @@
-import { createHash } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import { database } from "@/lib/activeSession";
 
 type MemoryBucket = { count: number; expiresAt: number };
+type MemoryLock = { leaseId: string; expiresAt: number };
 
 const localBuckets = new Map<string, MemoryBucket>();
-let rateLimitTableReady: Promise<void> | undefined;
+const localLocks = new Map<string, MemoryLock>();
+let securityTablesReady: Promise<void> | undefined;
+
+const MAX_ACTIVE_ASSISTANT_REQUESTS = 4;
+const ASSISTANT_LOCK_LEASE_SECONDS = 60;
+type DatabaseClient = ReturnType<typeof database>;
+
+async function ensureSecurityTables(sql: DatabaseClient) {
+  if (!securityTablesReady) {
+    securityTablesReady = (async () => {
+      await sql`
+        CREATE TABLE IF NOT EXISTS public_assistant_rate_limits (
+          key_hash TEXT PRIMARY KEY,
+          hit_count INTEGER NOT NULL DEFAULT 0,
+          expires_at TIMESTAMPTZ NOT NULL
+        )
+      `;
+      await sql`CREATE INDEX IF NOT EXISTS public_assistant_rate_limits_expiry_idx
+        ON public_assistant_rate_limits (expires_at)`;
+      await sql`
+        CREATE TABLE IF NOT EXISTS public_assistant_request_locks (
+          lock_key TEXT PRIMARY KEY,
+          lease_id TEXT NOT NULL,
+          expires_at TIMESTAMPTZ NOT NULL
+        )
+      `;
+      await sql`CREATE INDEX IF NOT EXISTS public_assistant_request_locks_expiry_idx
+        ON public_assistant_request_locks (expires_at)`;
+    })().catch((error) => {
+      securityTablesReady = undefined;
+      throw error;
+    });
+  }
+  await securityTablesReady;
+}
 
 export function isSameOriginRequest(request: Request) {
   const origin = request.headers.get("origin");
@@ -20,6 +55,7 @@ export function isSameOriginRequest(request: Request) {
 function requestAddress(request: Request) {
   return (
     request.headers.get("x-vercel-forwarded-for")?.split(",")[0]?.trim()
+    || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
     || "unknown"
   );
 }
@@ -44,39 +80,25 @@ function checkLocalRateLimit(key: string, maxHits: number, windowSeconds: number
 
 export async function isPublicApiRateLimited(
   request: Request,
-  scope: "chat" | "lead",
+  scope: "chat" | "chat-session" | "lead",
   maxHits: number,
   windowSeconds: number,
+  identity?: string,
 ) {
-  const address = requestAddress(request);
+  const address = identity ? `session:${identity}` : `ip:${requestAddress(request)}`;
   const keyHash = createHash("sha256")
     .update(`nproyectos-public-v1:${scope}:${address}`)
     .digest("hex");
 
   if (!process.env.DATABASE_URL) {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.VERCEL_ENV === "production" || (!process.env.VERCEL_ENV && process.env.NODE_ENV === "production")) {
       throw new Error("Rate limit storage is not configured.");
     }
     return checkLocalRateLimit(`${scope}:${keyHash}`, maxHits, windowSeconds);
   }
 
   const sql = database();
-  if (!rateLimitTableReady) {
-    rateLimitTableReady = sql`
-      CREATE TABLE IF NOT EXISTS public_assistant_rate_limits (
-        key_hash TEXT PRIMARY KEY,
-        hit_count INTEGER NOT NULL DEFAULT 0,
-        expires_at TIMESTAMPTZ NOT NULL
-      )
-    `.then(async () => {
-      await sql`CREATE INDEX IF NOT EXISTS public_assistant_rate_limits_expiry_idx
-        ON public_assistant_rate_limits (expires_at)`;
-    }).catch((error) => {
-      rateLimitTableReady = undefined;
-      throw error;
-    });
-  }
-  await rateLimitTableReady;
+  await ensureSecurityTables(sql);
 
   await sql`DELETE FROM public_assistant_rate_limits WHERE expires_at <= NOW()`;
   const rows = await sql`
@@ -88,4 +110,104 @@ export async function isPublicApiRateLimited(
   `;
 
   return Number(rows[0]?.hit_count ?? 0) > maxHits;
+}
+
+function lockHash(scope: string, identity: string) {
+  return createHash("sha256")
+    .update(`nproyectos-assistant-lock-v1:${scope}:${identity}`)
+    .digest("hex");
+}
+
+function acquireLocalLocks(sessionKey: string): (() => Promise<void>) | null {
+  const now = Date.now();
+  for (const [key, lock] of localLocks) {
+    if (lock.expiresAt <= now) localLocks.delete(key);
+  }
+
+  if (localLocks.has(sessionKey)) return null;
+
+  let globalSlot = "";
+  for (let index = 0; index < MAX_ACTIVE_ASSISTANT_REQUESTS; index += 1) {
+    const candidate = `global:${index}`;
+    if (!localLocks.has(candidate)) {
+      globalSlot = candidate;
+      break;
+    }
+  }
+  if (!globalSlot) return null;
+
+  const leaseId = randomUUID();
+  const expiresAt = now + ASSISTANT_LOCK_LEASE_SECONDS * 1000;
+  localLocks.set(sessionKey, { leaseId, expiresAt });
+  localLocks.set(globalSlot, { leaseId, expiresAt });
+
+  return async () => {
+    if (localLocks.get(sessionKey)?.leaseId === leaseId) localLocks.delete(sessionKey);
+    if (localLocks.get(globalSlot)?.leaseId === leaseId) localLocks.delete(globalSlot);
+  };
+}
+
+export async function acquireAssistantRequestSlot(
+  sessionId: string,
+): Promise<(() => Promise<void>) | null> {
+  const sessionKey = lockHash("session", sessionId);
+
+  if (!process.env.DATABASE_URL) {
+    if (process.env.VERCEL_ENV === "production" || (!process.env.VERCEL_ENV && process.env.NODE_ENV === "production")) {
+      throw new Error("Assistant concurrency storage is not configured.");
+    }
+    return acquireLocalLocks(sessionKey);
+  }
+
+  const sql = database();
+  await ensureSecurityTables(sql);
+
+  await sql`DELETE FROM public_assistant_request_locks WHERE expires_at <= NOW()`;
+
+  const leaseId = randomUUID();
+  const leaseDuration = ASSISTANT_LOCK_LEASE_SECONDS;
+  const sessionRows = await sql`
+    INSERT INTO public_assistant_request_locks (lock_key, lease_id, expires_at)
+    VALUES (${sessionKey}, ${leaseId}, NOW() + (${leaseDuration} * INTERVAL '1 second'))
+    ON CONFLICT (lock_key) DO UPDATE
+      SET lease_id = EXCLUDED.lease_id, expires_at = EXCLUDED.expires_at
+      WHERE public_assistant_request_locks.expires_at <= NOW()
+    RETURNING lock_key
+  `;
+  if (sessionRows.length === 0) return null;
+
+  let globalKey = "";
+  let globalLeaseId = "";
+  for (let index = 0; index < MAX_ACTIVE_ASSISTANT_REQUESTS; index += 1) {
+    const candidateKey = lockHash("global", String(index));
+    const candidateLeaseId = randomUUID();
+    const rows = await sql`
+      INSERT INTO public_assistant_request_locks (lock_key, lease_id, expires_at)
+      VALUES (${candidateKey}, ${candidateLeaseId}, NOW() + (${leaseDuration} * INTERVAL '1 second'))
+      ON CONFLICT (lock_key) DO UPDATE
+        SET lease_id = EXCLUDED.lease_id, expires_at = EXCLUDED.expires_at
+        WHERE public_assistant_request_locks.expires_at <= NOW()
+      RETURNING lock_key
+    `;
+    if (rows.length > 0) {
+      globalKey = candidateKey;
+      globalLeaseId = candidateLeaseId;
+      break;
+    }
+  }
+
+  if (!globalKey) {
+    await sql`DELETE FROM public_assistant_request_locks
+      WHERE lock_key = ${sessionKey} AND lease_id = ${leaseId}`;
+    return null;
+  }
+
+  return async () => {
+    await Promise.all([
+      sql`DELETE FROM public_assistant_request_locks
+        WHERE lock_key = ${sessionKey} AND lease_id = ${leaseId}`,
+      sql`DELETE FROM public_assistant_request_locks
+        WHERE lock_key = ${globalKey} AND lease_id = ${globalLeaseId}`,
+    ]);
+  };
 }

@@ -3,13 +3,22 @@ import {
   streamText,
   type ModelMessage,
 } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 import { getAssistantInstructions } from "@/lib/assistantKnowledge";
-import { isPublicApiRateLimited, isSameOriginRequest } from "@/lib/publicApiSecurity";
+import {
+  acquireAssistantRequestSlot,
+  isPublicApiRateLimited,
+  isSameOriginRequest,
+} from "@/lib/publicApiSecurity";
+
+export const maxDuration = 35;
 
 const MAX_BODY_BYTES = 80_000;
 const MAX_MESSAGE_COUNT = 22;
 const MAX_TOTAL_CHARS = 16_000;
+const MAX_SESSION_MESSAGES = 30;
+const SESSION_WINDOW_SECONDS = 24 * 60 * 60;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -66,16 +75,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Solicitud no autorizada." }, { status: 403 });
   }
 
-  if (
-    !process.env.AI_GATEWAY_API_KEY &&
-    !process.env.VERCEL_OIDC_TOKEN &&
-    process.env.VERCEL !== "1"
-  ) {
+  const apiKey = process.env.OPENAI_API_KEY?.trim();
+  const modelId = process.env.OPENAI_MODEL?.trim();
+  if (!apiKey || !modelId) {
     return NextResponse.json(
-      { error: "El asesor IA aún no está habilitado. Puedes preparar una solicitud comercial mientras tanto." },
+      { error: "El asesor IA aún no está configurado. Puedes preparar una solicitud comercial mientras tanto." },
       { status: 503 },
     );
   }
+  const directOpenAI = createOpenAI({ apiKey });
 
   const body = await readJsonBody(request);
   if (!body) {
@@ -91,23 +99,74 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "El mensaje está vacío o excede el límite permitido." }, { status: 400 });
   }
 
+  const sessionId = typeof body.sessionId === "string" ? body.sessionId : "";
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(sessionId)) {
+    return NextResponse.json({ error: "No se pudo validar esta sesión. Recarga la página e inténtalo nuevamente." }, { status: 400 });
+  }
+
+  let releaseConcurrencySlot: (() => Promise<void>) | null = null;
   try {
     if (await isPublicApiRateLimited(request, "chat", 24, 10 * 60)) {
       return NextResponse.json({ error: "Alcanzaste el límite temporal del asesor. Inténtalo más tarde o envía tu solicitud." }, { status: 429 });
+    }
+    if (await isPublicApiRateLimited(request, "chat-session", MAX_SESSION_MESSAGES, SESSION_WINDOW_SECONDS, sessionId)) {
+      return NextResponse.json({ error: "Esta sesión alcanzó su límite de mensajes por hoy. Puedes preparar una solicitud para ventas." }, { status: 429 });
+    }
+    releaseConcurrencySlot = await acquireAssistantRequestSlot(sessionId);
+    if (!releaseConcurrencySlot) {
+      return NextResponse.json({ error: "El asesor está atendiendo varias consultas. Inténtalo nuevamente en un momento." }, { status: 429 });
     }
   } catch {
     return NextResponse.json({ error: "El asesor no está disponible en este momento." }, { status: 503 });
   }
 
+  let lockReleased = false;
+  const releaseLock = async () => {
+    if (lockReleased || !releaseConcurrencySlot) return;
+    lockReleased = true;
+    try {
+      await releaseConcurrencySlot();
+    } catch {
+      // Leases expire automatically if a request cannot release its slot.
+      console.warn("[assistant] request-slot release failed");
+    }
+  };
+
+  const startedAt = Date.now();
   try {
     const result = streamText({
-      model: "openai/gpt-5-mini",
+      model: directOpenAI.responses(modelId),
       instructions: getAssistantInstructions(body.pagePath),
       messages,
       maxOutputTokens: 450,
       maxRetries: 0,
+      providerOptions: {
+        openai: {
+          store: false,
+          reasoningEffort: "none",
+          textVerbosity: "low",
+        },
+      },
       abortSignal: request.signal,
       timeout: { totalMs: 26_000 },
+      onError: async ({ error }) => {
+        console.error("[assistant] model request failed", {
+          errorType: error instanceof Error ? error.name : typeof error,
+        });
+        await releaseLock();
+      },
+      onEnd: async ({ usage, finishReason }) => {
+        console.info("[assistant] model request completed", {
+          inputTokens: usage.inputTokens ?? null,
+          outputTokens: usage.outputTokens ?? null,
+          finishReason,
+          elapsedMs: Date.now() - startedAt,
+        });
+        await releaseLock();
+      },
+      onAbort: async () => {
+        await releaseLock();
+      },
     });
 
     return createUIMessageStreamResponse({
@@ -115,6 +174,7 @@ export async function POST(request: Request) {
       headers: { "Cache-Control": "no-store, max-age=0" },
     });
   } catch {
+    await releaseLock();
     return NextResponse.json({ error: "No pude responder ahora. Puedes intentar nuevamente o preparar una solicitud." }, { status: 502 });
   }
 }

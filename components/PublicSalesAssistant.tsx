@@ -52,6 +52,9 @@ const WELCOME_MESSAGE: UIMessage = {
   }],
 };
 
+const CHAT_SESSION_STORAGE_KEY = "nproyectos-ai-chat-session-v1";
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 const EMPTY_LEAD: LeadForm = {
   name: "",
   company: "",
@@ -135,7 +138,9 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   const [leadError, setLeadError] = useState("");
   const [isSubmittingLead, setIsSubmittingLead] = useState(false);
   const [leadSent, setLeadSent] = useState(false);
+  const [leadDelivery, setLeadDelivery] = useState<"sent" | "simulated" | null>(null);
   const [isProactiveHintVisible, setIsProactiveHintVisible] = useState(false);
+  const chatSessionIdRef = useRef("");
   const userStartedRef = useRef(false);
   const quoteIntentTrackedRef = useRef(false);
   const leadSentRef = useRef(false);
@@ -152,6 +157,29 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   });
   const serviceType = serviceTypeForPath(pathname, initialService);
   const hasConversation = messages.some((message) => message.role === "user");
+
+  const getChatSessionId = () => {
+    if (chatSessionIdRef.current) return chatSessionIdRef.current;
+
+    try {
+      const storedSessionId = sessionStorage.getItem(CHAT_SESSION_STORAGE_KEY);
+      if (storedSessionId && UUID_PATTERN.test(storedSessionId)) {
+        chatSessionIdRef.current = storedSessionId;
+        return storedSessionId;
+      }
+    } catch {
+      // Keep the random session identifier in memory when storage is unavailable.
+    }
+
+    const sessionId = globalThis.crypto.randomUUID();
+    chatSessionIdRef.current = sessionId;
+    try {
+      sessionStorage.setItem(CHAT_SESSION_STORAGE_KEY, sessionId);
+    } catch {
+      // The chat still works; the session quota falls back to this page instance.
+    }
+    return sessionId;
+  };
 
   const proactiveCopy = initialService
     ? `¿Estás revisando ${initialService.toLowerCase()}? Puedo ayudarte a preparar la solicitud.`
@@ -235,7 +263,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     setInput("");
     if (status === "error") clearError();
     void sendMessage({ text: message }, {
-      body: { pagePath: pathname, website },
+      body: { pagePath: pathname, website, sessionId: getChatSessionId() },
     });
   };
 
@@ -256,6 +284,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     setLeadError("");
     setSubmissionId(createSubmissionId());
     setLeadSent(false);
+    setLeadDelivery(null);
     setIsLeadFormOpen(true);
     if (initialService) {
       const detectedService = serviceTypeForText(initialService);
@@ -276,6 +305,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     setLead(EMPTY_LEAD);
     setLeadError("");
     setLeadSent(false);
+    setLeadDelivery(null);
     setIsLeadFormOpen(false);
     userStartedRef.current = false;
     quoteIntentTrackedRef.current = false;
@@ -329,18 +359,22 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
         return;
       }
 
+      const delivery = resultRecord.simulated === true ? "simulated" : "sent";
       leadSentRef.current = true;
       setLeadSent(true);
+      setLeadDelivery(delivery);
       setIsLeadFormOpen(false);
       setLead(EMPTY_LEAD);
       setPrivacyConsent(false);
       setMessages([WELCOME_MESSAGE]);
       setInput("");
-      trackGaEvent("generate_lead", {
-        form_id: "asesor_comercial_ia",
-        lead_method: "assistant",
-        service_type: serviceTypeForText(lead.service) || serviceType,
-      });
+      if (delivery === "sent") {
+        trackGaEvent("generate_lead", {
+          form_id: "asesor_comercial_ia",
+          lead_method: "assistant",
+          service_type: serviceTypeForText(lead.service) || serviceType,
+        });
+      }
     } catch {
       setLeadError("No hubo conexión para enviar la solicitud. Revisa tu conexión e inténtalo nuevamente.");
     } finally {
@@ -437,9 +471,13 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
               <span className="flex h-14 w-14 items-center justify-center border border-blue-200 bg-blue-50 text-blue-700">
                 <Check className="h-7 w-7" aria-hidden="true" />
               </span>
-              <h3 className="mt-5 text-xl font-semibold text-slate-950">Solicitud recibida</h3>
+              <h3 className="mt-5 text-xl font-semibold text-slate-950">
+                {leadDelivery === "simulated" ? "Prueba completada" : "Solicitud recibida"}
+              </h3>
               <p className="mt-3 max-w-sm text-sm leading-6 text-slate-600">
-                El equipo comercial recibió tu solicitud. Américo Véliz puede responderte usando el contacto que compartiste.
+                {leadDelivery === "simulated"
+                  ? "Esta vista de prueba no envió ningún correo. En producción, una solicitud confirmada se envía al equipo comercial."
+                  : "El equipo comercial recibió tu solicitud. Américo Véliz puede responderte usando el contacto que compartiste."}
               </p>
               <button type="button" onClick={clearConversation} className="mt-6 inline-flex min-h-11 items-center gap-2 bg-[#17191b] px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">
                 Iniciar otra conversación <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -546,7 +584,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                 <div className="mb-4 border-l-2 border-blue-700 bg-white px-3 py-2.5 text-xs leading-5 text-slate-600">
                   <div className="flex items-start gap-2">
                     <LockKeyhole className="mt-0.5 h-4 w-4 shrink-0 text-blue-700" aria-hidden="true" />
-                    <p>Vercel AI Gateway y OpenAI procesan tus mensajes para generar respuestas. No incluyas datos confidenciales. La web no guarda el chat; solo enviaremos una solicitud a ventas si la revisas y confirmas.</p>
+                    <p>OpenAI procesa tus mensajes mediante su API para generar respuestas. La web no guarda el contenido del chat ni lo envía a analítica. OpenAI indica que los datos de API no se usan para entrenar sus modelos salvo autorización, y que sus registros de prevención de abuso pueden conservar contenido hasta 30 días. No incluyas datos confidenciales. Solo enviaremos a ventas la solicitud que revises, autorices y confirmes.</p>
                   </div>
                   {!aiNoticeAccepted && (
                     <button type="button" onClick={() => setAiNoticeAccepted(true)} className="mt-2 inline-flex min-h-8 items-center gap-1.5 font-semibold text-blue-800 hover:text-blue-950">

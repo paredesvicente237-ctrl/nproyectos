@@ -90,17 +90,23 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Indica un correo o teléfono para que el equipo pueda responderte." }, { status: 400 });
   }
 
-  const apiKey = process.env.RESEND_API_KEY ?? process.env.Resend;
-  if (!apiKey) {
-    return NextResponse.json({ error: "El envío de solicitudes no está configurado en este momento. Puedes comunicarte directamente con ventas." }, { status: 503 });
-  }
-
   try {
     if (await isPublicApiRateLimited(request, "lead", 4, 60 * 60)) {
       return NextResponse.json({ error: "Se alcanzó el límite temporal de solicitudes. Comunícate directamente con ventas." }, { status: 429 });
     }
   } catch {
     return NextResponse.json({ error: "No fue posible validar la solicitud. Inténtalo nuevamente más tarde." }, { status: 503 });
+  }
+
+  // Preview and local environments exercise form validation without ever
+  // delivering visitor data to the real sales mailbox.
+  if (process.env.VERCEL_ENV !== "production") {
+    return NextResponse.json({ sent: true, simulated: true });
+  }
+
+  const apiKey = process.env.RESEND_API_KEY ?? process.env.Resend;
+  if (!apiKey) {
+    return NextResponse.json({ error: "El envío de solicitudes no está configurado en este momento. Puedes comunicarte directamente con ventas." }, { status: 503 });
   }
 
   const details = [
