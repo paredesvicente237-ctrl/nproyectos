@@ -43,7 +43,7 @@
   --npa-blue: #1769c2;
   --npa-line: #d7e0e8;
   right: max(12px, env(safe-area-inset-right));
-  bottom: calc(5.5rem + 4.25rem + env(safe-area-inset-bottom));
+  bottom: calc(18px + 50px + 16px + env(safe-area-inset-bottom));
   width: min(440px, calc(100vw - 24px));
   max-width: 440px;
   height: min(680px, calc(100dvh - 12.25rem - env(safe-area-inset-bottom)));
@@ -99,7 +99,7 @@
 
 .npa-hint {
   right: max(14px, env(safe-area-inset-right));
-  bottom: calc(5.5rem + 50px + 11px + env(safe-area-inset-bottom));
+  bottom: calc(18px + 50px + 10px + env(safe-area-inset-bottom));
   width: min(340px, calc(100vw - 28px));
   border: 1px solid #d7e3ec;
   border-left: 3px solid #1769c2;
@@ -259,7 +259,7 @@
 
 .npa-launcher {
   right: max(14px, env(safe-area-inset-right));
-  bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  bottom: calc(18px + env(safe-area-inset-bottom));
   min-width: 158px;
   min-height: 50px;
   gap: 9px;
@@ -336,23 +336,22 @@
 }
 
 @media (min-width: 640px) {
-  .npa-shell { right: max(24px, env(safe-area-inset-right)); bottom: calc(5.75rem + 4.5rem + env(safe-area-inset-bottom)); }
-  .npa-launcher { right: max(24px, env(safe-area-inset-right)); bottom: calc(5.75rem + env(safe-area-inset-bottom)); }
-  .npa-hint { right: max(24px, env(safe-area-inset-right)); bottom: calc(5.75rem + 50px + 11px + env(safe-area-inset-bottom)); }
+  .npa-shell { right: max(24px, env(safe-area-inset-right)); bottom: calc(18px + 50px + 16px + env(safe-area-inset-bottom)); }
+  .npa-launcher { right: max(24px, env(safe-area-inset-right)); bottom: calc(18px + env(safe-area-inset-bottom)); }
+  .npa-hint { right: max(24px, env(safe-area-inset-right)); bottom: calc(18px + 50px + 10px + env(safe-area-inset-bottom)); }
 }
 
 @media (min-width: 1024px) {
-  .npa-launcher { bottom: calc(8rem + env(safe-area-inset-bottom)); }
   .npa-hint {
     right: max(24px, env(safe-area-inset-right));
-    bottom: calc(8rem + 50px + 11px + env(safe-area-inset-bottom));
+    bottom: calc(18px + 50px + 10px + env(safe-area-inset-bottom));
     width: min(320px, calc(100vw - 48px));
   }
 }
 
 @media (max-width: 767px) {
   .npa-launcher { min-width: 150px; min-height: 48px; padding-inline: 14px; }
-  .npa-hint { bottom: calc(5.5rem + 48px + 10px + env(safe-area-inset-bottom)); }
+  .npa-hint { bottom: calc(18px + 48px + 10px + env(safe-area-inset-bottom)); }
 }
 
 @media (max-width: 639px) {
@@ -372,7 +371,7 @@
 }
 
 @media (max-height: 680px) and (max-width: 639px) {
-  .npa-shell { height: calc(100dvh - 10.5rem - env(safe-area-inset-bottom)); min-height: 0; bottom: calc(5rem + 4rem + env(safe-area-inset-bottom)); }
-  .npa-launcher { bottom: calc(5rem + env(safe-area-inset-bottom)); }
+  .npa-shell { height: calc(100dvh - 10.5rem - env(safe-area-inset-bottom)); min-height: 0; bottom: calc(12px + 48px + 12px + env(safe-area-inset-bottom)); }
+  .npa-launcher { bottom: calc(12px + env(safe-area-inset-bottom)); }
   .npa-header { min-height: 66px; padding-block: 9px; }
 }
