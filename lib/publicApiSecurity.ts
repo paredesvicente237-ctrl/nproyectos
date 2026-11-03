@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
+import { neon } from "@neondatabase/serverless";
 import { database } from "@/lib/activeSession";
 
 type MemoryBucket = { count: number; expiresAt: number };
@@ -6,15 +7,21 @@ type MemoryLock = { leaseId: string; expiresAt: number };
 
 const localBuckets = new Map<string, MemoryBucket>();
 const localLocks = new Map<string, MemoryLock>();
-let securityTablesReady: Promise<void> | undefined;
+const securityTablesReady = new Map<"assistant" | "contact", Promise<void>>();
 
 const MAX_ACTIVE_ASSISTANT_REQUESTS = 4;
 const ASSISTANT_LOCK_LEASE_SECONDS = 60;
 type DatabaseClient = ReturnType<typeof database>;
 
-async function ensureSecurityTables(sql: DatabaseClient) {
-  if (!securityTablesReady) {
-    securityTablesReady = (async () => {
+function assistantDatabase() {
+  const connectionString = process.env.AI_ASSISTANT_DATABASE_URL;
+  if (!connectionString) throw new Error("AI_ASSISTANT_DATABASE_URL no está configurada.");
+  return neon(connectionString);
+}
+
+async function ensureSecurityTables(sql: DatabaseClient, storage: "assistant" | "contact") {
+  if (!securityTablesReady.has(storage)) {
+    securityTablesReady.set(storage, (async () => {
       await sql`
         CREATE TABLE IF NOT EXISTS public_assistant_rate_limits (
           key_hash TEXT PRIMARY KEY,
@@ -34,11 +41,11 @@ async function ensureSecurityTables(sql: DatabaseClient) {
       await sql`CREATE INDEX IF NOT EXISTS public_assistant_request_locks_expiry_idx
         ON public_assistant_request_locks (expires_at)`;
     })().catch((error) => {
-      securityTablesReady = undefined;
+      securityTablesReady.delete(storage);
       throw error;
-    });
+    }));
   }
-  await securityTablesReady;
+  await securityTablesReady.get(storage);
 }
 
 export function isSameOriginRequest(request: Request) {
@@ -85,20 +92,26 @@ export async function isPublicApiRateLimited(
   windowSeconds: number,
   identity?: string,
 ) {
+  const assistantScope = scope !== "contact";
+  const hasDatabase = assistantScope
+    ? Boolean(process.env.AI_ASSISTANT_DATABASE_URL)
+    : Boolean(process.env.DATABASE_URL);
   const address = identity ? `session:${identity}` : `ip:${requestAddress(request)}`;
   const keyHash = createHash("sha256")
     .update(`nproyectos-public-v1:${scope}:${address}`)
     .digest("hex");
 
-  if (!process.env.DATABASE_URL) {
+  if (!hasDatabase) {
     if (process.env.VERCEL_ENV === "production" || (!process.env.VERCEL_ENV && process.env.NODE_ENV === "production")) {
-      throw new Error("Rate limit storage is not configured.");
+      throw new Error(assistantScope
+        ? "Assistant rate limit storage is not configured."
+        : "Public contact rate limit storage is not configured.");
     }
     return checkLocalRateLimit(`${scope}:${keyHash}`, maxHits, windowSeconds);
   }
 
-  const sql = database();
-  await ensureSecurityTables(sql);
+  const sql = assistantScope ? assistantDatabase() : database();
+  await ensureSecurityTables(sql, assistantScope ? "assistant" : "contact");
 
   await sql`DELETE FROM public_assistant_rate_limits WHERE expires_at <= NOW()`;
   const rows = await sql`
@@ -152,15 +165,15 @@ export async function acquireAssistantRequestSlot(
 ): Promise<(() => Promise<void>) | null> {
   const sessionKey = lockHash("session", sessionId);
 
-  if (!process.env.DATABASE_URL) {
+  if (!process.env.AI_ASSISTANT_DATABASE_URL) {
     if (process.env.VERCEL_ENV === "production" || (!process.env.VERCEL_ENV && process.env.NODE_ENV === "production")) {
       throw new Error("Assistant concurrency storage is not configured.");
     }
     return acquireLocalLocks(sessionKey);
   }
 
-  const sql = database();
-  await ensureSecurityTables(sql);
+  const sql = assistantDatabase();
+  await ensureSecurityTables(sql, "assistant");
 
   await sql`DELETE FROM public_assistant_request_locks WHERE expires_at <= NOW()`;
 
