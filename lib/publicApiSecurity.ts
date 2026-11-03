@@ -1,6 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
 import { neon } from "@neondatabase/serverless";
-import { database } from "@/lib/activeSession";
 
 type MemoryBucket = { count: number; expiresAt: number };
 type MemoryLock = { leaseId: string; expiresAt: number };
@@ -11,7 +10,7 @@ const securityTablesReady = new Map<"assistant" | "contact", Promise<void>>();
 
 const MAX_ACTIVE_ASSISTANT_REQUESTS = 4;
 const ASSISTANT_LOCK_LEASE_SECONDS = 60;
-type DatabaseClient = ReturnType<typeof database>;
+type DatabaseClient = ReturnType<typeof neon<false, false>>;
 
 function assistantDatabase() {
   const connectionString = process.env.AI_ASSISTANT_DATABASE_URL;
@@ -92,10 +91,7 @@ export async function isPublicApiRateLimited(
   windowSeconds: number,
   identity?: string,
 ) {
-  const assistantScope = scope !== "contact";
-  const hasDatabase = assistantScope
-    ? Boolean(process.env.AI_ASSISTANT_DATABASE_URL)
-    : Boolean(process.env.DATABASE_URL);
+  const hasDatabase = Boolean(process.env.AI_ASSISTANT_DATABASE_URL);
   const address = identity ? `session:${identity}` : `ip:${requestAddress(request)}`;
   const keyHash = createHash("sha256")
     .update(`nproyectos-public-v1:${scope}:${address}`)
@@ -103,15 +99,13 @@ export async function isPublicApiRateLimited(
 
   if (!hasDatabase) {
     if (process.env.VERCEL_ENV === "production" || (!process.env.VERCEL_ENV && process.env.NODE_ENV === "production")) {
-      throw new Error(assistantScope
-        ? "Assistant rate limit storage is not configured."
-        : "Public contact rate limit storage is not configured.");
+      throw new Error("Public API rate limit storage is not configured.");
     }
     return checkLocalRateLimit(`${scope}:${keyHash}`, maxHits, windowSeconds);
   }
 
-  const sql = assistantScope ? assistantDatabase() : database();
-  await ensureSecurityTables(sql, assistantScope ? "assistant" : "contact");
+  const sql = assistantDatabase();
+  await ensureSecurityTables(sql, scope === "contact" ? "contact" : "assistant");
 
   await sql`DELETE FROM public_assistant_rate_limits WHERE expires_at <= NOW()`;
   const rows = await sql`
