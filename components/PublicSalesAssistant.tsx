@@ -30,6 +30,7 @@ type PublicSalesAssistantProps = {
 type LeadForm = {
   name: string;
   company: string;
+  companyRut: string;
   email: string;
   phone: string;
   service: string;
@@ -81,6 +82,7 @@ function playAssistantHintChime(context: AudioContext) {
 const EMPTY_LEAD: LeadForm = {
   name: "",
   company: "",
+  companyRut: "",
   email: "",
   phone: "",
   service: "",
@@ -98,6 +100,7 @@ function createWhatsAppQuoteMessage(lead: LeadForm, pagePath: string) {
     "",
     `Nombre: ${lead.name.trim().slice(0, 100)}`,
     lead.company.trim() ? `Empresa: ${lead.company.trim().slice(0, 100)}` : "",
+    lead.companyRut.trim() ? `RUT de la empresa: ${lead.companyRut.trim().slice(0, 20)}` : "",
     lead.email.trim() ? `Correo: ${lead.email.trim().slice(0, 180)}` : "",
     lead.phone.trim() ? `Teléfono: ${lead.phone.trim().slice(0, 30)}` : "",
     lead.service.trim() ? `Servicio o producto: ${lead.service.trim().slice(0, 120)}` : "",
@@ -579,6 +582,11 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
                     <input id="assistant-company" autoComplete="organization" value={lead.company} onChange={(event) => updateLead("company", event.target.value)} maxLength={120} className="min-h-10 w-full border border-slate-300 bg-white px-3 text-sm outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100" />
                   </div>
                   <div className="npa-field">
+                    <label htmlFor="assistant-company-rut" className="mb-1 block text-xs font-semibold text-slate-700">RUT de la empresa <span className="font-normal text-slate-500">(opcional)</span></label>
+                    <input id="assistant-company-rut" inputMode="text" autoComplete="off" value={lead.companyRut} onChange={(event) => updateLead("companyRut", event.target.value)} maxLength={20} placeholder="Ej.: 76.123.456-7" aria-describedby="assistant-company-rut-help" className="min-h-10 w-full border border-slate-300 bg-white px-3 text-sm outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100" />
+                    <p id="assistant-company-rut-help" className="mt-1 text-[11px] leading-4 text-slate-500">Se incluirá en el mensaje para que lo revises antes de abrir WhatsApp.</p>
+                  </div>
+                  <div className="npa-field">
                     <label htmlFor="assistant-email" className="mb-1 block text-xs font-semibold text-slate-700">Correo</label>
                     <input id="assistant-email" type="email" autoComplete="email" value={lead.email} onChange={(event) => updateLead("email", event.target.value)} maxLength={254} className="min-h-10 w-full border border-slate-300 bg-white px-3 text-sm outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100" />
                   </div>
@@ -635,7 +643,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
 
                 <label className="npa-consent flex items-start gap-2.5 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-600">
                   <input type="checkbox" checked={privacyConsent} onChange={(event) => setPrivacyConsent(event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-blue-700" />
-                  <span>Autorizo abrir WhatsApp con este mensaje para compartirlo con el equipo comercial de N Proyectos. Meta/WhatsApp procesará el mensaje cuando lo envíe; N Proyectos solo lo recibirá si pulso “Enviar” allí. El chat no se guarda. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Lee la política de privacidad</Link>.</span>
+                  <span>Autorizo abrir WhatsApp con este mensaje para compartirlo con el equipo comercial de N Proyectos. WhatsApp recibirá el texto preparado al abrir el enlace; N Proyectos solo recibirá la solicitud si pulso “Enviar” allí. El chat no se guarda. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Lee la política de privacidad</Link>.</span>
                 </label>
 
                 {leadError && <p role="alert" className="border-l-2 border-red-600 bg-red-50 px-3 py-2 text-sm leading-5 text-red-800">{leadError}</p>}

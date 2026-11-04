@@ -37,7 +37,7 @@ export default function PrivacyPage() {
               <h2 id="datos" className="text-2xl">Qué información podemos recibir</h2>
               <ul className="mt-3 list-disc space-y-2 pl-5 marker:text-blue-700">
                 <li>En el formulario de contacto: nombre, empresa, correo, teléfono, área de interés y descripción del requerimiento.</li>
-                <li>En el asesor IA: los mensajes que escribes y la página pública desde la que consultas. Si preparas una solicitud, también los datos de contacto y antecedentes que revisas y decides compartir con ventas.</li>
+                <li>En el asesor IA: los mensajes que escribes y la página pública desde la que consultas. Si preparas una solicitud, también los datos de contacto y antecedentes que revisas y decides compartir con ventas, incluido el RUT de la empresa si decides ingresarlo.</li>
                 <li>Para seguridad y límites de uso: identificadores aleatorios de sesión, contadores de solicitudes y hashes de identificadores técnicos. El asesor no guarda el texto de la conversación en una base de datos de N Proyectos.</li>
                 <li>Para medición: datos agregados de navegación de Vercel Analytics y, solo si aceptas, eventos de Google Analytics como páginas visitadas, tipo de servicio de interés y canal de contacto. No enviamos a Google Analytics el nombre, correo, teléfono ni texto de formularios.</li>
               </ul>
@@ -53,7 +53,7 @@ export default function PrivacyPage() {
                 Al pulsar ciertos enlaces de WhatsApp o correo del sitio, se envía a N Proyectos un aviso interno con el canal, la página y la hora del clic. Ese aviso no incluye el mensaje que envíes por WhatsApp o correo y no confirma que hayas iniciado una conversación.
               </p>
               <p className="mt-3">
-                Los mensajes del asesor se procesan en el momento para generar respuestas. Si preparas una solicitud, podrás revisar el resumen y abrir WhatsApp con los datos que completaste. N Proyectos no recibe la solicitud hasta que pulses “Enviar” dentro de WhatsApp; el chat por sí solo no se convierte en una solicitud y puedes seguir navegando sin compartir tus datos de contacto.
+                Los mensajes del asesor se procesan en el momento para generar respuestas. Si preparas una solicitud, podrás revisar el resumen y abrir WhatsApp con los datos que completaste. Al abrir el enlace, el texto preparado se comparte con WhatsApp para mostrarlo en el mensaje; N Proyectos no recibe la solicitud hasta que pulses “Enviar” dentro de WhatsApp. El chat por sí solo no se convierte en una solicitud y puedes seguir navegando sin completar el formulario.
               </p>
             </section>
 
@@ -64,7 +64,7 @@ export default function PrivacyPage() {
                 <li><strong>OpenAI API:</strong> recibe los mensajes del asesor y genera respuestas. La aplicación solicita que no se almacene el estado de respuesta (`store: false`). OpenAI indica que los datos de API no se usan para entrenar modelos salvo autorización; los registros de prevención de abuso pueden conservar contenido hasta 30 días por defecto.</li>
                 <li><strong>Neon:</strong> en producción, el asesor utiliza tablas dedicadas a límites de frecuencia y concurrencia; guarda hashes de identificadores y contadores con vencimiento, no el contenido del chat ni los datos de cotización. El Cotizador VA y la intranet operan con flujos y tablas aparte, no consultados por el asesor público.</li>
                 <li><strong>Resend:</strong> entrega al correo de ventas los formularios generales de contacto que envías desde el sitio. Resend recibe los datos contenidos en ese formulario para procesar su envío.</li>
-                <li><strong>WhatsApp (Meta):</strong> cuando eliges abrir el mensaje preparado del asesor y luego pulsas “Enviar”, WhatsApp procesa el texto y los datos incluidos para entregarlos al contacto comercial de N Proyectos. Abrir el enlace no envía la solicitud por sí solo.</li>
+                <li><strong>WhatsApp (Meta):</strong> al abrir el enlace preparado, WhatsApp recibe el texto incluido para mostrarlo en el mensaje. Solo entrega la solicitud al contacto comercial de N Proyectos si luego pulsas “Enviar”.</li>
                 <li><strong>Google Analytics 4:</strong> solo se activa si aceptas la medición. Puedes cambiar o retirar esa preferencia desde el enlace “Preferencias de cookies” del pie de página.</li>
               </ul>
               <p className="mt-3">
