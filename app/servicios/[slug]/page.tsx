@@ -187,6 +187,35 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
         </section>
 
+        {service.slug === "corte-plegado-planchas" && (
+          <section className="section-padding bg-slate-50" aria-labelledby="corte-laser-faq-title">
+            <div className="container-custom">
+              <span className="eyebrow">Corte láser y plegado</span>
+              <h2 id="corte-laser-faq-title" className="section-title">Preguntas frecuentes sobre corte láser</h2>
+              <div className="mt-8 grid gap-x-10 md:grid-cols-2">
+                <article className="border-t border-slate-300 py-5">
+                  <h3 className="text-lg font-semibold text-slate-900">¿Qué información necesito para cotizar un corte láser?</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    Idealmente, comparte el plano o archivo de corte, material, espesor y cantidad. Si no tienes plano, puedes enviar medidas y fotos de referencia; revisaremos si esos antecedentes bastan para evaluar el trabajo.
+                  </p>
+                </article>
+                <article className="border-t border-slate-300 py-5">
+                  <h3 className="text-lg font-semibold text-slate-900">¿Puedo solicitar corte láser y plegado juntos?</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    Sí. Podemos revisar el corte y el plegado como parte de una misma pieza o proyecto. Cuéntanos la geometría y el uso del componente para evaluar el proceso adecuado.
+                  </p>
+                </article>
+                <article className="border-t border-slate-300 py-5">
+                  <h3 className="text-lg font-semibold text-slate-900">¿Qué materiales y espesores pueden procesar?</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    La factibilidad depende del material, espesor, geometría y cantidad. Envíanos esos datos para confirmar qué proceso corresponde antes de preparar la cotización.
+                  </p>
+                </article>
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="section-padding bg-[#17191b]">
           <div className="container-custom">
             <span className="eyebrow !text-blue-300 before:!bg-blue-400">Cómo trabajamos</span>

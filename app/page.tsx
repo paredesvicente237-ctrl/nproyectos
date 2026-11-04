@@ -15,6 +15,9 @@ import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
 export const metadata: Metadata = {
+  title: "Maestranza en Santiago y corte láser",
+  description:
+    "Fabricación metalmecánica, corte láser y plegado de planchas, soldadura MIG/TIG y soluciones acústicas para proyectos industriales en Santiago.",
   alternates: { canonical: "/" },
 };
 

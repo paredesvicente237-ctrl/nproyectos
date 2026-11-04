@@ -5,7 +5,7 @@ import { services } from "@/lib/serviceData";
 
 const specialties = [
   { icon: Factory, title: "Fabricación metalmecánica", brief: "Piezas, conjuntos y estructuras en acero carbono, inoxidable y galvanizado.", slug: "fabricacion-metalmecanica", code: "FAB" },
-  { icon: Boxes, title: "Corte y plegado", brief: "Procesamiento de planchas para geometrías precisas y producción repetible.", slug: "corte-plegado-planchas", code: "CYP" },
+  { icon: Boxes, title: "Corte láser y plegado", brief: "Corte de planchas metálicas, guillotina y plegado según plano y requerimiento.", slug: "corte-plegado-planchas", code: "CYP" },
   { icon: Ruler, title: "Armado y soldadura", brief: "Uniones MIG/TIG y fabricación de equipos, gabinetes, ductos y soportes.", slug: "soldadura-mig-tig", code: "SOL" },
   { icon: AudioLines, title: "Control acústico", brief: "Silenciadores, paneles, cabinas y soluciones para ruido industrial.", slug: "control-acustico-industrial", code: "ACU" },
 ];
