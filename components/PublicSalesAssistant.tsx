@@ -329,7 +329,8 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   }, [messages, setMessages, status]);
 
   const trackVisitorMessage = (text: string) => {
-    if (!userStartedRef.current) {
+    const startsConversation = !userStartedRef.current;
+    if (startsConversation) {
       userStartedRef.current = true;
       trackGaEvent("assistant_conversation_started", { service_type: serviceType });
     }
@@ -346,16 +347,18 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
         service_type: detectedService || serviceType,
       });
     }
+
+    return startsConversation;
   };
 
   const submitChatMessage = (text: string) => {
     const message = text.trim();
     if (!message || status === "submitted" || status === "streaming") return;
-    trackVisitorMessage(message);
+    const conversationStart = trackVisitorMessage(message);
     setInput("");
     if (status === "error") clearError();
     void sendMessage({ text: message }, {
-      body: { pagePath: pathname, website, sessionId: getChatSessionId() },
+      body: { pagePath: pathname, website, sessionId: getChatSessionId(), conversationStart },
     });
   };
 

@@ -6,6 +6,7 @@ import {
 import { createOpenAI } from "@ai-sdk/openai";
 import { NextResponse } from "next/server";
 import { getAssistantInstructions } from "@/lib/assistantKnowledge";
+import { recordAssistantConversationStart } from "@/lib/assistantMetrics";
 import {
   acquireAssistantRequestSlot,
   isPublicApiRateLimited,
@@ -99,6 +100,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "El mensaje está vacío o excede el límite permitido." }, { status: 400 });
   }
 
+  const shouldCountConversationStart = body.conversationStart === true
+    && messages.filter((message) => message.role === "user").length === 1;
+
   const sessionId = typeof body.sessionId === "string" ? body.sessionId : "";
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(sessionId)) {
     return NextResponse.json({ error: "No se pudo validar esta sesión. Recarga la página e inténtalo nuevamente." }, { status: 400 });
@@ -162,6 +166,14 @@ export async function POST(request: Request) {
           finishReason,
           elapsedMs: Date.now() - startedAt,
         });
+        if (shouldCountConversationStart) {
+          try {
+            await recordAssistantConversationStart();
+          } catch {
+            // Metrics must never prevent a completed response from reaching the visitor.
+            console.warn("[assistant] conversation metric write failed");
+          }
+        }
         await releaseLock();
       },
       onAbort: async () => {

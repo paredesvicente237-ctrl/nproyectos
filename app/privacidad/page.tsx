@@ -39,7 +39,7 @@ export default function PrivacyPage() {
                 <li>En el formulario de contacto: nombre, empresa, correo, teléfono, área de interés y descripción del requerimiento.</li>
                 <li>En el asesor IA: los mensajes que escribes y la página pública desde la que consultas. Si preparas una solicitud, también los datos de contacto y antecedentes que revisas y decides compartir con ventas, incluido el RUT de la empresa si decides ingresarlo.</li>
                 <li>Para seguridad y límites de uso: identificadores aleatorios de sesión, contadores de solicitudes y hashes de identificadores técnicos. El asesor no guarda el texto de la conversación en una base de datos de N Proyectos.</li>
-                <li>Para medición: datos agregados de navegación de Vercel Analytics y, solo si aceptas, eventos de Google Analytics como páginas visitadas, tipo de servicio de interés y canal de contacto. No enviamos a Google Analytics el nombre, correo, teléfono ni texto de formularios.</li>
+                <li>Para medición: N Proyectos conserva por 30 días un total diario agregado de conversaciones que recibieron respuesta del asesor, sin guardar identificadores de visitantes, mensajes ni datos de cotización. También usamos datos agregados de navegación de Vercel Analytics y, solo si aceptas, eventos de Google Analytics como páginas visitadas, tipo de servicio de interés y canal de contacto. No enviamos a Google Analytics el nombre, correo, teléfono ni texto de formularios.</li>
               </ul>
               <p className="mt-3">No incluyas información sensible, financiera ni confidencial en el chat o en los formularios.</p>
             </section>
