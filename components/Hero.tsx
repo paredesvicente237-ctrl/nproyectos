@@ -1,49 +1,78 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import { ArrowDown, ArrowRight, FileCheck2, MapPin, Scissors } from "lucide-react";
+import TrackedQuoteLink from "@/components/TrackedQuoteLink";
+import { siteAssets } from "@/components/siteAssets";
+
+const capabilities = ["Corte láser y plegado", "Soldadura MIG/TIG", "Fabricación a medida"];
 
 export default function Hero() {
   return (
-    <section id="inicio" className="relative isolate flex min-h-[700px] flex-col justify-end overflow-hidden bg-[#17191b] pt-[76px] text-white lg:min-h-[90vh]">
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/images/hero-soldadura-nproyectos-premium.webp"
-          alt="Soldador de N Proyectos fabricando una pieza metálica"
-          fill
-          priority
-          fetchPriority="high"
-          className="object-cover object-[59%_center]"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(12,15,17,.78)_0%,rgba(12,15,17,.42)_42%,rgba(12,15,17,.04)_100%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(12,15,17,.68)_0%,rgba(12,15,17,.08)_54%,rgba(12,15,17,.1)_100%)]" />
+    <section id="inicio" className="overflow-hidden bg-[#f1f3f2] pt-[76px] text-[#17191b]">
+      <div className="container-custom grid lg:min-h-[650px] lg:grid-cols-[.92fr_1.08fr]">
+        <div className="flex flex-col justify-center px-5 py-14 sm:px-8 sm:py-16 lg:px-10 lg:py-20 xl:pr-16">
+          <p className="eyebrow">Maestranza industrial · Santiago</p>
+          <h1 className="mt-6 max-w-[760px] text-balance text-[clamp(2.2rem,8.2vw,3.25rem)] font-semibold leading-[.96] tracking-[-.065em] text-[#17191b] sm:text-[clamp(2.65rem,5.2vw,4.5rem)]">
+            Ingeniería y fabricación para proyectos que exigen más.
+          </h1>
+          <p className="mt-6 max-w-[590px] text-base leading-7 text-[#5e666b] sm:text-lg sm:leading-8">
+            Convertimos planos, muestras y requerimientos industriales en piezas y soluciones metalmecánicas fabricables. Revisamos cada necesidad para definir el proceso adecuado.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <TrackedQuoteLink href="/#contacto" location="hero" className="btn-primary !min-h-[52px] !px-6">
+              Solicitar cotización <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </TrackedQuoteLink>
+            <Link href="/#especialidades" className="inline-flex min-h-[52px] items-center justify-center gap-2 border border-[#b9c0c2] bg-transparent px-5 py-3 text-sm font-semibold text-[#26343b] transition-colors hover:border-[#145fce] hover:bg-white">
+              Explorar capacidades <ArrowDown className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+
+          <ul aria-label="Servicios industriales" className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-[#d3d8d6] pt-5 text-xs font-semibold text-[#4d5a60] sm:text-sm">
+            {capabilities.map((capability) => (
+              <li key={capability} className="inline-flex items-center gap-2">
+                <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#145fce]" />
+                {capability}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="relative isolate min-h-[300px] overflow-hidden bg-[#26343b] sm:min-h-[430px] lg:min-h-[650px]">
+          <Image
+            src={siteAssets.fotobuenax1}
+            alt="Corte láser de una plancha metálica"
+            fill
+            priority
+            fetchPriority="high"
+            className="-z-10 object-cover object-[56%_center]"
+            sizes="(max-width: 1024px) 100vw, 54vw"
+          />
+          <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#101a20]/75 via-transparent to-[#101a20]/10" />
+          <span className="absolute left-4 top-4 border border-white/40 bg-[#101a20]/35 px-3 py-2 text-[11px] text-white/90 backdrop-blur-sm sm:left-6 sm:top-6">Imagen referencial</span>
+          <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-7 lg:p-9">
+            <p className="text-xs font-semibold text-white/70">Corte láser · imagen referencial</p>
+            <p className="mt-1 text-lg font-semibold tracking-[-.025em] sm:text-xl">Geometría definida desde el plano</p>
+          </div>
+        </div>
       </div>
 
-      <div className="container-custom relative flex w-full flex-1 flex-col justify-end px-5 pb-24 pt-20 sm:px-8 sm:pb-14 lg:px-10 lg:pb-16">
-        <div className="mb-7 flex items-center gap-3 text-xs font-semibold text-white/85 sm:text-sm">
-          <span className="h-px w-9 bg-blue-400" />
-          Maestranza en Santiago · fabricación metalmecánica
-        </div>
-        <h1 className="text-balance max-w-[1080px] text-[clamp(2.65rem,7.6vw,7.25rem)] font-semibold leading-[.9] tracking-[-.065em] text-white">
-          Acero convertido<br className="hidden sm:block" /> en soluciones precisas.
-        </h1>
-        <div className="mt-8 grid items-end gap-8 border-t border-white/30 pt-6 lg:grid-cols-[1fr_auto] lg:pt-7">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:gap-10">
-            <p className="max-w-[500px] text-base leading-7 text-white/85 sm:text-lg sm:leading-8">
-              Diseñamos, fabricamos y montamos piezas, estructuras y soluciones metalmecánicas para proyectos que no admiten improvisación.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Link href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link>
-              <Link href="/#especialidades" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-5 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white hover:text-[#17191b]">Explorar capacidades <ArrowDown className="h-4 w-4" /></Link>
-            </div>
+      <div className="border-y border-[#d5dad8] bg-white">
+        <div className="container-custom grid sm:grid-cols-3">
+          <div className="flex items-start gap-3 border-b border-[#e0e4e2] px-5 py-4 sm:border-b-0 sm:px-8 sm:py-5 lg:px-10">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#145fce]" aria-hidden="true" />
+            <div><p className="text-sm font-semibold text-[#20282c]">Desde La Granja</p><p className="mt-0.5 text-xs text-[#6e777b]">Santiago, Chile</p></div>
           </div>
-          <div className="hidden items-center gap-3 whitespace-nowrap text-right text-xs text-white/80 lg:flex">
-            <span className="h-8 w-px bg-white/50" />
-            <span>Santiago, Chile</span>
+          <div className="flex items-start gap-3 border-b border-[#e0e4e2] px-5 py-4 sm:border-b-0 sm:border-l sm:border-[#e0e4e2] sm:px-8 sm:py-5 lg:px-10">
+            <FileCheck2 className="mt-0.5 h-4 w-4 shrink-0 text-[#145fce]" aria-hidden="true" />
+            <div><p className="text-sm font-semibold text-[#20282c]">Desde plano o muestra</p><p className="mt-0.5 text-xs text-[#6e777b]">Revisión técnica del requerimiento</p></div>
+          </div>
+          <div className="flex items-start gap-3 px-5 py-4 sm:border-l sm:border-[#e0e4e2] sm:px-8 sm:py-5 lg:px-10">
+            <Scissors className="mt-0.5 h-4 w-4 shrink-0 text-[#145fce]" aria-hidden="true" />
+            <div><p className="text-sm font-semibold text-[#20282c]">Procesos coordinados</p><p className="mt-0.5 text-xs text-[#6e777b]">Corte, plegado, armado y soldadura</p></div>
           </div>
         </div>
       </div>
-      <div aria-hidden="true" className="absolute bottom-1/2 right-[4vw] hidden h-[210px] w-px bg-white/30 2xl:block"><span className="absolute -left-1.5 top-0 h-3 w-3 rounded-full border border-white/60" /></div>
     </section>
   );
 }

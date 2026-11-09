@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import TrackedContactLink from "@/components/TrackedContactLink";
+import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 import { products, type Product } from "@/lib/productData";
 
 type ProductImage = { src: StaticImageData; alt: string };
@@ -56,7 +57,7 @@ export const metadata: Metadata = {
         url: "/images/hero-soldadura-nproyectos-premium.webp",
         width: 1672,
         height: 941,
-        alt: "Fabricación industrial de N Proyectos",
+        alt: "Proceso de fabricación industrial en metal",
       },
     ],
   },
@@ -148,7 +149,7 @@ export default function ProductosPage() {
       <Navbar />
       <main className="relative z-10">
         {/* Hero */}
-        <section className="relative isolate flex min-h-[760px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-12 pt-32 text-white sm:px-8 sm:pb-16 lg:min-h-[78vh] lg:px-10">
+        <section className="relative isolate flex min-h-[560px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-10 pt-28 text-white sm:px-8 sm:pb-14 lg:min-h-[680px] lg:px-10">
           <Image src={productCards[1].images[0].src} alt={productCards[1].images[0].alt} fill priority className="-z-10 object-cover" sizes="100vw" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.83)_0%,rgba(15,17,18,.48)_58%,rgba(15,17,18,.08)_100%)]" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/10" />
@@ -168,8 +169,7 @@ export default function ProductosPage() {
               específicos de tu proyecto.
             </p>
 
-            {/* Quick nav */}
-            <div className="mt-10 flex flex-wrap justify-start gap-x-3 gap-y-2">
+            <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
               <a href="#fichas-tecnicas" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
                 Descargar fichas técnicas
               </a>
@@ -279,9 +279,9 @@ export default function ProductosPage() {
               >
                 Cotizar por WhatsApp
               </TrackedContactLink>
-              <Link href="/#contacto" className="inline-flex min-h-11 items-center justify-center gap-2 border border-white/50 px-5 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">
+              <TrackedQuoteLink href="/#contacto" location="products_footer" serviceType="productos" className="inline-flex min-h-11 items-center justify-center gap-2 border border-white/50 px-5 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">
                 Formulario de contacto
-              </Link>
+              </TrackedQuoteLink>
             </div>
           </div>
         </section>

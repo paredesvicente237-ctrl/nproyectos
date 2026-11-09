@@ -11,6 +11,7 @@ import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import Process from "@/components/Process";
 import ProductSolutions from "@/components/ProductSolutions";
 import Services from "@/components/Services";
+import VerifiedProof from "@/components/VerifiedProof";
 import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
@@ -92,6 +93,7 @@ export default function Home() {
         <Hero />
         <About />
         <Services />
+        <VerifiedProof />
         <IndustrialProcesses />
         <Process />
         <Equipment />

@@ -53,7 +53,7 @@ export const metadata: Metadata = {
         url: "/images/hero-soldadura-nproyectos-premium.webp",
         width: 1672,
         height: 941,
-        alt: "Soldadura y fabricación metalmecánica de N Proyectos",
+        alt: "Proceso de soldadura industrial sobre una estructura metálica",
       },
     ],
   },

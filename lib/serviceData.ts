@@ -28,7 +28,7 @@ export const services: Service[] = [
     summary:
       "Fabricamos piezas, soportes y estructuras metálicas para proyectos industriales a partir de planos, prototipos o requerimientos funcionales. Integramos revisión técnica, selección de materiales, corte, conformado, armado y soldadura para definir una solución fabricable.",
     image: siteAssets.goodSparks,
-    imageAlt: "Trabajo de fabricación metalmecánica y soldadura en acero",
+    imageAlt: "Proceso de fabricación y soldadura en acero, imagen referencial",
     benefits: [
       "Desarrollo desde planos, modelos CAD o una necesidad funcional",
       "Fabricación de piezas únicas, conjuntos y soluciones a medida",
@@ -62,7 +62,7 @@ export const services: Service[] = [
     summary:
       "Desarrollamos piezas metálicas a partir de planos, archivos de corte, muestras o medidas. Revisamos geometría, material, espesor y cantidad; cuando el proyecto lo requiere, integramos corte láser, guillotina y plegado para fabricar componentes según el diseño.",
     image: siteAssets.goodBending,
-    imageAlt: "Plegado de plancha metálica en taller industrial",
+    imageAlt: "Plegado de una plancha metálica en una prensa industrial, imagen referencial",
     benefits: [
       "Corte láser y corte con guillotina según geometría, material y requerimiento",
       "Plegado de perfiles, canales, bandejas y cubiertas",
@@ -96,7 +96,7 @@ export const services: Service[] = [
     summary:
       "Realizamos armado y soldadura como parte de proyectos metalmecánicos o sobre componentes suministrados por el cliente. Elegimos el proceso de unión de acuerdo con el material, la geometría y la terminación requerida, integrándolo con corte, plegado y fabricación cuando el proyecto necesita una solución completa.",
     image: siteAssets.goodWelding,
-    imageAlt: "Soldadura industrial MIG y TIG de componentes metálicos",
+    imageAlt: "Proceso de soldadura de componentes metálicos, imagen referencial",
     benefits: [
       "Soldadura MIG y TIG para diferentes aplicaciones industriales",
       "Armado a partir de planos, piezas cortadas o conjuntos existentes",
@@ -130,7 +130,7 @@ export const services: Service[] = [
     summary:
       "Diseñamos y fabricamos soluciones metálicas para reducir o controlar la propagación de ruido en sistemas de ventilación, salas de máquinas, fachadas y recintos industriales. Cada elemento se desarrolla según el espacio disponible, el flujo de aire, la forma de instalación y las necesidades del proyecto.",
     image: siteAssets.fotobuenax2,
-    imageAlt: "Fabricación de solución metálica para control acústico industrial",
+    imageAlt: "Máquina de corte procesando una plancha metálica, imagen referencial",
     benefits: [
       "Soluciones fabricadas según medidas y condiciones del proyecto",
       "Integración de desempeño acústico, ventilación y montaje",

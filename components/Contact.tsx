@@ -97,22 +97,22 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="section-padding bg-[#17191b] text-white">
+    <section id="contacto" className="section-padding bg-[#142737] text-white">
       <div className="container-custom">
         <div className="max-w-3xl">
-          <span className="eyebrow">Contacto</span>
+          <span className="eyebrow !text-blue-200 before:!bg-blue-400">Contacto comercial</span>
           <h2 className="section-title !text-white">
-            Hablemos de tu próximo proyecto.
+            Cuéntanos qué necesitas fabricar.
           </h2>
           <p className="section-copy !text-white/70">
-            Cuéntanos qué necesitas fabricar. Revisaremos el requerimiento para responder con una propuesta técnica clara.
+            Comparte la información que tengas. Revisaremos el requerimiento y te contactaremos para avanzar con la cotización.
           </p>
         </div>
 
         <div className="mt-12">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
             {/* Form Container */}
-            <div className="relative overflow-hidden bg-white p-6 sm:p-8 lg:p-10">
+            <div className="relative overflow-hidden bg-white p-5 shadow-[0_18px_60px_rgba(4,19,30,.18)] sm:p-8 lg:p-10">
               
               {/* Success Message Overlay */}
               {(feedback === "success" || feedback === "simulated") && (
@@ -237,7 +237,7 @@ export default function Contact() {
                 </button>
 
                 {feedback && (
-                  <p className="text-center text-sm text-slate-500">{feedback}</p>
+                  <p role="status" aria-live="polite" className={`text-center text-sm ${feedback.includes("error") || feedback.includes("Completa") || feedback.includes("Autoriza") ? "font-medium text-red-700" : "text-slate-600"}`}>{feedback}</p>
                 )}
               </form>
             </div>

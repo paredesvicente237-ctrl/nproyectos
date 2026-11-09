@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import TrackedContactLink from "@/components/TrackedContactLink";
+import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 import { siteAssets } from "@/components/siteAssets";
 import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
@@ -28,7 +29,7 @@ export const metadata: Metadata = {
         url: "/images/hero-soldadura-nproyectos-premium.webp",
         width: 1672,
         height: 941,
-        alt: "Fabricación metalmecánica de N Proyectos en Santiago",
+        alt: "Proceso de soldadura industrial, imagen referencial",
       },
     ],
   },
@@ -147,16 +148,17 @@ export default function MaestranzaSantiagoPage() {
       />
       <Navbar />
       <main className="relative z-10">
-        <section className="relative isolate flex min-h-[720px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-12 pt-32 text-white sm:px-8 sm:pb-16 lg:min-h-[78vh] lg:px-10">
-          <Image src={siteAssets.goodWelding} alt="Trabajo de soldadura y fabricación en maestranza de Santiago" fill priority className="-z-10 object-cover object-center" sizes="100vw" />
+        <section className="relative isolate flex min-h-[560px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-10 pt-28 text-white sm:px-8 sm:pb-14 lg:min-h-[680px] lg:px-10">
+          <Image src={siteAssets.goodWelding} alt="Proceso de soldadura de una estructura metálica" fill priority className="-z-10 object-cover object-center" sizes="100vw" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.88)_0%,rgba(15,17,18,.55)_54%,rgba(15,17,18,.12)_100%)]" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/15" />
+          <span className="absolute right-4 top-24 border border-white/40 bg-[#101a20]/35 px-3 py-2 text-[11px] text-white/90 backdrop-blur-sm sm:right-8">Imagen referencial</span>
           <div className="container-custom w-full">
             <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-sm text-white/65"><Link href="/" className="hover:text-white">Inicio</Link><ChevronRight className="h-4 w-4" /><span className="text-white">Maestranza en Santiago</span></nav>
             <p className="mt-10 flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />N Proyectos · La Granja</p>
             <h1 className="mt-5 max-w-5xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">Maestranza industrial en Santiago para proyectos a medida</h1>
             <p className="mt-6 max-w-3xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">Desarrollamos y fabricamos piezas, estructuras y soluciones en acero para minería, manufactura, construcción e industria. Integramos corte, plegado, armado y soldadura en un mismo proyecto.</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><Link href="/#contacto" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></Link><TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Cotizar por WhatsApp</TrackedContactLink></div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row"><TrackedQuoteLink href="/#contacto" location="maestranza_hero" serviceType="fabricacion_metalmecanica" className="btn-primary !bg-blue-600 hover:!bg-blue-500">Solicitar cotización <ArrowRight className="h-4 w-4" /></TrackedQuoteLink><TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 border border-white/60 bg-white/5 px-6 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Cotizar por WhatsApp</TrackedContactLink></div>
           </div>
         </section>
 
@@ -236,7 +238,7 @@ export default function MaestranzaSantiagoPage() {
               <h2 className="mt-4 max-w-3xl text-3xl font-semibold text-white sm:text-4xl">Envíanos tus planos, medidas o fotografías.</h2>
               <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">Revisaremos el material, las cantidades, los procesos necesarios y el plazo para preparar una propuesta técnica.</p>
             </div>
-            <Link href="/#contacto" className="btn-white shrink-0">Cotizar proyecto <ArrowRight className="h-4 w-4" /></Link>
+            <TrackedQuoteLink href="/#contacto" location="maestranza_footer" serviceType="fabricacion_metalmecanica" className="btn-white shrink-0">Cotizar proyecto <ArrowRight className="h-4 w-4" /></TrackedQuoteLink>
           </div>
         </section>
       </main>

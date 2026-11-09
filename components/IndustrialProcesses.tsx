@@ -1,33 +1,57 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
+import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 
-const processes = [
-  { name: "Corte láser", description: "Geometrías y piezas", image: siteAssets.fotobuenax1, href: "/servicios/corte-plegado-planchas", position: "object-center" },
-  { name: "Plegado industrial", description: "Planchas y perfiles", image: siteAssets.goodBending, href: "/servicios/corte-plegado-planchas", position: "object-center" },
-  { name: "Soldadura MIG/TIG", description: "Armado de conjuntos", image: siteAssets.goodWelding, href: "/servicios/soldadura-mig-tig", position: "object-center" },
+const usefulDetails = [
+  "Plano, archivo, muestra o fotografías",
+  "Material, espesor y medidas disponibles",
+  "Cantidad y uso de la pieza o conjunto",
+];
+
+const processImages = [
+  { name: "Corte de planchas", image: siteAssets.fotobuenax1, position: "object-center" },
+  { name: "Plegado industrial", image: siteAssets.goodBending, position: "object-center" },
+  { name: "Armado y soldadura", image: siteAssets.goodWelding, position: "object-center" },
 ];
 
 export default function IndustrialProcesses() {
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-28">
-      <div className="container-custom px-5 sm:px-8 lg:px-10">
-        <div className="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end lg:mb-14">
-          <div><p className="eyebrow">Procesos destacados</p><h2 className="mt-5 text-balance text-4xl font-semibold leading-[.98] tracking-[-.065em] text-[#17191b] sm:text-5xl lg:text-[3.5rem]">Ingeniería que toma forma.</h2></div>
-          <p className="max-w-md text-base leading-7 text-[#777D81] sm:text-lg sm:leading-8">Tecnología aplicada a fabricación real.</p>
+    <section className="bg-[#172b3b] py-16 text-white sm:py-20 lg:py-24">
+      <div className="container-custom grid gap-10 px-5 sm:px-8 lg:grid-cols-[1.05fr_.95fr] lg:items-center lg:gap-16 lg:px-10">
+        <div>
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
+            {processImages.map((process, index) => (
+              <figure key={process.name} className={`relative overflow-hidden bg-[#243d50] ${index === 0 ? "col-span-2 aspect-[2.1/1]" : "aspect-[1.15/1]"}`}>
+                <Image src={process.image} alt={process.name} fill className={`object-cover ${process.position}`} sizes={index === 0 ? "(max-width: 1024px) 100vw, 52vw" : "(max-width: 1024px) 48vw, 26vw"} />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#081723]/70 via-transparent to-transparent" />
+                <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 px-3 py-3 text-xs font-semibold text-white sm:px-4 sm:text-sm">
+                  {process.name}<span className="text-[10px] font-normal text-white/70 sm:text-xs">Imagen referencial</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <p className="mt-3 text-[11px] leading-5 text-white/55">Imágenes ilustrativas de procesos; no representan casos de clientes específicos.</p>
         </div>
-        <div className="grid gap-3 lg:h-[560px] lg:grid-cols-12 lg:grid-rows-2">
-          {processes.map((process, index) => (
-            <Link key={process.name} href={process.href} className={`group relative block min-h-[280px] overflow-hidden bg-[#202426] lg:min-h-0 ${index === 0 ? "lg:col-span-7 lg:row-span-2" : "lg:col-span-5"}`}>
-              <Image src={process.image} alt={process.name} fill className={`object-cover ${process.position} transition-transform duration-700 group-hover:scale-[1.025]`} sizes={index === 0 ? "(max-width: 1024px) 100vw, 58vw" : "(max-width: 1024px) 100vw, 40vw"} />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#17191b]/68 via-[#17191b]/5 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white sm:p-7">
-                <div><p className="text-sm text-white/75">{process.description}</p><h3 className="mt-1 text-2xl font-semibold text-white sm:text-3xl">{process.name}</h3></div>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center border border-white/60 transition-colors group-hover:bg-white group-hover:text-[#17191b]"><ArrowUpRight className="h-5 w-5" /></span>
-              </div>
-            </Link>
-          ))}
+
+        <div className="py-1 lg:py-6">
+          <p className="eyebrow !text-blue-200 before:!bg-blue-400">Preparar una cotización</p>
+          <h2 className="mt-5 max-w-xl text-balance text-3xl font-semibold leading-[1.02] tracking-[-.055em] text-white sm:text-4xl lg:text-[3.25rem]">
+            Cuanto más entendamos la necesidad, mejor podremos revisarla.
+          </h2>
+          <p className="mt-5 max-w-xl text-base leading-7 text-white/70 sm:text-lg sm:leading-8">
+            Comparte los antecedentes que tengas. Si todavía no cuentas con un plano completo, puedes explicar el uso, las medidas aproximadas y el resultado que necesitas.
+          </p>
+          <ul className="mt-6 divide-y divide-white/15 border-y border-white/15">
+            {usefulDetails.map((detail) => (
+              <li key={detail} className="flex items-start gap-3 py-3 text-sm leading-6 text-white/85">
+                <Check className="mt-1 h-4 w-4 shrink-0 text-blue-300" aria-hidden="true" />{detail}
+              </li>
+            ))}
+          </ul>
+          <TrackedQuoteLink href="/#contacto" location="quote_requirements" className="mt-7 inline-flex min-h-12 items-center gap-3 bg-white px-5 py-3 text-sm font-semibold text-[#172b3b] transition-colors hover:bg-blue-50">
+            Enviar antecedentes <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </TrackedQuoteLink>
         </div>
       </div>
     </section>
