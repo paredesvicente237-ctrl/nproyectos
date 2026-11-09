@@ -1,17 +1,10 @@
 import type { Metadata } from "next";
-import About from "@/components/About";
 import Contact from "@/components/Contact";
-import Equipment from "@/components/Equipment";
-
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import IndustrialProcesses from "@/components/IndustrialProcesses";
+import CommercialStory from "@/components/CommercialStory";
 import Navbar from "@/components/Navbar";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
-import Process from "@/components/Process";
 import ProductSolutions from "@/components/ProductSolutions";
-import Services from "@/components/Services";
-import VerifiedProof from "@/components/VerifiedProof";
 import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
@@ -90,13 +83,7 @@ export default function Home() {
       />
       <Navbar />
       <main className="relative z-10">
-        <Hero />
-        <About />
-        <Services />
-        <VerifiedProof />
-        <IndustrialProcesses />
-        <Process />
-        <Equipment />
+        <CommercialStory />
         <ProductSolutions />
         <Contact />
       </main>
