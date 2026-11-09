@@ -118,17 +118,17 @@ export default function GoogleAnalyticsConsent() {
     <aside
       aria-label="Preferencias de medición"
       aria-live="polite"
-      className="fixed bottom-4 left-4 right-20 z-[70] max-w-[34rem] border border-slate-200 bg-white p-5 text-slate-800 shadow-xl sm:bottom-6 sm:left-6 sm:right-auto sm:p-6"
+      className="fixed bottom-20 left-3 right-3 z-[70] max-w-[22rem] border border-slate-200 bg-white p-3 text-slate-800 shadow-lg sm:bottom-6 sm:left-6 sm:right-auto sm:max-w-[34rem] sm:p-6"
     >
-      <p className="text-sm font-semibold text-slate-950">Preferencias de medición</p>
-      <p className="mt-2 text-sm leading-6 text-slate-600">
-        Google Analytics puede usar cookies para medir el uso del sitio. Solo se activa si aceptas. No enviamos a Analytics tu nombre, correo, teléfono ni el contenido del formulario. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Política de privacidad</Link>.
+      <p className="text-xs font-semibold text-slate-950 sm:text-sm">Preferencias de medición</p>
+      <p className="mt-1.5 text-xs leading-5 text-slate-600 sm:mt-2 sm:text-sm sm:leading-6">
+        Google Analytics puede usar cookies para medir el uso del sitio. Solo se activa si aceptas. No enviamos datos de formularios a Analytics. <Link href="/privacidad" className="font-semibold text-blue-800 underline underline-offset-2">Política de privacidad</Link>.
       </p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <button type="button" onClick={() => saveChoice("granted")} className="btn-primary !min-h-10 !px-4 !py-2 !text-xs">
+      <div className="mt-2.5 flex flex-wrap gap-2 sm:mt-4">
+        <button type="button" onClick={() => saveChoice("granted")} className="btn-primary !min-h-9 !px-3 !py-1.5 !text-xs sm:!min-h-10 sm:!px-4 sm:!py-2">
           Aceptar medición
         </button>
-        <button type="button" onClick={() => saveChoice("denied")} className="btn-outline !min-h-10 !px-4 !py-2 !text-xs">
+        <button type="button" onClick={() => saveChoice("denied")} className="btn-outline !min-h-9 !px-3 !py-1.5 !text-xs sm:!min-h-10 sm:!px-4 sm:!py-2">
           Rechazar
         </button>
       </div>
