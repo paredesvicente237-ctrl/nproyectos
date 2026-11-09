@@ -142,39 +142,6 @@ export default function CommercialStory() {
 
       <VerifiedProof />
 
-      <section id="nosotros" className="relative overflow-hidden bg-[#102b40] py-14 text-white sm:py-20 lg:py-24">
-        <div aria-hidden="true" className="absolute right-0 top-0 h-full w-[40%] bg-[linear-gradient(135deg,transparent_49.8%,rgba(133,184,220,.12)_50%,transparent_50.2%)] bg-[length:42px_42px] opacity-50" />
-        <div className="container-custom relative grid gap-8 px-5 sm:px-8 lg:grid-cols-[1fr_.72fr] lg:items-end lg:gap-20 lg:px-10">
-          <div>
-            <p className="inline-flex items-center gap-3 text-xs font-bold tracking-[.16em] text-[#a8d0f5]"><span className="h-px w-8 bg-[#54a6ff]" /> INGENIERÍA APLICADA</p>
-            <h2 className="mt-5 max-w-4xl text-balance text-3xl font-semibold leading-[.98] tracking-[-.06em] text-white sm:text-5xl lg:text-[4.25rem]">
-              Primero entendemos qué debe resolver la pieza.
-            </h2>
-          </div>
-          <div className="border-l-2 border-[#3184df] pl-5 sm:pl-6">
-            <p className="max-w-xl text-base leading-7 text-white/75 sm:text-lg sm:leading-8">
-              Revisamos uso, geometría, material, espesor y cantidad para evaluar cómo fabricar cada requerimiento. Así definimos el alcance antes de cotizar.
-            </p>
-            <Link href="/maestranza-santiago" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white underline decoration-[#76b7fa] underline-offset-4 transition-colors hover:text-[#b8dcff]">
-              Conoce nuestra maestranza <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-            </Link>
-          </div>
-        </div>
-        <div className="container-custom relative mt-10 grid gap-px px-5 sm:grid-cols-3 sm:px-8 lg:mt-14 lg:px-10">
-          {[
-            { icon: DraftingCompass, title: "Uso y geometría", text: "Qué función debe cumplir y cómo se integra." },
-            { icon: Ruler, title: "Material y medidas", text: "Espesor, dimensiones, tolerancias y terminación." },
-            { icon: Wrench, title: "Proceso y alcance", text: "Qué procesos y antecedentes requiere la fabricación." },
-          ].map(({ icon: Icon, title, text }) => (
-            <div key={title} className="border-t border-white/20 py-5 sm:px-5 sm:first:pl-0 sm:last:pr-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:pl-5 lg:py-6">
-              <Icon className="h-5 w-5 text-[#78b8f5]" strokeWidth={1.6} aria-hidden="true" />
-              <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
-              <p className="mt-2 max-w-xs text-sm leading-6 text-white/65">{text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       <section id="especialidades" className="bg-[#f7f8f7] py-16 sm:py-20 lg:py-28">
         <div className="container-custom px-5 sm:px-8 lg:px-10">
           <div className="grid gap-6 lg:grid-cols-[1fr_.72fr] lg:items-end lg:gap-14">
@@ -240,6 +207,39 @@ export default function CommercialStory() {
           <TrackedQuoteLink href="/#contacto" location="custom_fabrication" serviceType="fabricacion_especial" className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#155fc3] underline decoration-[#91b8e7] underline-offset-4 hover:text-[#0d4b9e]">
             Cuéntanos el requerimiento <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </TrackedQuoteLink>
+        </div>
+      </section>
+
+      <section id="nosotros" className="relative overflow-hidden bg-[#102b40] py-14 text-white sm:py-20 lg:py-24">
+        <div aria-hidden="true" className="absolute right-0 top-0 h-full w-[40%] bg-[linear-gradient(135deg,transparent_49.8%,rgba(133,184,220,.12)_50%,transparent_50.2%)] bg-[length:42px_42px] opacity-50" />
+        <div className="container-custom relative grid gap-8 px-5 sm:px-8 lg:grid-cols-[1fr_.72fr] lg:items-end lg:gap-20 lg:px-10">
+          <div>
+            <p className="inline-flex items-center gap-3 text-xs font-bold tracking-[.16em] text-[#a8d0f5]"><span className="h-px w-8 bg-[#54a6ff]" /> INGENIERÍA APLICADA</p>
+            <h2 className="mt-5 max-w-4xl text-balance text-3xl font-semibold leading-[.98] tracking-[-.06em] text-white sm:text-5xl lg:text-[4.25rem]">
+              Primero entendemos qué debe resolver la pieza.
+            </h2>
+          </div>
+          <div className="border-l-2 border-[#3184df] pl-5 sm:pl-6">
+            <p className="max-w-xl text-base leading-7 text-white/75 sm:text-lg sm:leading-8">
+              Revisamos uso, geometría, material, espesor y cantidad para evaluar cómo fabricar cada requerimiento. Así definimos el alcance antes de cotizar.
+            </p>
+            <Link href="/maestranza-santiago" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white underline decoration-[#76b7fa] underline-offset-4 transition-colors hover:text-[#b8dcff]">
+              Conoce nuestra maestranza <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+        <div className="container-custom relative mt-10 grid gap-px px-5 sm:grid-cols-3 sm:px-8 lg:mt-14 lg:px-10">
+          {[
+            { icon: DraftingCompass, title: "Uso y geometría", text: "Qué función debe cumplir y cómo se integra." },
+            { icon: Ruler, title: "Material y medidas", text: "Espesor, dimensiones, tolerancias y terminación." },
+            { icon: Wrench, title: "Proceso y alcance", text: "Qué procesos y antecedentes requiere la fabricación." },
+          ].map(({ icon: Icon, title, text }) => (
+            <div key={title} className="border-t border-white/20 py-5 sm:px-5 sm:first:pl-0 sm:last:pr-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:pl-5 lg:py-6">
+              <Icon className="h-5 w-5 text-[#78b8f5]" strokeWidth={1.6} aria-hidden="true" />
+              <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
+              <p className="mt-2 max-w-xs text-sm leading-6 text-white/65">{text}</p>
+            </div>
+          ))}
         </div>
       </section>
 
