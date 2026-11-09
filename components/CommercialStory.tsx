@@ -6,25 +6,17 @@ import {
   ArrowUpRight,
   Check,
   DraftingCompass,
-  Factory,
   FileCheck2,
   MapPin,
   Ruler,
   Scissors,
-  Workflow,
   Wrench,
 } from "lucide-react";
 import { siteAssets } from "@/components/siteAssets";
 import TrackedQuoteLink from "@/components/TrackedQuoteLink";
+import VerifiedProof from "@/components/VerifiedProof";
 import { companyInfo } from "@/components/siteData";
 import { servicesBySlug } from "@/lib/serviceData";
-
-const proofPoints = [
-  { icon: MapPin, title: "La Granja, Santiago", detail: "Atención en la Región Metropolitana" },
-  { icon: FileCheck2, title: "Desde plano o muestra", detail: "También puedes partir desde una necesidad" },
-  { icon: Workflow, title: "Procesos coordinados", detail: "Corte, plegado, armado y soldadura" },
-  { icon: Factory, title: "Soluciones industriales", detail: "Piezas, conjuntos y fabricación a medida" },
-];
 
 const serviceStories = [
   {
@@ -148,16 +140,7 @@ export default function CommercialStory() {
         </div>
       </section>
 
-      <section id="equipamiento" aria-label="Datos de N Proyectos" className="border-y border-[#d8dedf] bg-white">
-        <div className="container-custom grid px-5 sm:grid-cols-2 sm:px-8 lg:grid-cols-4 lg:px-10">
-          {proofPoints.map(({ icon: Icon, title, detail }, index) => (
-            <div key={title} className={`flex items-start gap-3 py-4 sm:px-5 sm:py-5 lg:px-6 ${index % 2 === 0 ? "border-b border-[#e3e7e7] sm:border-b-0" : "border-b border-[#e3e7e7] sm:border-b-0 sm:border-l sm:border-[#e3e7e7]"} ${index > 1 ? "lg:border-l lg:border-[#e3e7e7]" : ""}`}>
-              <Icon className="mt-0.5 h-5 w-5 shrink-0 text-[#155fc3]" strokeWidth={1.7} aria-hidden="true" />
-              <div><p className="text-sm font-bold text-[#1c2d3a]">{title}</p><p className="mt-1 text-xs leading-5 text-[#687780]">{detail}</p></div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <VerifiedProof />
 
       <section id="nosotros" className="relative overflow-hidden bg-[#102b40] py-14 text-white sm:py-20 lg:py-24">
         <div aria-hidden="true" className="absolute right-0 top-0 h-full w-[40%] bg-[linear-gradient(135deg,transparent_49.8%,rgba(133,184,220,.12)_50%,transparent_50.2%)] bg-[length:42px_42px] opacity-50" />
