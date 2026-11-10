@@ -1,141 +1,60 @@
 import type { Metadata } from "next";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
-import { ChevronRight, Download, FileText } from "lucide-react";
-import { siteAssets } from "@/components/siteAssets";
+import { ArrowDown, ArrowUpRight, Download } from "lucide-react";
 import { companyInfo } from "@/components/siteData";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import TrackedQuoteLink from "@/components/TrackedQuoteLink";
-import { products, type Product } from "@/lib/productData";
-
-type ProductImage = { src: StaticImageData; alt: string };
-type ProductWithImages = Product & { images: ProductImage[] };
-
-const productImages: Record<string, ProductImage[]> = {
-  "espuma-acustica": [
-    { src: siteAssets.espumaAcustica, alt: "Espuma acústica NFonoAB primer plano" },
-    { src: siteAssets.espumaAplicacion, alt: "Espuma acústica instalada en cielo" },
-    { src: siteAssets.espumaEstudio, alt: "Espuma acústica en estudio de grabación" },
-  ],
-  "panel-acustico-naislanpanel": [
-    { src: siteAssets.naislanPanelProducto, alt: "Panel acústico NAislanPANEL galvanizado" },
-    { src: siteAssets.naislanPanelAplicacion, alt: "Encierro industrial construido con paneles acústicos NAislanPANEL" },
-  ],
-  splitter: [{ src: siteAssets.splitter, alt: "Splitter acústico de acero galvanizado" }],
-  celosia: [{ src: siteAssets.celosia, alt: "Celosía acústica instalada en fachada" }],
-  "silenciador-escape-gases": [{ src: siteAssets.silenciadorEscapeGases, alt: "Silenciador de escape de gases NSilenSE" }],
-  "panel-perforado": [
-    { src: siteAssets.panelPerforado, alt: "Panel perforado metálico" },
-    { src: siteAssets.panelAplicacion, alt: "Panel perforado instalado en cielo" },
-  ],
-  "pantalla-movil": [{ src: siteAssets.pantallaMovil, alt: "Pantalla móvil plegable para soldadura" }],
-};
-
-const productCards: ProductWithImages[] = products.map((product) => ({
-  ...product,
-  images: productImages[product.id] ?? [],
-}));
+import TrackedProductDownloadLink from "@/components/TrackedProductDownloadLink";
+import { products } from "@/lib/productData";
+import { productImages } from "@/lib/productImages";
 
 export const metadata: Metadata = {
-  title: "Productos acústicos e industriales a medida",
+  title: { absolute: "Productos acústicos industriales y control de ruido | N Proyectos" },
   description:
-    "Productos acústicos e industriales fabricados a medida en Chile: silenciadores de escape, paneles acústicos, espuma acústica, splitters, celosías y pantallas móviles.",
+    "Explora espuma acústica, paneles acústicos industriales, splitters para ductos, celosías, silenciadores de escape, paneles perforados y pantallas móviles. Revisa fichas y cotiza.",
   alternates: { canonical: "/productos" },
   openGraph: {
     type: "website",
     locale: "es_CL",
     url: "/productos",
-    title: "Productos acústicos e industriales a medida | N Proyectos",
+    title: "Productos acústicos industriales y control de ruido | N Proyectos",
     description:
-      "Silenciadores de escape, paneles acústicos, espuma acústica, splitters, celosías y pantallas móviles fabricados según cada proyecto.",
+      "Soluciones para acondicionamiento y control acústico industrial, con fichas técnicas y orientación para cotizar.",
     siteName: companyInfo.shortName,
     images: [
       {
         url: "/images/hero-soldadura-nproyectos-premium.webp",
         width: 1672,
         height: 941,
-        alt: "Proceso de fabricación industrial en metal",
+        alt: "Fabricación metalmecánica de N Proyectos",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Productos acústicos e industriales a medida | N Proyectos",
+    title: "Productos acústicos industriales | N Proyectos",
     description:
-      "Silenciadores, paneles acústicos, espuma, splitters, celosías y pantallas industriales fabricados a medida.",
+      "Paneles acústicos, silenciadores, splitters, celosías y más soluciones industriales.",
     images: ["/images/hero-soldadura-nproyectos-premium.webp"],
   },
 };
-
-function ProductCard({ product, index }: { product: ProductWithImages; index: number }) {
-  return (
-    <div id={product.id} className="scroll-mt-24">
-      <header className="mb-8 grid gap-5 border-b border-[#DADDDC] pb-7 sm:grid-cols-[120px_1fr] sm:items-end lg:mb-10 lg:grid-cols-[170px_1fr_auto] lg:pb-9">
-        <span className="text-5xl font-semibold leading-none tracking-[-.08em] text-[#c7cbca] sm:text-6xl">0{index + 1}</span>
-        <div>
-          <p className="text-sm font-semibold text-blue-700">{product.category} <span className="ml-2 text-[#777D81]">{product.code}</span></p>
-          <h2 className="mt-3 text-3xl font-semibold leading-[1.02] tracking-[-.06em] text-[#17191b] sm:text-4xl lg:text-5xl">{product.name}</h2>
-        </div>
-        <p className="max-w-xl text-base leading-7 text-[#777D81] lg:justify-self-end">{product.description}</p>
-      </header>
-
-      <div className={`grid gap-2 ${product.images.length === 1 ? "grid-cols-1" : "grid-cols-12"}`}>
-        {product.images.map((image, imageIndex) => (
-          <div key={image.alt} className={`relative min-h-[240px] overflow-hidden bg-[#dedfdd] sm:min-h-[320px] ${product.images.length === 1 ? "aspect-[16/8] lg:min-h-[440px]" : imageIndex === 0 ? "col-span-12 lg:col-span-7 lg:row-span-2 lg:min-h-[500px]" : "col-span-6 lg:col-span-5 lg:min-h-[246px]"}`}>
-            <Image src={image.src} alt={image.alt} fill className="object-cover" sizes={imageIndex === 0 ? "(max-width: 1024px) 100vw, 58vw" : "(max-width: 1024px) 50vw, 40vw"} />
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-8 grid gap-8 lg:grid-cols-[1.1fr_.9fr] lg:gap-14">
-        <div>
-          <p className="text-sm font-semibold text-[#17191b]">Especificaciones</p>
-          <dl className="mt-4 grid grid-cols-2 border-t border-[#DADDDC] sm:grid-cols-3">
-            {product.specs.map((spec) => (
-              <div key={spec.label} className="border-b border-[#DADDDC] py-4 pr-4">
-                <dt className="text-xs font-medium text-[#777D81]">{spec.label}</dt>
-                <dd className="mt-1 text-sm font-semibold text-[#17191b]">{spec.value}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-        <div>
-          <p className="text-sm font-semibold text-[#17191b]">Aplicaciones</p>
-          <ul className="mt-4 border-t border-[#DADDDC]">
-            {product.uses.map((use) => <li key={use} className="border-b border-[#DADDDC] py-2.5 text-sm text-[#5f6669]">{use}</li>)}
-          </ul>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <TrackedContactLink channel="whatsapp" href={`${companyInfo.whatsappHref.replace("cotizar%20un%20proyecto", `cotizar%20${encodeURIComponent(product.name)}`)}`} className="btn-primary" target="_blank" rel="noopener noreferrer">Cotizar este producto</TrackedContactLink>
-            <a href={product.datasheet} download className="btn-outline"><Download className="h-4 w-4" aria-hidden="true" />Descargar ficha técnica</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function ProductosPage() {
   const pageUrl = `${companyInfo.website}/productos`;
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Inicio",
-        item: companyInfo.website,
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Productos",
-        item: pageUrl,
-      },
-    ],
+    "@type": "ItemList",
+    name: "Productos acústicos e industriales de N Proyectos",
+    itemListElement: products.map((product, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: product.name,
+      url: `${pageUrl}/${product.slug}`,
+    })),
   };
 
   return (
@@ -148,138 +67,101 @@ export default function ProductosPage() {
       />
       <Navbar />
       <main className="relative z-10">
-        {/* Hero */}
-        <section className="relative isolate flex min-h-[560px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-10 pt-28 text-white sm:px-8 sm:pb-14 lg:min-h-[680px] lg:px-10">
-          <Image src={productCards[1].images[0].src} alt={productCards[1].images[0].alt} fill priority className="-z-10 object-cover" sizes="100vw" />
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.83)_0%,rgba(15,17,18,.48)_58%,rgba(15,17,18,.08)_100%)]" />
+        <section className="relative isolate flex min-h-[500px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-12 pt-28 text-white sm:px-8 sm:pb-16 lg:min-h-[620px] lg:px-10">
+          <Image
+            src={productImages["panel-acustico-naislanpanel"][0].src}
+            alt={productImages["panel-acustico-naislanpanel"][0].alt}
+            fill
+            priority
+            className="-z-10 object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.86)_0%,rgba(15,17,18,.55)_58%,rgba(15,17,18,.12)_100%)]" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/10" />
           <div className="container-custom w-full">
             <nav aria-label="Migas de pan" className="mb-8 flex items-center gap-1.5 text-sm text-white/65">
               <Link href="/" className="hover:text-white">Inicio</Link>
-              <ChevronRight className="h-4 w-4" aria-hidden="true" />
+              <span aria-hidden="true">/</span>
               <span aria-current="page" className="text-white">Productos</span>
             </nav>
-            <span className="flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />Catálogo industrial</span>
-            <h1 className="mt-5 max-w-4xl text-balance text-4xl font-semibold leading-[.92] tracking-[-.065em] text-white sm:text-6xl lg:text-[5.5rem]">
-              Productos acústicos e industriales a medida
+            <p className="text-sm font-semibold text-blue-200">Línea acústica e industrial</p>
+            <h1 className="mt-4 max-w-4xl text-balance text-4xl font-semibold leading-[.96] tracking-[-.065em] text-white sm:text-6xl lg:text-[5rem]">
+              Productos para el control acústico industrial
             </h1>
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8">
-              Soluciones acústicas e industriales fabricadas a medida. Cada
-              producto es diseñado y producido según los requerimientos
-              específicos de tu proyecto.
+              Encuentra espuma y paneles acústicos, silenciadores de escape, splitters para ductos, celosías metálicas, paneles perforados y pantallas móviles. Revisa las aplicaciones y fichas técnicas de cada solución.
             </p>
-
-            <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
-              <a href="#fichas-tecnicas" className="btn-primary !bg-blue-600 hover:!bg-blue-500">
-                Descargar fichas técnicas
-              </a>
-              {products.map((p) => (
-                <a
-                  key={p.id}
-                  href={`#${p.id}`}
-                  className="border-b border-white/50 px-3 py-2 text-xs font-semibold text-white/85 transition-colors hover:border-white hover:text-white"
-                >
-                  {p.name}
-                </a>
-              ))}
-            </div>
-            </div>
+            <a href="#catalogo" className="mt-7 inline-flex min-h-12 items-center gap-2 bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-blue-500">
+              Explorar productos <ArrowDown className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </div>
         </section>
 
-        {/* Technical sheets */}
-        <section
-          id="fichas-tecnicas"
-          className="scroll-mt-20 border-b border-slate-200 bg-slate-100 px-5 py-16 sm:px-8 md:py-20 lg:px-10"
-        >
-          <div className="container-custom grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
-            <div className="lg:sticky lg:top-28 lg:self-start">
-              <span className="eyebrow">Documentación técnica</span>
-              <h2 className="section-title">
-                Una ficha clara para cada producto.
-              </h2>
-              <p className="section-copy">
-                Descarga especificaciones, aplicaciones y datos de contacto en
-                PDF. Cada documento está preparado para compartir, imprimir o
-                adjuntar a una solicitud de cotización.
+        <section id="catalogo" className="scroll-mt-20 bg-[#F5F5F2] px-5 py-14 sm:px-8 sm:py-20 lg:px-10 lg:py-24">
+          <div className="container-custom">
+            <div className="mb-9 max-w-3xl sm:mb-12">
+              <p className="eyebrow">Catálogo de productos</p>
+              <h2 id="fichas-tecnicas" className="section-title mt-4">Soluciones acústicas para espacios y equipos industriales</h2>
+              <p className="section-copy mt-4">
+                Compara aplicaciones y especificaciones. Si buscas reducir ruido en salas de máquinas, acondicionar un recinto o tratar ductos de ventilación, abre el producto para ver sus detalles y descargar el PDF.
               </p>
-              <div className="mt-7 flex items-center gap-3 text-sm font-semibold text-slate-700">
-                <span className="flex h-10 w-10 items-center justify-center bg-[#17191b] text-white">
-                  <FileText className="h-5 w-5" aria-hidden="true" />
-                </span>
-                {products.length} fichas disponibles
-              </div>
             </div>
 
-            <div className="border-t border-slate-300">
-              {products.map((product) => (
-                <a
-                  key={product.id}
-                  href={product.datasheet}
-                  download
-                  className="group grid grid-cols-[auto_1fr_auto] items-center gap-4 border-b border-slate-300 bg-white px-4 py-5 transition-colors hover:bg-navy-50 sm:gap-6 sm:px-6"
-                >
-                  <span className="flex h-11 w-11 items-center justify-center border border-slate-300 bg-white text-[10px] font-bold uppercase tracking-wider text-blue-800">
-                    PDF
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
-                      {product.category} · {product.code}
-                    </span>
-                    <span className="mt-1 block truncate text-base font-semibold text-slate-950 sm:text-lg">
-                      {product.name}
-                    </span>
-                  </span>
-                  <span className="flex h-10 w-10 items-center justify-center border border-slate-300 text-slate-600 transition-colors group-hover:border-blue-700 group-hover:bg-blue-700 group-hover:text-white">
-                    <Download className="h-4 w-4" aria-hidden="true" />
-                    <span className="sr-only">
-                      Descargar ficha técnica de {product.name}
-                    </span>
-                  </span>
-                </a>
-              ))}
+            <div className="grid gap-px bg-[#d7dad9] sm:grid-cols-2 xl:grid-cols-3">
+              {products.map((product) => {
+                const image = productImages[product.id][0];
+                return (
+                  <article id={product.id} key={product.id} className="group flex min-w-0 flex-col bg-white scroll-mt-24">
+                    <Link href={`/productos/${product.slug}`} className="relative block aspect-[1.55/1] overflow-hidden bg-[#d9dcda]" aria-label={`Ver ${product.name}`}>
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.025]"
+                        sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 33vw"
+                      />
+                    </Link>
+                    <div className="flex flex-1 flex-col p-5 sm:p-6">
+                      <p className="text-xs font-semibold text-blue-700">{product.category} <span className="ml-2 text-slate-500">{product.code}</span></p>
+                      <h3 className="mt-2 text-xl font-semibold tracking-tight text-slate-950 sm:text-2xl">
+                        <Link href={`/productos/${product.slug}`} className="hover:text-blue-800">{product.name}</Link>
+                      </h3>
+                      <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{product.catalogSummary}</p>
+                      <p className="mt-4 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-500">
+                        Aplicaciones: {product.uses.slice(0, 3).join(" · ")}
+                      </p>
+                      <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3">
+                        <Link href={`/productos/${product.slug}`} className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-700 hover:text-blue-900">
+                          Ver producto <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                        </Link>
+                        <TrackedProductDownloadLink href={product.datasheet} download productName={product.name} productCode={product.code} className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-blue-700">
+                          <Download className="h-4 w-4" aria-hidden="true" /> Ficha técnica
+                        </TrackedProductDownloadLink>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        {/* Products */}
-        <div className="divide-y divide-slate-100">
-          {productCards.map((product, i) => (
-            <section
-              key={product.id}
-          className={`section-padding ${i % 2 === 0 ? "bg-white" : "bg-[#F5F5F2]"}`}
-            >
-              <div className="container-custom">
-                <ProductCard product={product} index={i} />
-              </div>
-            </section>
-          ))}
-        </div>
-
-        {/* CTA final */}
-        <section className="section-padding relative overflow-hidden bg-[#17191b] text-white">
-          <div aria-hidden="true" className="absolute inset-y-0 right-0 hidden w-1/3 border-l border-white/10 lg:block" />
-          <div className="container-custom relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+        <section className="section-padding bg-white">
+          <div className="container-custom grid gap-7 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-            <p className="text-sm font-semibold text-blue-200">Productos acústicos e industriales</p>
-            <h2 className="mt-4 max-w-3xl text-balance text-3xl font-semibold tracking-[-.05em] text-white sm:text-4xl">
-              ¿Necesitas un producto a medida?
-            </h2>
-            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">
-              Fabricamos según tus especificaciones técnicas. Cuéntanos tu
-              proyecto y te entregamos una cotización sin compromiso.
-            </p>
+              <p className="text-sm font-semibold text-blue-700">Orientación para tu proyecto</p>
+              <h2 className="mt-3 max-w-3xl text-balance text-3xl font-semibold tracking-[-.05em] text-[#17191b] sm:text-4xl">
+                ¿No sabes qué solución acústica necesitas?
+              </h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-[#5f6669]">
+                Cuéntanos qué equipo, espacio o fuente de ruido necesitas resolver. Revisaremos los antecedentes para orientar la solicitud y preparar una cotización.
+              </p>
             </div>
-            <div className="mt-8 flex flex-wrap justify-center gap-4">
-              <TrackedContactLink
-                channel="whatsapp"
-                href={companyInfo.whatsappHref}
-                className="btn-primary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+            <div className="flex flex-wrap gap-3">
+              <TrackedContactLink channel="whatsapp" href={companyInfo.whatsappHref} className="btn-primary" target="_blank" rel="noopener noreferrer">
                 Cotizar por WhatsApp
               </TrackedContactLink>
-              <TrackedQuoteLink href="/#contacto" location="products_footer" serviceType="productos" className="inline-flex min-h-11 items-center justify-center gap-2 border border-white/50 px-5 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">
+              <TrackedQuoteLink href="/#contacto" location="products_footer" serviceType="productos" className="btn-outline">
                 Formulario de contacto
               </TrackedQuoteLink>
             </div>
@@ -287,7 +169,7 @@ export default function ProductosPage() {
         </section>
       </main>
       <Footer />
-      <PublicSalesAssistant initialService="Productos acústicos e industriales" />
+      <PublicSalesAssistant initialService="Productos acústicos e industriales" compactOnMobile />
     </>
   );
 }

@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import ProductSolutions from "@/components/ProductSolutions";
 import { companyInfo } from "@/components/siteData";
+import { products } from "@/lib/productData";
 import { services } from "@/lib/serviceData";
 
 export const metadata: Metadata = {
@@ -48,7 +49,10 @@ export default function Home() {
           areaServed: "CL",
           availableLanguage: "Spanish",
         },
-        knowsAbout: services.map((service) => service.shortName),
+        knowsAbout: [
+          ...services.map((service) => service.shortName),
+          ...products.map((product) => `${product.name} ${product.code}`),
+        ],
         hasOfferCatalog: {
           "@type": "OfferCatalog",
           name: "Servicios metalmecánicos",

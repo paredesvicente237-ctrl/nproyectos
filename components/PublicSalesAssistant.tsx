@@ -25,6 +25,7 @@ import { trackGaEvent } from "@/lib/analytics";
 
 type PublicSalesAssistantProps = {
   initialService?: string;
+  compactOnMobile?: boolean;
 };
 
 type LeadForm = {
@@ -164,7 +165,7 @@ function hasQuoteIntent(value: string) {
   return /cotiz|presupuest|precio|valor|comprar/.test(text);
 }
 
-export default function PublicSalesAssistant({ initialService = "" }: PublicSalesAssistantProps) {
+export default function PublicSalesAssistant({ initialService = "", compactOnMobile = false }: PublicSalesAssistantProps) {
   const pathname = usePathname();
   const transport = useMemo(
     () => new DefaultChatTransport({ api: "/api/assistant/chat" }),
@@ -282,6 +283,10 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   };
 
   useEffect(() => {
+    const isCompactMobile = () => compactOnMobile && window.matchMedia("(max-width: 639px)").matches;
+
+    if (isCompactMobile()) return;
+
     try {
       if (sessionStorage.getItem(ASSISTANT_HINT_SHOWN_STORAGE_KEY)) return;
     } catch {
@@ -289,7 +294,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     }
 
     const timer = window.setTimeout(() => {
-      if (isOpenRef.current) return;
+      if (isOpenRef.current || isCompactMobile()) return;
       try {
         sessionStorage.setItem(ASSISTANT_HINT_SHOWN_STORAGE_KEY, "1");
       } catch {
@@ -299,7 +304,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
     }, 12_000);
 
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [compactOnMobile]);
 
   useEffect(() => {
     if (isOpen && !isLeadFormOpen && !whatsAppMessage) inputRef.current?.focus();
@@ -479,7 +484,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
   return (
     <>
       {isProactiveHintVisible && !isOpen && (
-        <aside className="npa-hint fixed z-[59]" aria-label="Invitación para conversar con el asesor comercial">
+        <aside className={`npa-hint fixed z-[59]${compactOnMobile ? " npa-hint--mobile-suppressed" : ""}`} aria-label="Invitación para conversar con el asesor comercial">
           <button
             type="button"
             onClick={handleOpen}
@@ -756,7 +761,7 @@ export default function PublicSalesAssistant({ initialService = "" }: PublicSale
         ref={launcherRef}
         aria-label={isOpen ? "Minimizar asesor comercial" : "Abrir asesor comercial de IA de N Proyectos"}
         title={isOpen ? "Minimizar asesor comercial" : "Conversemos con el asesor comercial"}
-        className="npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+        className={`npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700${compactOnMobile ? " npa-launcher--compact-mobile" : ""}`}
       >
         {isOpen ? <ChevronDown className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="npa-launcher-icon h-5 w-5" aria-hidden="true" />}
         {!isOpen && <span className="npa-launcher-label">Conversemos</span>}

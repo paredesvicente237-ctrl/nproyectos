@@ -9,6 +9,7 @@ import PublicSalesAssistant from "@/components/PublicSalesAssistant";
 import TrackedContactLink from "@/components/TrackedContactLink";
 import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 import { companyInfo } from "@/components/siteData";
+import { products } from "@/lib/productData";
 import { services, servicesBySlug } from "@/lib/serviceData";
 
 type ServicePageProps = {
@@ -177,11 +178,20 @@ export default async function ServicePage({ params }: ServicePageProps) {
                     Revisa los productos acústicos disponibles y descarga sus especificaciones.
                   </p>
                   <Link
-                    href="/productos#fichas-tecnicas"
+                    href="/productos#catalogo"
                     className="mt-3 inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-blue-700 underline decoration-blue-300 underline-offset-4 hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-700"
                   >
                     Ver productos y fichas técnicas <ArrowRight className="h-4 w-4" />
                   </Link>
+                  <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+                    {products.filter((product) => product.id !== "pantalla-movil").map((product) => (
+                      <li key={product.id}>
+                        <Link href={`/productos/${product.slug}`} className="text-sm font-medium text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-blue-800">
+                          {product.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               )}
             </aside>
