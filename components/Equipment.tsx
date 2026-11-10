@@ -23,7 +23,6 @@ export default function Equipment() {
             <p className="mt-5 max-w-2xl text-base leading-7 text-white/85 sm:text-lg sm:leading-8">El proceso se define considerando forma, material, espesor, cantidad y terminación del requerimiento.</p>
             <p className="mt-6 border-l-2 border-blue-400 pl-4 text-sm font-medium text-white">Corte láser, plegado, armado y soldadura según el proyecto.</p>
           </div>
-          <span className="absolute right-4 top-4 border border-white/50 bg-[#17191b]/35 px-3 py-2 text-[11px] text-white backdrop-blur-sm sm:right-6 sm:top-6 sm:text-xs">Imagen referencial</span>
         </div>
 
         <div className="grid gap-8 border-b border-[#DADDDC] bg-[#f1f3f2] p-6 sm:p-8 lg:grid-cols-[.55fr_1.45fr] lg:gap-12 lg:p-10">

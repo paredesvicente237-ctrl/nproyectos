@@ -123,9 +123,6 @@ export default function CommercialStory() {
             />
             <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0d2030]/55 via-[#0d2030]/6 to-[#0d2030]/0" />
             <div aria-hidden="true" className="absolute inset-y-0 left-0 hidden w-[16%] bg-gradient-to-r from-[#f1f3f2] to-transparent lg:block" />
-            <div className="absolute left-4 top-4 border border-white/35 bg-[#0b2132]/45 px-3 py-2 text-[10px] font-semibold tracking-[.12em] text-white backdrop-blur sm:left-6 sm:top-6 sm:text-xs">
-              IMAGEN REFERENCIAL
-            </div>
             <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 p-5 text-white sm:flex-row sm:items-end sm:justify-between sm:p-7 lg:p-9">
               <div>
                 <p className="text-xs font-semibold text-white/70">De la definición a la fabricación</p>
@@ -160,7 +157,6 @@ export default function CommercialStory() {
             <div className="group relative min-h-[260px] overflow-hidden bg-[#ccd3d4] sm:min-h-[390px] lg:min-h-[520px]">
               <Image src={siteAssets.fotobuenax1} alt="Corte de una plancha metálica con láser, imagen referencial" fill className="object-cover transition-transform duration-700 group-hover:scale-[1.025]" sizes="(max-width: 1023px) 100vw, 56vw" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b1d2b]/75 via-transparent to-transparent" />
-              <span className="absolute left-4 top-4 border border-white/40 bg-[#102b40]/55 px-3 py-2 text-[10px] font-semibold tracking-[.12em] text-white backdrop-blur sm:left-6 sm:top-6 sm:text-xs">IMAGEN REFERENCIAL</span>
               <div className="absolute bottom-0 left-0 right-0 p-5 text-white sm:p-7 lg:p-9">
                 <p className="text-xs font-semibold text-white/70">{cuttingService.eyebrow}</p>
                 <p className="mt-1 text-2xl font-semibold tracking-[-.04em] sm:text-3xl">Precisión desde el plano.</p>
@@ -262,7 +258,7 @@ export default function CommercialStory() {
                 <Image src={item.image} alt={`${item.title}, imagen referencial`} fill className={`object-cover transition-transform duration-700 group-hover:scale-[1.035] ${item.position}`} sizes="(max-width: 640px) 100vw, (max-width: 1023px) 50vw, 56vw" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#081723]/80 via-transparent to-[#081723]/5" />
                 <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white sm:p-5 lg:p-6">
-                  <div><span className="text-[10px] font-semibold tracking-[.12em] text-white/70">REFERENCIA VISUAL</span><p className="mt-1 text-lg font-semibold tracking-[-.03em] sm:text-xl">{item.title}</p></div>
+                  <div><p className="text-lg font-semibold tracking-[-.03em] sm:text-xl">{item.title}</p></div>
                   <ArrowUpRight className="mb-1 h-5 w-5 shrink-0 text-white/80" aria-hidden="true" />
                 </figcaption>
               </figure>

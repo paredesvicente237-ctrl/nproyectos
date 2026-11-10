@@ -19,7 +19,7 @@ export default function About() {
             <Image src={siteAssets.goodBending} alt="Operario trabajando con una plancha en una plegadora industrial" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 50vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#17191b]/55 via-transparent to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between border-t border-white/35 px-5 py-4 text-white sm:px-7">
-              <p className="text-sm font-medium">Plegado industrial</p><span className="text-xs text-white/75">Imagen referencial</span>
+              <p className="text-sm font-medium">Plegado industrial</p>
             </div>
             <span aria-hidden="true" className="absolute left-0 top-0 h-16 w-1 bg-blue-600" />
           </div>

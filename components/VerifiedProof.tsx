@@ -94,9 +94,6 @@ export default function VerifiedProof() {
                   sizes="(max-width: 639px) 44vw, (max-width: 1023px) 40vw, 28vw"
                 />
                 <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071521]/90 via-[#071521]/10 to-transparent" />
-                <span className="absolute left-2 top-2 border border-white/35 bg-[#102b40]/65 px-2 py-1 text-[8px] font-bold tracking-[.12em] text-white backdrop-blur-sm sm:left-3 sm:top-3 sm:text-[9px]">
-                  IMAGEN REFERENCIAL
-                </span>
                 <figcaption className="absolute inset-x-0 bottom-0 p-2.5 text-sm font-semibold leading-5 text-white sm:p-4 sm:text-base sm:leading-6">
                   {item.title}
                 </figcaption>

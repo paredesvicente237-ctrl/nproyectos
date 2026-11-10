@@ -152,7 +152,6 @@ export default function MaestranzaSantiagoPage() {
           <Image src={siteAssets.goodWelding} alt="Proceso de soldadura de una estructura metálica" fill priority className="-z-10 object-cover object-center" sizes="100vw" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.88)_0%,rgba(15,17,18,.55)_54%,rgba(15,17,18,.12)_100%)]" />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#17191b]/90 via-transparent to-[#17191b]/15" />
-          <span className="absolute right-4 top-24 border border-white/40 bg-[#101a20]/35 px-3 py-2 text-[11px] text-white/90 backdrop-blur-sm sm:right-8">Imagen referencial</span>
           <div className="container-custom w-full">
             <nav aria-label="Migas de pan" className="flex items-center gap-1.5 text-sm text-white/65"><Link href="/" className="hover:text-white">Inicio</Link><ChevronRight className="h-4 w-4" /><span className="text-white">Maestranza en Santiago</span></nav>
             <p className="mt-10 flex items-center gap-3 text-sm font-semibold text-blue-200"><span className="h-px w-8 bg-blue-400" />N Proyectos · La Granja</p>

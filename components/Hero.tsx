@@ -49,9 +49,8 @@ export default function Hero() {
             sizes="(max-width: 1024px) 100vw, 54vw"
           />
           <div className="absolute inset-0 -z-10 bg-gradient-to-t from-[#101a20]/75 via-transparent to-[#101a20]/10" />
-          <span className="absolute left-4 top-4 border border-white/40 bg-[#101a20]/35 px-3 py-2 text-[11px] text-white/90 backdrop-blur-sm sm:left-6 sm:top-6">Imagen referencial</span>
           <div className="absolute inset-x-0 bottom-0 p-5 text-white sm:p-7 lg:p-9">
-            <p className="text-xs font-semibold text-white/70">Corte láser · imagen referencial</p>
+            <p className="text-xs font-semibold text-white/70">Corte láser</p>
             <p className="mt-1 text-lg font-semibold tracking-[-.025em] sm:text-xl">Geometría definida desde el plano</p>
           </div>
         </div>

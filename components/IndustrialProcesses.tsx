@@ -25,8 +25,8 @@ export default function IndustrialProcesses() {
               <figure key={process.name} className={`relative overflow-hidden bg-[#243d50] ${index === 0 ? "col-span-2 aspect-[2.1/1]" : "aspect-[1.15/1]"}`}>
                 <Image src={process.image} alt={process.name} fill className={`object-cover ${process.position}`} sizes={index === 0 ? "(max-width: 1024px) 100vw, 52vw" : "(max-width: 1024px) 48vw, 26vw"} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#081723]/70 via-transparent to-transparent" />
-                <figcaption className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 px-3 py-3 text-xs font-semibold text-white sm:px-4 sm:text-sm">
-                  {process.name}<span className="text-[10px] font-normal text-white/70 sm:text-xs">Imagen referencial</span>
+                <figcaption className="absolute inset-x-0 bottom-0 px-3 py-3 text-xs font-semibold text-white sm:px-4 sm:text-sm">
+                  {process.name}
                 </figcaption>
               </figure>
             ))}
