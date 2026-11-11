@@ -26,11 +26,13 @@ assert.ok(sitemapUrls.length > 0, "El sitemap debe contener rutas públicas.");
 
 const routes = [...new Set([...sitemapUrls, "/privacidad"])];
 const pageAssets = new Map();
+const pageHtml = new Map();
 for (const path of routes) {
   await check(`ruta pública ${path}`, async () => {
     const response = await get(path);
     assert.equal(response.status, 200, `${path} respondió ${response.status}.`);
     const html = await response.text();
+    pageHtml.set(path, html);
     assert.match(html, /<h1\b/i, `${path} no tiene título principal.`);
     for (const match of html.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/gi)) {
       const candidate = new URL(match[1].replaceAll("&amp;", "&"), baseUrl);
@@ -45,6 +47,41 @@ for (const path of routes) {
     }
   });
 }
+
+for (const [path, expected] of [
+  ["/servicios/corte-plegado-planchas", "Corte de planchas y piezas plegadas según tu diseño"],
+  ["/servicios/fabricacion-metalmecanica", "Fabricación metalmecánica desde una pieza hasta un conjunto"],
+  ["/servicios/control-acustico-industrial", "Control de ruido según la fuente, el recinto y la ventilación"],
+  ["/maestranza-santiago", "fabricación metalmecánica según plano"],
+]) {
+  await check(`contenido comercial y canonical ${path}`, async () => {
+    const html = pageHtml.get(path);
+    assert.ok(html?.includes(expected), `Falta el contenido específico de ${path}.`);
+    assert.ok(html.includes(`href="https://www.nproyectos.cl${path}"`), "Falta canonical absoluto.");
+    assert.doesNotMatch(html, /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i);
+  });
+}
+
+await check("siete fichas con metadatos y datos estructurados", async () => {
+  const productPages = [...pageHtml.entries()].filter(([path]) => path.startsWith("/productos/"));
+  assert.equal(productPages.length, 7);
+  const titles = new Set();
+  for (const [path, html] of productPages) {
+    const title = html.match(/<title>(.*?)<\/title>/)?.[1];
+    assert.ok(title);
+    titles.add(title);
+    assert.ok(html.includes(`<link rel="canonical" href="https://www.nproyectos.cl${path}"`));
+    assert.doesNotMatch(html, /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i);
+    const graphs = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      .flatMap((match) => JSON.parse(match[1])["@graph"] ?? []);
+    const webpage = graphs.find((item) => item["@type"] === "WebPage");
+    assert.ok(webpage?.about?.identifier, "La ficha debe identificar el producto sin ofertas ficticias.");
+    assert.ok(!graphs.some((item) => item["@type"] === "Product" || item["@type"] === "Offer"));
+    assert.ok(graphs.some((item) => item["@type"] === "BreadcrumbList"));
+    if (!path.endsWith("pantalla-movil-soldadura")) assert.ok(html.includes('href="/servicios/control-acustico-industrial"'));
+  }
+  assert.equal(titles.size, 7, "Los títulos deben ser únicos.");
+});
 
 for (const route of ["/robots.txt", "/favicon.ico"]) {
   await check(`${route} accesible`, async () => {

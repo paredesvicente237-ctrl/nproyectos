@@ -12,9 +12,9 @@ import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
 export const metadata: Metadata = {
-  title: "Maestranza industrial en Santiago",
+  title: "Maestranza industrial en Santiago · La Granja",
   description:
-    "Servicios de maestranza industrial en La Granja, Santiago: fabricación metalmecánica, corte y plegado, soldadura MIG/TIG y soluciones para empresas.",
+    "Maestranza en La Granja, Santiago: piezas según plano, estructuras, corte y plegado y soldadura MIG/TIG. Envía planos o medidas para cotizar tu proyecto.",
   alternates: { canonical: "/maestranza-santiago" },
   openGraph: {
     type: "website",
@@ -172,6 +172,11 @@ export default function MaestranzaSantiagoPage() {
                 Atendemos trabajos unitarios y proyectos a medida desde nuestra ubicación en La Granja. Revisamos la necesidad técnica, los materiales, las dimensiones y la terminación antes de fabricar.
               </p>
             </div>
+            <p className="mt-7 max-w-3xl text-sm leading-6 text-slate-600">
+              Si tu solicitud parte de una plancha, revisa el servicio de <Link href="/servicios/corte-plegado-planchas" className="font-semibold text-blue-700 underline underline-offset-4">corte láser y plegado</Link>.
+              {" "}Para un conjunto de piezas, consulta <Link href="/servicios/fabricacion-metalmecanica" className="font-semibold text-blue-700 underline underline-offset-4">fabricación metalmecánica según plano</Link>.
+              {" "}Si necesitas tratar ruido de equipos o ventilación, revisa los <Link href="/productos" className="font-semibold text-blue-700 underline underline-offset-4">productos acústicos y sus fichas técnicas</Link>.
+            </p>
             <div className="mt-12 grid border-t border-slate-300 sm:grid-cols-2">
               {services.map((service, index) => (
                 <Link key={service.slug} href={`/servicios/${service.slug}`} className="group grid min-h-48 grid-cols-[52px_1fr_auto] items-start gap-4 border-b border-slate-300 px-2 py-6 hover:bg-white sm:px-5">

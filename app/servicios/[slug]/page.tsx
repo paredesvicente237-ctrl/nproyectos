@@ -11,6 +11,7 @@ import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 import { companyInfo } from "@/components/siteData";
 import { products } from "@/lib/productData";
 import { services, servicesBySlug } from "@/lib/serviceData";
+import { serviceGuidance } from "@/lib/serviceGuidance";
 
 type ServicePageProps = {
   params: Promise<{ slug: string }>;
@@ -39,10 +40,10 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       siteName: companyInfo.shortName,
       images: [
         {
-          url: "/images/hero-soldadura-nproyectos-premium.webp",
-          width: 1672,
-          height: 941,
-          alt: `Proceso de ${service.shortName.toLowerCase()}, imagen referencial`,
+          url: service.image.src,
+          width: service.image.width,
+          height: service.image.height,
+          alt: service.imageAlt,
         },
       ],
     },
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       card: "summary_large_image",
       title: `${service.name} | ${companyInfo.shortName}`,
       description: service.description,
-      images: ["/images/hero-soldadura-nproyectos-premium.webp"],
+      images: [service.image.src],
     },
   };
 }
@@ -60,6 +61,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const service = servicesBySlug[slug];
 
   if (!service) notFound();
+  const guidance = serviceGuidance[slug];
 
   const pageUrl = `${companyInfo.website}/servicios/${service.slug}`;
   const whatsappHref = `${companyInfo.whatsappHref.split("?")[0]}?text=${encodeURIComponent(
@@ -141,9 +143,9 @@ export default async function ServicePage({ params }: ServicePageProps) {
           <div className="container-custom grid gap-12 lg:grid-cols-[1fr_0.85fr] lg:items-start">
             <div>
               <span className="eyebrow">Qué hacemos</span>
-              <h2 className="section-title">Una solución técnica ajustada a cada requerimiento.</h2>
+              <h2 className="section-title">{guidance?.heading ?? "Una solución técnica ajustada a cada requerimiento."}</h2>
               <p className="section-copy">
-                Atendemos proyectos de empresas, contratistas y áreas de mantenimiento que necesitan fabricar, reponer o desarrollar componentes metálicos. Para cotizar con mayor precisión puedes enviar planos, fotografías, medidas, cantidades, material y plazo esperado.
+                {guidance?.introduction ?? "Atendemos proyectos de empresas, contratistas y áreas de mantenimiento que necesitan fabricar, reponer o desarrollar componentes metálicos. Para cotizar con mayor precisión puedes enviar planos, fotografías, medidas, cantidades, material y plazo esperado."}
               </p>
               <ul className="mt-8 grid gap-x-7 sm:grid-cols-2">
                 {service.benefits.map((benefit) => (
@@ -153,6 +155,15 @@ export default async function ServicePage({ params }: ServicePageProps) {
                   </li>
                 ))}
               </ul>
+              {guidance && (
+                <div className="mt-8 border-t border-slate-300 pt-6">
+                  <h3 className="text-xl font-semibold text-slate-950">Antecedentes para cotizar {service.shortName.toLowerCase()}</h3>
+                  <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-6 text-slate-600">
+                    {guidance.checklist.map((item) => <li key={item}>{item}</li>)}
+                  </ul>
+                  <p className="mt-4 text-sm leading-6 text-slate-600">No necesitas tener todo resuelto para consultar. Indica qué información tienes y qué puntos necesitas revisar con el equipo.</p>
+                </div>
+              )}
             </div>
             <aside className="border-t-2 border-blue-700 bg-slate-50 p-6 sm:p-8">
               <h2 className="text-xl font-semibold">Aplicaciones frecuentes</h2>
@@ -198,30 +209,18 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
         </section>
 
-        {service.slug === "corte-plegado-planchas" && (
-          <section className="section-padding bg-slate-50" aria-labelledby="corte-laser-faq-title">
+        {guidance && (
+          <section className="section-padding bg-slate-50" aria-labelledby="service-faq-title">
             <div className="container-custom">
-              <span className="eyebrow">Corte láser y plegado</span>
-              <h2 id="corte-laser-faq-title" className="section-title">Preguntas frecuentes sobre corte láser</h2>
+              <span className="eyebrow">{service.shortName}</span>
+              <h2 id="service-faq-title" className="section-title">Preguntas frecuentes sobre {service.shortName.toLowerCase()}</h2>
               <div className="mt-8 grid gap-x-10 md:grid-cols-2">
-                <article className="border-t border-slate-300 py-5">
-                  <h3 className="text-lg font-semibold text-slate-900">¿Qué información necesito para cotizar un corte láser?</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    Idealmente, comparte el plano o archivo de corte, material, espesor y cantidad. Si no tienes plano, puedes enviar medidas y fotos de referencia; revisaremos si esos antecedentes bastan para evaluar el trabajo.
-                  </p>
-                </article>
-                <article className="border-t border-slate-300 py-5">
-                  <h3 className="text-lg font-semibold text-slate-900">¿Puedo solicitar corte láser y plegado juntos?</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    Sí. Podemos revisar el corte y el plegado como parte de una misma pieza o proyecto. Cuéntanos la geometría y el uso del componente para evaluar el proceso adecuado.
-                  </p>
-                </article>
-                <article className="border-t border-slate-300 py-5">
-                  <h3 className="text-lg font-semibold text-slate-900">¿Qué materiales y espesores pueden procesar?</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    La factibilidad depende del material, espesor, geometría y cantidad. Envíanos esos datos para confirmar qué proceso corresponde antes de preparar la cotización.
-                  </p>
-                </article>
+                {guidance.faqs.map((faq) => (
+                  <article key={faq.question} className="border-t border-slate-300 py-5">
+                    <h3 className="text-lg font-semibold text-slate-900">{faq.question}</h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{faq.answer}</p>
+                  </article>
+                ))}
               </div>
             </div>
           </section>

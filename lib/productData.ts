@@ -66,9 +66,9 @@ export const products: Product[] = [
     code: "NAislanPANEL",
     category: "Control acústico",
     datasheet: "/fichas-tecnicas/panel-acustico-naislanpanel.pdf",
-    seoTitle: "Panel acústico industrial NAislanPANEL de 97 × 300 cm | N Proyectos",
+    seoTitle: "Paneles acústicos industriales en Chile | N Proyectos",
     seoDescription:
-      "Panel acústico industrial NAislanPANEL en metal galvanizado, formato 97 × 300 cm. Para salas de máquinas, grupos electrógenos y encierros de equipos.",
+      "Panel acústico industrial NAislanPANEL de 97 × 300 cm para salas de máquinas, generadores y encierros. Consulta medidas especiales y cotización en Chile.",
     description:
       "Panel acústico industrial modular con terminación en metal galvanizado. Se utiliza para formar encierros y barreras acústicas en salas de máquinas, grupos electrógenos y otras instalaciones.",
     catalogSummary: "Panel acústico galvanizado para barreras y encierros de salas de máquinas y equipos industriales.",
@@ -105,9 +105,9 @@ export const products: Product[] = [
     code: "NSplitter",
     category: "Acústica",
     datasheet: "/fichas-tecnicas/splitter-acustico-nsplitter.pdf",
-    seoTitle: "Splitter acústico NSplitter para ductos y ventilación | N Proyectos",
+    seoTitle: "Splitter acústico para ductos en Chile | N Proyectos",
     seoDescription:
-      "Splitter acústico para ductos HVAC y sistemas de ventilación industrial. Fabricación a medida en acero galvanizado; consulta ficha y aplicaciones.",
+      "Silenciador tipo splitter NSplitter para ductos HVAC y ventilación industrial. Fabricación a medida en galvanizado. Revisa ficha y cotiza en Chile.",
     description:
       "Splitter acústico para atenuar el ruido en ductos industriales y sistemas de ventilación. Su configuración se define según el flujo de aire y los requerimientos del proyecto.",
     catalogSummary: "Silenciador tipo splitter para atenuar ruido en ductos HVAC y sistemas de ventilación industrial.",
@@ -142,7 +142,7 @@ export const products: Product[] = [
     code: "NCelosía",
     category: "Acústica",
     datasheet: "/fichas-tecnicas/celosia-acustica-ncelosia.pdf",
-    seoTitle: "Celosía acústica metálica para ventilación industrial | N Proyectos",
+    seoTitle: "Celosías acústicas para ventilación en Chile | N Proyectos",
     seoDescription:
       "Celosía acústica metálica para fachadas, salas de generadores y ventilación industrial. Fabricación en acero galvanizado o inoxidable según proyecto.",
     description:
@@ -178,7 +178,7 @@ export const products: Product[] = [
     code: "NSilenSE",
     category: "Control acústico industrial",
     datasheet: "/fichas-tecnicas/silenciador-escape-gases-nsilense.pdf",
-    seoTitle: "Silenciador industrial de escape de gases NSilenSE | N Proyectos",
+    seoTitle: "Silenciadores de escape industriales en Chile | N Proyectos",
     seoDescription:
       "Silenciador industrial para escapes de motores, sopladores y bombas de vacío. NSilenSE se fabrica según los requerimientos de cada instalación.",
     description:

@@ -73,17 +73,26 @@ export default async function ProductPage({ params }: ProductPageProps) {
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "Product",
-        "@id": `${pageUrl}#product`,
-        name: product.name,
+        // Quote-only catalog: no verified price or reviews to support a Google
+        // product snippet. Describe the page without fabricating an Offer.
+        "@type": "WebPage",
+        "@id": `${pageUrl}#webpage`,
+        name: product.searchHeading,
         description: product.description,
-        sku: product.code,
-        category: product.category,
+        inLanguage: "es-CL",
+        about: {
+          "@type": "Thing",
+          name: product.name,
+          identifier: product.code,
+          description: product.description,
+        },
+        breadcrumb: { "@id": `${pageUrl}#breadcrumb` },
         image: images.map((image) => `${companyInfo.website}${image.src.src}`),
         url: pageUrl,
       },
       {
         "@type": "BreadcrumbList",
+        "@id": `${pageUrl}#breadcrumb`,
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Inicio", item: companyInfo.website },
           { "@type": "ListItem", position: 2, name: "Productos", item: `${companyInfo.website}/productos` },
@@ -126,7 +135,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                   <TrackedContactLink channel="whatsapp" href={whatsappUrl} className="btn-primary" target="_blank" rel="noopener noreferrer">Cotizar este producto</TrackedContactLink>
                   <TrackedProductDownloadLink href={product.datasheet} download productName={product.name} productCode={product.code} className="btn-outline"><Download className="h-4 w-4" aria-hidden="true" /> Ficha técnica PDF</TrackedProductDownloadLink>
                 </div>
-                <p className="mt-4 text-sm leading-6 text-slate-500">Atendemos consultas en Santiago y la Región Metropolitana. Para proyectos en otras zonas, consulta cobertura con ventas.</p>
+                <p className="mt-4 text-sm leading-6 text-slate-500">Atendemos consultas en Santiago y la Región Metropolitana. Para proyectos en otras zonas de Chile, consulta cobertura con ventas.</p>
               </div>
             </div>
           </div>
@@ -210,6 +219,11 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <p className="text-sm font-semibold text-blue-200">{product.name} · {product.code}</p>
               <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Conversemos sobre tu proyecto</h2>
               <p className="mt-3 max-w-2xl text-base leading-7 text-slate-300">Comparte las medidas, condiciones de operación y aplicación que ya conozcas. El equipo podrá revisar los antecedentes para cotizar.</p>
+              {product.id !== "pantalla-movil" && (
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">
+                  ¿Necesitas orientar la selección? Revisa el servicio de <Link href="/servicios/control-acustico-industrial" className="font-semibold text-blue-200 underline underline-offset-4 hover:text-white">control de ruido industrial</Link> y los antecedentes para evaluar tu instalación.
+                </p>
+              )}
             </div>
             <div className="flex flex-wrap gap-3">
               <TrackedContactLink channel="whatsapp" href={whatsappUrl} className="btn-primary" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</TrackedContactLink>

@@ -24,7 +24,7 @@ export const services: Service[] = [
     eyebrow: "Fabricación industrial",
     title: "Fabricación metalmecánica para proyectos industriales",
     description:
-      "Fabricación metalmecánica y de estructuras metálicas en Santiago para minería, manufactura, construcción e industria. Desarrollamos piezas, soportes y equipos en acero a medida.",
+      "Fabricación metalmecánica en Santiago, Chile: piezas según plano, soportes, estructuras y conjuntos soldados. Cotiza con planos, medidas, material y cantidad.",
     summary:
       "Fabricamos piezas, soportes y estructuras metálicas para proyectos industriales a partir de planos, prototipos o requerimientos funcionales. Integramos revisión técnica, selección de materiales, corte, conformado, armado y soldadura para definir una solución fabricable.",
     image: siteAssets.goodSparks,
@@ -53,12 +53,12 @@ export const services: Service[] = [
   },
   {
     slug: "corte-plegado-planchas",
-    name: "Corte láser de planchas en Santiago",
+    name: "Corte y plegado de planchas en Santiago",
     shortName: "Corte láser y plegado",
     eyebrow: "Corte y conformado de planchas",
     title: "Corte láser y plegado de planchas en Santiago",
     description:
-      "Corte láser de planchas metálicas y plegado en Santiago. Revisamos plano, material, espesor y cantidad para evaluar cada solicitud.",
+      "Corte y plegado de planchas en Santiago: corte láser, guillotina y piezas plegadas según proyecto. Envía plano, material, espesor y cantidad para cotizar.",
     summary:
       "Desarrollamos piezas metálicas a partir de planos, archivos de corte, muestras o medidas. Revisamos geometría, material, espesor y cantidad; cuando el proyecto lo requiere, integramos corte láser, guillotina y plegado para fabricar componentes según el diseño.",
     image: siteAssets.goodBending,
@@ -126,7 +126,7 @@ export const services: Service[] = [
     eyebrow: "Acústica y ruido",
     title: "Soluciones de control acústico industrial a medida",
     description:
-      "Diseño y fabricación de soluciones de control acústico y control de ruido industrial: splitters, celosías, paneles perforados, pantallas, cabinas y atenuadores a medida.",
+      "Control de ruido industrial en Chile: paneles acústicos, splitters para ductos, celosías y silenciadores. Revisa fichas técnicas y cotiza según tu instalación.",
     summary:
       "Diseñamos y fabricamos soluciones metálicas para reducir o controlar la propagación de ruido en sistemas de ventilación, salas de máquinas, fachadas y recintos industriales. Cada elemento se desarrolla según el espacio disponible, el flujo de aire, la forma de instalación y las necesidades del proyecto.",
     image: siteAssets.fotobuenax2,
