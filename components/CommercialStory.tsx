@@ -87,10 +87,10 @@ export default function CommercialStory() {
               MAESTRANZA INDUSTRIAL · SANTIAGO
             </p>
             <h1 className="mt-6 max-w-[680px] text-[clamp(2.5rem,10.5vw,3.1rem)] font-extrabold uppercase leading-[.88] tracking-[-.045em] text-[#142330] sm:mt-8 sm:text-[clamp(3.4rem,8.5vw,6.5rem)] lg:text-[clamp(4rem,6.2vw,6.25rem)]">
-              <span className="block">Fabricamos</span>
-              <span className="block">lo que tu</span>
-              <span className="block">industria</span>
-              <span className="block">necesita.</span>
+              <span className="block">Maestranza y</span>
+              <span className="block">fabricación</span>
+              <span className="block">metalmecánica</span>
+              <span className="block">en Santiago.</span>
             </h1>
             <p className="mt-6 max-w-[570px] text-[15px] leading-7 text-[#53616b] sm:mt-7 sm:text-lg sm:leading-8">
               Convertimos planos, ideas y desafíos técnicos en soluciones metalmecánicas a medida. Ingeniería, fabricación y precisión para proyectos industriales exigentes.

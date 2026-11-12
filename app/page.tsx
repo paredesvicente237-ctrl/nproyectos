@@ -10,10 +10,34 @@ import { products } from "@/lib/productData";
 import { services } from "@/lib/serviceData";
 
 export const metadata: Metadata = {
-  title: "Maestranza en Santiago y corte láser",
+  title: { absolute: "Maestranza industrial y corte láser en Santiago | N Proyectos" },
   description:
     "Fabricación metalmecánica, corte láser y plegado de planchas, soldadura MIG/TIG y soluciones acústicas para proyectos industriales en Santiago.",
   alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "es_CL",
+    title: "Maestranza industrial y corte láser en Santiago | N Proyectos",
+    description:
+      "Fabricación metalmecánica, corte láser y plegado de planchas, soldadura MIG/TIG y soluciones acústicas para proyectos industriales en Santiago.",
+    url: "/",
+    siteName: companyInfo.shortName,
+    images: [
+      {
+        url: "/images/hero-soldadura-nproyectos-premium.webp",
+        width: 1672,
+        height: 941,
+        alt: "Proceso de soldadura industrial; imagen referencial",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Maestranza industrial y corte láser en Santiago | N Proyectos",
+    description:
+      "Fabricación metalmecánica, corte láser y plegado de planchas, soldadura MIG/TIG y soluciones acústicas para proyectos industriales en Santiago.",
+    images: ["/images/hero-soldadura-nproyectos-premium.webp"],
+  },
 };
 
 export default function Home() {

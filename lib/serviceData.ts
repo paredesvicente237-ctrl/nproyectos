@@ -53,7 +53,7 @@ export const services: Service[] = [
   },
   {
     slug: "corte-plegado-planchas",
-    name: "Corte y plegado de planchas en Santiago",
+    name: "Corte láser y plegado de planchas en Santiago",
     shortName: "Corte láser y plegado",
     eyebrow: "Corte y conformado de planchas",
     title: "Corte láser y plegado de planchas en Santiago",
