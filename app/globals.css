@@ -524,6 +524,7 @@
 .npa-launcher { border-color: #edc29e; background: #fff; color: #252729; box-shadow: 0 9px 24px rgba(85,58,35,.12); }
 .npa-launcher:hover { border-color: #f47b00; background: #fffaf5; box-shadow: 0 12px 28px rgba(85,58,35,.16); }
 .npa-launcher-icon { color: #bd5b00; }
+.npa-launcher-label { color: #252729; }
 .npa-launcher-arrow { color: #525456; }
 .npa-form-body { background-color: #f6f4f2; background-image: linear-gradient(rgba(120,90,65,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(120,90,65,.025) 1px, transparent 1px); }
 .npa-consent input { accent-color: var(--np-orange); }
