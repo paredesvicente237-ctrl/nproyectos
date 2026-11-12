@@ -429,6 +429,14 @@
 }
 .npro-site-header--cinematic.npro-site-header--at-hero a:not(.btn-primary) { color: rgba(255, 255, 255, .88); }
 .npro-site-header--cinematic.npro-site-header--at-hero a:not(.btn-primary):hover { color: #ffae5b; }
+.npro-site-header--cinematic.npro-site-header--at-hero .btn-primary {
+  background: #fff;
+  color: #17191b;
+}
+.npro-site-header--cinematic.npro-site-header--at-hero .btn-primary:hover {
+  background: #f0f0ee;
+  color: #17191b;
+}
 
 .npro-public {
   --brand: var(--np-orange);
