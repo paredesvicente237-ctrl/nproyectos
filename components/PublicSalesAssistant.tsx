@@ -47,7 +47,7 @@ const WELCOME_MESSAGE: UIMessage = {
   role: "assistant",
   parts: [{
     type: "text",
-    text: "Hola, soy el asesor comercial de N Proyectos. Cuéntame qué necesitas fabricar o resolver y te ayudo a ordenar los antecedentes para una cotización.",
+    text: "Hola, soy el asesor comercial de N Proyectos. Cuéntame qué necesitas resolver: puedo orientarte y ayudarte a dejar una solicitud lista para cotizar por WhatsApp.",
   }],
 };
 
