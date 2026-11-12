@@ -4,7 +4,6 @@ import Footer from "@/components/Footer";
 import CommercialStory from "@/components/CommercialStory";
 import Navbar from "@/components/Navbar";
 import PublicSalesAssistant from "@/components/PublicSalesAssistant";
-import ProductSolutions from "@/components/ProductSolutions";
 import { companyInfo } from "@/components/siteData";
 import { products } from "@/lib/productData";
 import { services } from "@/lib/serviceData";
@@ -112,11 +111,10 @@ export default function Home() {
       <Navbar />
       <main className="npro-public relative z-10">
         <CommercialStory />
-        <ProductSolutions />
         <Contact />
       </main>
       <Footer />
-      <PublicSalesAssistant />
+      <PublicSalesAssistant compactOnMobile />
     </>
   );
 }

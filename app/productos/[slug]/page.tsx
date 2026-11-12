@@ -233,7 +233,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </section>
       </main>
       <Footer />
-      <PublicSalesAssistant initialService={product.name} />
+      <PublicSalesAssistant initialService={product.name} compactOnMobile />
     </>
   );
 }

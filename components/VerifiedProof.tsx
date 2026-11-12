@@ -70,16 +70,16 @@ export default function VerifiedProof() {
           </TrackedQuoteLink>
         </div>
 
-        <div className="border-t border-[#dedbd7] py-8 sm:py-10 lg:border-l lg:border-t-0 lg:py-14 lg:pl-10 xl:pl-14">
+        <div id="trabajos" className="border-t border-[#dedbd7] py-8 sm:py-10 lg:border-l lg:border-t-0 lg:py-14 lg:pl-10 xl:pl-14">
           <div>
             <div>
-              <p className="text-[10px] font-bold tracking-[.18em] text-[#a94f00] sm:text-xs">CAPACIDADES DE FABRICACIÓN</p>
+              <p className="text-[10px] font-bold tracking-[.18em] text-[#a94f00] sm:text-xs">PROCESOS METALMECÁNICOS</p>
               <h3 className="mt-2 max-w-3xl text-2xl font-semibold leading-[1.03] tracking-[-.045em] text-[#252729] sm:text-3xl lg:text-[2.35rem]">
-                TRABAJOS QUE DEMUESTRAN NUESTRA CAPACIDAD
+                Fabricación, conformado y unión.
               </h3>
             </div>
             <p className="mt-2 max-w-xl text-xs leading-5 text-[#66696b] sm:text-sm sm:leading-6">
-              Corte, conformado y armado para distintas necesidades industriales.
+              Referencias visuales de procesos industriales relacionados con nuestras capacidades.
             </p>
           </div>
 
@@ -100,8 +100,8 @@ export default function VerifiedProof() {
               </figure>
             ))}
           </div>
-          <p className="mt-3 text-[10px] leading-4 text-white/50 sm:mt-4 sm:text-xs sm:leading-5">
-            Fotografías ilustrativas de procesos industriales; no representan proyectos específicos de clientes.
+          <p className="mt-3 text-[10px] leading-4 text-[#777a7c] sm:mt-4 sm:text-xs sm:leading-5">
+            Fotografías referenciales; no representan instalaciones ni trabajos específicos de clientes de N Proyectos.
           </p>
         </div>
       </div>

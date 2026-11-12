@@ -247,7 +247,7 @@ export default function MaestranzaSantiagoPage() {
         </section>
       </main>
       <Footer />
-      <PublicSalesAssistant initialService="Maestranza industrial" />
+      <PublicSalesAssistant initialService="Maestranza industrial" compactOnMobile />
     </>
   );
 }

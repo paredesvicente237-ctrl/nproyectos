@@ -304,7 +304,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </section>
       </main>
       <Footer />
-      <PublicSalesAssistant initialService={service.shortName} />
+      <PublicSalesAssistant initialService={service.shortName} compactOnMobile />
     </>
   );
 }

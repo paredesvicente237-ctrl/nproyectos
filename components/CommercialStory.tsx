@@ -15,6 +15,7 @@ import {
 import { siteAssets } from "@/components/siteAssets";
 import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 import VerifiedProof from "@/components/VerifiedProof";
+import ProductSolutions from "@/components/ProductSolutions";
 import { companyInfo } from "@/components/siteData";
 import { servicesBySlug } from "@/lib/serviceData";
 
@@ -43,12 +44,6 @@ const serviceStories = [
     summary: "Fabricación de estructuras y soportes según plano, con revisión de dimensiones, uniones y terminación.",
     marker: "04",
   },
-];
-
-const processGallery = [
-  { image: siteAssets.goodBending, title: "Plegado de planchas", position: "object-[54%_center]" },
-  { image: siteAssets.goodSparks, title: "Preparación y corte", position: "object-[56%_center]" },
-  { image: siteAssets.goodWelding, title: "Armado y soldadura", position: "object-[55%_center]" },
 ];
 
 const questions = [
@@ -99,7 +94,7 @@ export default function CommercialStory() {
               <TrackedQuoteLink
                 href="/#contacto"
                 location="hero"
-                className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-[#f47b00] px-6 text-sm font-bold text-[#17191b] shadow-[0_8px_22px_rgba(0,0,0,.22)] transition-all hover:-translate-y-0.5 hover:bg-[#ff941f] hover:shadow-[0_12px_28px_rgba(0,0,0,.3)]"
+                className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-[#f47b00] px-6 text-sm font-bold text-[#17191b] shadow-[0_8px_22px_rgba(0,0,0,.16)] transition-[transform,background-color,box-shadow] hover:-translate-y-0.5 hover:bg-[#ff941f] hover:shadow-[0_12px_28px_rgba(0,0,0,.22)] motion-reduce:transform-none motion-reduce:transition-none"
               >
                 Solicitar cotización <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </TrackedQuoteLink>
@@ -212,6 +207,8 @@ export default function CommercialStory() {
         </div>
       </section>
 
+      <ProductSolutions />
+
       <section id="nosotros" className="relative overflow-hidden bg-[#f7f5f2] py-14 text-[#252729] sm:py-20 lg:py-24">
         <div aria-hidden="true" className="absolute right-0 top-0 h-full w-[40%] bg-[linear-gradient(135deg,transparent_49.8%,rgba(244,123,0,.09)_50%,transparent_50.2%)] bg-[length:42px_42px] opacity-50" />
         <div className="container-custom relative grid gap-8 px-5 sm:px-8 lg:grid-cols-[1fr_.72fr] lg:items-end lg:gap-20 lg:px-10">
@@ -242,35 +239,6 @@ export default function CommercialStory() {
               <p className="mt-2 max-w-xs text-sm leading-6 text-[#626568]">{text}</p>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section id="trabajos" className="bg-white py-16 sm:py-20 lg:py-24" aria-labelledby="process-gallery-title">
-        <div className="container-custom px-5 sm:px-8 lg:px-10">
-          <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="inline-flex items-center gap-3 text-xs font-bold tracking-[.16em] text-[#155fc3]"><span className="h-px w-8 bg-[#155fc3]" /> PROCESOS METALMECÁNICOS</p>
-              <h2 id="process-gallery-title" className="mt-5 max-w-3xl text-balance text-4xl font-semibold leading-[.97] tracking-[-.065em] text-[#17232c] sm:text-5xl lg:text-[3.8rem]">
-                Cada proceso responde a una necesidad distinta.
-              </h2>
-            </div>
-            <p className="max-w-md text-sm leading-6 text-[#627079] sm:text-base sm:leading-7">
-              Una referencia visual de operaciones habituales. La solución y el proceso se definen para cada requerimiento.
-            </p>
-          </div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:mt-11 lg:grid-cols-[.82fr_1.18fr] lg:gap-4">
-            {processGallery.map((item, index) => (
-              <figure key={item.title} className={`group relative overflow-hidden bg-[#263947] ${index === 0 ? "aspect-[1.2/1] lg:row-span-2 lg:aspect-auto" : index === 2 ? "aspect-[1.7/1] sm:col-span-2 lg:col-span-1" : "aspect-[1.7/1]"}`}>
-                <Image src={item.image} alt={`${item.title}, imagen referencial`} fill className={`object-cover transition-transform duration-700 group-hover:scale-[1.035] ${item.position}`} sizes="(max-width: 640px) 100vw, (max-width: 1023px) 50vw, 56vw" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#081723]/80 via-transparent to-[#081723]/5" />
-                <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 text-white sm:p-5 lg:p-6">
-                  <div><p className="text-lg font-semibold tracking-[-.03em] sm:text-xl">{item.title}</p></div>
-                  <ArrowUpRight className="mb-1 h-5 w-5 shrink-0 text-white/80" aria-hidden="true" />
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-          <p className="mt-4 text-xs leading-5 text-[#77838a]">Las fotografías son referenciales; no representan instalaciones ni trabajos específicos de clientes de N Proyectos.</p>
         </div>
       </section>
 
