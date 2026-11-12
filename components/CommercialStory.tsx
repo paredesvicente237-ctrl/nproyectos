@@ -103,7 +103,7 @@ export default function CommercialStory() {
               <TrackedQuoteLink
                 href="/#contacto"
                 location="hero"
-                className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-[#f47b00] px-6 text-sm font-bold text-[#17191b] shadow-[0_10px_28px_rgba(0,0,0,.26)] transition-[transform,background-color,box-shadow] hover:-translate-y-0.5 hover:bg-[#ff941f] hover:shadow-[0_14px_32px_rgba(0,0,0,.32)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white motion-reduce:transform-none motion-reduce:transition-none sm:w-fit"
+                className="hero-quote-cta inline-flex min-h-[54px] items-center justify-center gap-3 px-6 text-sm font-bold shadow-[0_10px_28px_rgba(0,0,0,.26)] transition-[transform,background-color,box-shadow] hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white motion-reduce:transform-none motion-reduce:transition-none sm:w-fit"
               >
                 Cotizar mi proyecto <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </TrackedQuoteLink>

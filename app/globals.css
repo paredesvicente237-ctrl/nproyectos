@@ -463,6 +463,8 @@
   line-height: 1.04;
   letter-spacing: -.04em;
 }
+.commercial-hero .hero-quote-cta { background: #fff; color: #17191b; }
+.commercial-hero .hero-quote-cta:hover { background: #f0f0ee; color: #17191b; }
 .npro-public .eyebrow::before { background: var(--np-orange); }
 .npro-public .btn-primary {
   border-radius: 2px;
