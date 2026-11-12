@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="246" height="48" viewBox="0 0 246 48">
+  <title>NProyectos — Ingeniería y soluciones</title>
+  <!-- Versión de cabecera: tintas planas y espacios negativos transparentes. -->
+  <g transform="translate(1 2) scale(.34) translate(-15 -6)">
+    <path fill="#f6f7f8" d="M51 28 83 9q7-4 13 0l51 31q7 5 0 10l-27 16-57-36q-6-4-12-2Z"/>
+    <path fill="#e2e6e9" d="M15 122V55q0-5 5-8l16-10q5-3 10 0l66 40v25q0 5 4 7l-67-42v35Z"/>
+    <path fill="#ff860d" d="m112 77 34-21q4-2 5-6v36q0 5-5 8l-21 13q-6 4-11 0-2-2-2-6Z"/>
+    <path fill="#f58209" d="m51 105 27-16 35 22-20 13q-5 4-11 0Z"/>
+  </g>
+  <path stroke="#73808a" d="M56.5 5v38"/>
+  <!-- Lettering de la marca, dibujado a escala para no depender de fuentes. -->
+  <g fill="#fff" fill-rule="evenodd" transform="translate(66 7) scale(.427)">
+    <path d="M0 34V0h8l29 23V0h9v34h-8L9 11v23Z"/>
+    <path id="p" d="M53 34V0h25q13 0 13 12T78 24H61v10Zm8-17h16q6 0 6-5t-6-5H61Z"/>
+    <path d="M96 34V0h25q12 0 12 12 0 9-9 11l11 11h-12l-10-11h-9v11Zm8-17h16q5 0 5-5t-5-5h-16Z"/>
+    <path id="o" d="M153 0h9q16 0 16 14v6q0 14-16 14h-9q-16 0-16-14v-6q0-14 16-14Zm0 7q-7 0-7 7v6q0 7 7 7h9q7 0 7-7v-6q0-7-7-7Z"/>
+    <path d="m178 0 16 20v14h9V20l16-20h-11l-10 13-10-13Zm45 0h34v7h-26v6h23v7h-23v7h26v7h-34Zm52 0h20v7h-19q-6 0-6 7v6q0 7 6 7h19v7h-20q-14 0-14-14v-6q0-14 14-14Zm24 0h36v7h-14v27h-8V7h-14Z"/>
+    <use href="#o" x="199"/>
+    <path d="M419 0v7h-24q-4 0-4 3t4 3h13q12 0 12 10 0 11-12 11h-27v-7h26q5 0 5-4 0-3-5-3h-14q-11 0-11-10t12-10Z"/>
+  </g>
+  <path fill="#ff860d" d="m66 38 4-5h12l-4 5Z"/>
+  <text x="84" y="38" fill="#e7ebee" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="600" letter-spacing=".65" textLength="159" lengthAdjust="spacingAndGlyphs">INGENIERÍA Y SOLUCIONES</text>
+</svg>
