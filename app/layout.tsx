@@ -50,10 +50,10 @@ export const metadata: Metadata = {
       "Fabricación en acero, corte y plegado, soldadura MIG/TIG y control acústico para proyectos industriales en Santiago.",
     images: [
       {
-        url: "/images/hero-soldadura-nproyectos-premium.webp",
-        width: 1672,
-        height: 941,
-        alt: "Proceso de soldadura industrial sobre una estructura metálica",
+        url: "/images/nproyectos-brand-social.webp",
+        width: 1200,
+        height: 630,
+        alt: "Identidad NProyectos Ingeniería y Soluciones junto a una imagen referencial de soldadura industrial",
       },
     ],
   },
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: "Maestranza y fabricación en acero | N Proyectos",
     description:
       "Fabricación en acero, corte y plegado, soldadura y control acústico en Santiago.",
-    images: ["/images/hero-soldadura-nproyectos-premium.webp"],
+    images: ["/images/nproyectos-brand-social.webp"],
   },
   robots: {
     index: true,

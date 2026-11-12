@@ -37,48 +37,48 @@ const processGallery: {
 
 export default function VerifiedProof() {
   return (
-    <section id="equipamiento" className="scroll-mt-24 bg-[#102b40] text-white" aria-labelledby="verified-proof-title">
+    <section id="equipamiento" className="scroll-mt-24 bg-white text-[#252729]" aria-labelledby="verified-proof-title">
       <div className="container-custom grid px-5 sm:px-8 lg:grid-cols-[.82fr_1.18fr] lg:px-10">
         <div className="relative flex flex-col justify-start overflow-hidden py-10 sm:py-12 lg:pb-10 lg:pr-10 lg:pt-16">
-          <div aria-hidden="true" className="absolute -left-28 top-1/2 h-[25rem] w-[25rem] -translate-y-1/2 rounded-full border border-white/[.07]" />
-          <div aria-hidden="true" className="absolute -left-16 top-1/2 h-[18rem] w-[18rem] -translate-y-1/2 rounded-full border border-white/[.07]" />
-          <p className="relative inline-flex items-center gap-3 text-[10px] font-bold tracking-[.19em] text-[#9bc9f1] sm:text-xs">
-            <span className="h-px w-8 bg-[#4a9ae6]" /> EXPERIENCIA INDUSTRIAL ACUMULADA
+          <div aria-hidden="true" className="absolute -left-28 top-1/2 h-[25rem] w-[25rem] -translate-y-1/2 rounded-full border border-[#f47b00]/10" />
+          <div aria-hidden="true" className="absolute -left-16 top-1/2 h-[18rem] w-[18rem] -translate-y-1/2 rounded-full border border-[#f47b00]/10" />
+          <p className="relative inline-flex items-center gap-3 text-[10px] font-bold tracking-[.19em] text-[#a94f00] sm:text-xs">
+            <span className="h-px w-8 bg-[#f47b00]" /> EXPERIENCIA INDUSTRIAL ACUMULADA
           </p>
-          <h2 id="verified-proof-title" className="relative mt-5 font-heading text-[clamp(4rem,17vw,7.75rem)] font-semibold leading-[.82] tracking-[-.075em] text-white sm:mt-6 sm:text-[clamp(5.25rem,10vw,8.5rem)]">
+          <h2 id="verified-proof-title" className="relative mt-5 font-heading text-[clamp(4rem,17vw,7.75rem)] font-semibold leading-[.82] tracking-[-.075em] text-[#f47b00] sm:mt-6 sm:text-[clamp(5.25rem,10vw,8.5rem)]">
             +5.000
           </h2>
-          <p className="relative mt-4 max-w-md text-[11px] font-bold leading-5 tracking-[.16em] text-[#dceafa] sm:mt-5 sm:text-sm sm:tracking-[.2em]">
+          <p className="relative mt-4 max-w-md text-[11px] font-bold leading-5 tracking-[.16em] text-[#55585a] sm:mt-5 sm:text-sm sm:tracking-[.2em]">
             ÓRDENES DE TRABAJO REALIZADAS
           </p>
-          <div aria-hidden="true" className="relative mt-6 h-px w-16 bg-[#4895dd] sm:mt-7" />
-          <p className="relative mt-5 max-w-lg text-sm leading-6 text-white/75 sm:mt-6 sm:text-base sm:leading-7">
+          <div aria-hidden="true" className="relative mt-6 h-px w-16 bg-[#f47b00] sm:mt-7" />
+          <p className="relative mt-5 max-w-lg text-sm leading-6 text-[#55585a] sm:mt-6 sm:text-base sm:leading-7">
             Nuestra trayectoria se construye con miles de trabajos de fabricación, desarrollo y soluciones metalmecánicas para distintas necesidades industriales.
           </p>
-          <p className="relative mt-3 max-w-md text-[11px] leading-5 text-white/55 sm:text-xs">
+          <p className="relative mt-3 max-w-md text-[11px] leading-5 text-[#777a7c] sm:text-xs">
             Cifra acumulada de órdenes de trabajo; no equivale a 5.000 proyectos distintos.
           </p>
-          <p className="relative mt-5 text-sm font-semibold text-white sm:mt-6 sm:text-base">
+          <p className="relative mt-5 text-sm font-semibold text-[#252729] sm:mt-6 sm:text-base">
             MÁS DE 5.000 ÓRDENES DE TRABAJO REALIZADAS. TU PROYECTO PUEDE SER EL PRÓXIMO.
           </p>
           <TrackedQuoteLink
             href="/#contacto"
             location="verified_proof"
-            className="relative mt-6 inline-flex min-h-12 w-full items-center justify-between gap-5 bg-[#155fc3] px-5 text-sm font-bold text-white transition-colors hover:bg-[#0e4fa8] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white sm:mt-7 sm:w-fit sm:justify-center sm:px-6"
+            className="relative mt-6 inline-flex min-h-12 w-full items-center justify-between gap-5 bg-[#f47b00] px-5 text-sm font-bold text-[#191a1c] transition-colors hover:bg-[#ff9220] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#a94f00] sm:mt-7 sm:w-fit sm:justify-center sm:px-6"
           >
             COTIZAR MI PROYECTO <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </TrackedQuoteLink>
         </div>
 
-        <div className="border-t border-white/15 py-8 sm:py-10 lg:border-l lg:border-t-0 lg:py-14 lg:pl-10 xl:pl-14">
+        <div className="border-t border-[#dedbd7] py-8 sm:py-10 lg:border-l lg:border-t-0 lg:py-14 lg:pl-10 xl:pl-14">
           <div>
             <div>
-              <p className="text-[10px] font-bold tracking-[.18em] text-[#9bc9f1] sm:text-xs">CAPACIDADES DE FABRICACIÓN</p>
-              <h3 className="mt-2 max-w-3xl text-2xl font-semibold leading-[1.03] tracking-[-.045em] text-white sm:text-3xl lg:text-[2.35rem]">
+              <p className="text-[10px] font-bold tracking-[.18em] text-[#a94f00] sm:text-xs">CAPACIDADES DE FABRICACIÓN</p>
+              <h3 className="mt-2 max-w-3xl text-2xl font-semibold leading-[1.03] tracking-[-.045em] text-[#252729] sm:text-3xl lg:text-[2.35rem]">
                 TRABAJOS QUE DEMUESTRAN NUESTRA CAPACIDAD
               </h3>
             </div>
-            <p className="mt-2 max-w-xl text-xs leading-5 text-white/60 sm:text-sm sm:leading-6">
+            <p className="mt-2 max-w-xl text-xs leading-5 text-[#66696b] sm:text-sm sm:leading-6">
               Corte, conformado y armado para distintas necesidades industriales.
             </p>
           </div>

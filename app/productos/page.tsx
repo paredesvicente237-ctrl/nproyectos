@@ -66,7 +66,7 @@ export default function ProductosPage() {
         }}
       />
       <Navbar />
-      <main className="relative z-10">
+      <main className="npro-public relative z-10">
         <section className="relative isolate flex min-h-[500px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-12 pt-28 text-white sm:px-8 sm:pb-16 lg:min-h-[620px] lg:px-10">
           <Image
             src={productImages["panel-acustico-naislanpanel"][0].src}

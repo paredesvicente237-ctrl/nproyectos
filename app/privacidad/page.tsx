@@ -16,7 +16,7 @@ export default function PrivacyPage() {
   return (
     <>
       <Navbar />
-      <main className="min-h-[60vh] bg-white px-5 pb-20 pt-28 sm:px-8 sm:pt-36 lg:px-10">
+      <main className="npro-public min-h-[60vh] bg-white px-5 pb-20 pt-28 sm:px-8 sm:pt-36 lg:px-10">
         <div className="mx-auto max-w-3xl">
           <p className="mb-4 border-l-2 border-blue-700 pl-3 text-sm font-semibold text-blue-800">N Proyectos Ltda</p>
           <h1 className="text-4xl leading-tight sm:text-5xl">Política de privacidad</h1>

@@ -2,6 +2,7 @@
 
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useChat } from "@ai-sdk/react";
+import Image from "next/image";
 import {
   ArrowLeft,
   ArrowRight,
@@ -519,11 +520,11 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
         >
           <header className="npa-header flex shrink-0 items-center justify-between gap-4 bg-[#17191b] px-4 py-3.5 text-white sm:px-5">
             <div className="flex min-w-0 items-center gap-3">
-              <span className="npa-brand-mark flex h-10 w-10 shrink-0 items-center justify-center" aria-hidden="true">
-                N
+              <span className="npa-brand-mark relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden" aria-hidden="true">
+                <Image src="/images/nproyectos-isotipo.png" alt="" fill sizes="40px" className="object-cover" />
               </span>
               <div className="npa-brand-copy min-w-0">
-                <h2 id="nproyectos-assistant-title" className="truncate text-sm font-semibold">N Proyectos</h2>
+                <h2 id="nproyectos-assistant-title" className="truncate text-sm font-semibold">NProyectos</h2>
                 <p className="mt-0.5 truncate text-xs text-white/60">Asesor comercial · Santiago</p>
               </div>
             </div>

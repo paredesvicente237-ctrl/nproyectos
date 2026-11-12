@@ -79,41 +79,41 @@ export default function CommercialStory() {
 
   return (
     <>
-      <section id="inicio" className="commercial-hero relative overflow-hidden bg-[#f1f3f2] pt-[76px] text-[#17232c]">
+      <section id="inicio" className="commercial-hero relative overflow-hidden bg-white pt-[76px] text-[#252729]">
         <div className="container-custom grid lg:min-h-[690px] lg:grid-cols-[.9fr_1.1fr]">
           <div className="relative z-10 flex flex-col justify-center px-5 pb-8 pt-12 sm:px-8 sm:pt-16 lg:px-10 lg:py-16 lg:pr-12 xl:pr-16">
-            <p className="inline-flex items-center gap-3 text-[11px] font-bold tracking-[.18em] text-[#155fc3] sm:text-xs">
-              <span className="h-px w-8 bg-[#155fc3]" />
-              MAESTRANZA INDUSTRIAL · SANTIAGO
+            <p className="inline-flex items-center gap-3 text-[11px] font-bold tracking-[.18em] text-[#f47b00] sm:text-xs">
+              <span className="h-px w-8 bg-[#f47b00]" />
+              NPROYECTOS · INGENIERÍA Y SOLUCIONES
             </p>
-            <h1 className="mt-6 max-w-[680px] text-[clamp(2.5rem,10.5vw,3.1rem)] font-extrabold uppercase leading-[.88] tracking-[-.045em] text-[#142330] sm:mt-8 sm:text-[clamp(3.4rem,8.5vw,6.5rem)] lg:text-[clamp(4rem,6.2vw,6.25rem)]">
-              <span className="block">Maestranza y</span>
+            <h1 className="mt-6 max-w-[680px] text-[clamp(2.5rem,10.5vw,3.1rem)] font-semibold leading-[.98] tracking-[-.035em] text-[#252729] sm:mt-8 sm:text-[clamp(3.4rem,8.5vw,6.5rem)] lg:text-[clamp(3.6rem,4.9vw,5.5rem)]">
+              <span className="block">Ingeniería y</span>
               <span className="block">fabricación</span>
               <span className="block">metalmecánica</span>
-              <span className="block">en Santiago.</span>
+              <span className="block text-[#f47b00]">para la industria.</span>
             </h1>
-            <p className="mt-6 max-w-[570px] text-[15px] leading-7 text-[#53616b] sm:mt-7 sm:text-lg sm:leading-8">
-              Convertimos planos, ideas y desafíos técnicos en soluciones metalmecánicas a medida. Ingeniería, fabricación y precisión para proyectos industriales exigentes.
+            <p className="mt-6 max-w-[570px] text-[15px] leading-7 text-[#5b5e60] sm:mt-7 sm:text-lg sm:leading-8">
+              Del plano a una solución fabricable. Integramos corte, plegado, armado y soldadura para resolver requerimientos industriales a medida.
             </p>
             <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center">
               <TrackedQuoteLink
                 href="/#contacto"
                 location="hero"
-                className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-[#155fc3] px-6 text-sm font-bold text-white shadow-[0_8px_22px_rgba(21,95,195,.2)] transition-all hover:-translate-y-0.5 hover:bg-[#0e4fa8] hover:shadow-[0_12px_28px_rgba(21,95,195,.27)]"
+                className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-[#f47b00] px-6 text-sm font-bold text-[#17191b] shadow-[0_8px_22px_rgba(0,0,0,.22)] transition-all hover:-translate-y-0.5 hover:bg-[#ff941f] hover:shadow-[0_12px_28px_rgba(0,0,0,.3)]"
               >
                 Solicitar cotización <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </TrackedQuoteLink>
               <Link
                 href="/#especialidades"
-                className="inline-flex min-h-[50px] items-center justify-center gap-2 px-3 text-sm font-semibold text-[#263a49] transition-colors hover:text-[#155fc3]"
+                className="inline-flex min-h-[50px] items-center justify-center gap-2 px-3 text-sm font-semibold text-[#343638] transition-colors hover:text-[#b75700]"
               >
                 Conocer nuestras capacidades <ArrowDownRight className="h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
-            <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-[#cbd3d6] pt-4 text-xs font-semibold text-[#53616b] sm:mt-10 sm:gap-x-7 sm:pt-5 sm:text-sm">
-              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#155fc3]" /> Corte y plegado</span>
-              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#155fc3]" /> Soldadura MIG/TIG</span>
-              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#155fc3]" /> Fabricación a medida</span>
+            <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-[#d7d5d3] pt-4 text-xs font-semibold text-[#505255] sm:mt-10 sm:gap-x-7 sm:pt-5 sm:text-sm">
+              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#f47b00]" /> Corte y plegado</span>
+              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#f47b00]" /> Soldadura MIG/TIG</span>
+              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#f47b00]" /> Fabricación a medida</span>
             </div>
           </div>
 
@@ -128,7 +128,7 @@ export default function CommercialStory() {
               sizes="(max-width: 1023px) 100vw, 55vw"
             />
             <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0d2030]/55 via-[#0d2030]/6 to-[#0d2030]/0" />
-            <div aria-hidden="true" className="absolute inset-y-0 left-0 hidden w-[16%] bg-gradient-to-r from-[#f1f3f2] to-transparent lg:block" />
+            <div aria-hidden="true" className="absolute inset-y-0 left-0 hidden w-[16%] bg-gradient-to-r from-[#17191b] to-transparent lg:block" />
             <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 p-5 text-white sm:flex-row sm:items-end sm:justify-between sm:p-7 lg:p-9">
               <div>
                 <p className="text-xs font-semibold text-white/70">De la definición a la fabricación</p>
@@ -212,20 +212,20 @@ export default function CommercialStory() {
         </div>
       </section>
 
-      <section id="nosotros" className="relative overflow-hidden bg-[#102b40] py-14 text-white sm:py-20 lg:py-24">
-        <div aria-hidden="true" className="absolute right-0 top-0 h-full w-[40%] bg-[linear-gradient(135deg,transparent_49.8%,rgba(133,184,220,.12)_50%,transparent_50.2%)] bg-[length:42px_42px] opacity-50" />
+      <section id="nosotros" className="relative overflow-hidden bg-[#f7f5f2] py-14 text-[#252729] sm:py-20 lg:py-24">
+        <div aria-hidden="true" className="absolute right-0 top-0 h-full w-[40%] bg-[linear-gradient(135deg,transparent_49.8%,rgba(244,123,0,.09)_50%,transparent_50.2%)] bg-[length:42px_42px] opacity-50" />
         <div className="container-custom relative grid gap-8 px-5 sm:px-8 lg:grid-cols-[1fr_.72fr] lg:items-end lg:gap-20 lg:px-10">
           <div>
-            <p className="inline-flex items-center gap-3 text-xs font-bold tracking-[.16em] text-[#a8d0f5]"><span className="h-px w-8 bg-[#54a6ff]" /> INGENIERÍA APLICADA</p>
-            <h2 className="mt-5 max-w-4xl text-balance text-3xl font-semibold leading-[.98] tracking-[-.06em] text-white sm:text-5xl lg:text-[4.25rem]">
+            <p className="inline-flex items-center gap-3 text-xs font-bold tracking-[.16em] text-[#a94f00]"><span className="h-px w-8 bg-[#f47b00]" /> INGENIERÍA APLICADA</p>
+            <h2 className="mt-5 max-w-4xl text-balance text-3xl font-semibold leading-[.98] tracking-[-.06em] text-[#252729] sm:text-5xl lg:text-[4.25rem]">
               Primero entendemos qué debe resolver la pieza.
             </h2>
           </div>
-          <div className="border-l-2 border-[#3184df] pl-5 sm:pl-6">
-            <p className="max-w-xl text-base leading-7 text-white/75 sm:text-lg sm:leading-8">
+          <div className="border-l-2 border-[#f47b00] pl-5 sm:pl-6">
+            <p className="max-w-xl text-base leading-7 text-[#55585a] sm:text-lg sm:leading-8">
               Revisamos uso, geometría, material, espesor y cantidad para evaluar cómo fabricar cada requerimiento. Así definimos el alcance antes de cotizar.
             </p>
-            <Link href="/maestranza-santiago" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-white underline decoration-[#76b7fa] underline-offset-4 transition-colors hover:text-[#b8dcff]">
+            <Link href="/maestranza-santiago" className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#a94f00] underline decoration-[#f3bc8a] underline-offset-4 transition-colors hover:text-[#7c3900]">
               Conoce nuestra maestranza <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -236,10 +236,10 @@ export default function CommercialStory() {
             { icon: Ruler, title: "Material y medidas", text: "Espesor, dimensiones, tolerancias y terminación." },
             { icon: Wrench, title: "Proceso y alcance", text: "Qué procesos y antecedentes requiere la fabricación." },
           ].map(({ icon: Icon, title, text }) => (
-            <div key={title} className="border-t border-white/20 py-5 sm:px-5 sm:first:pl-0 sm:last:pr-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:pl-5 lg:py-6">
-              <Icon className="h-5 w-5 text-[#78b8f5]" strokeWidth={1.6} aria-hidden="true" />
-              <h3 className="mt-4 text-lg font-semibold text-white">{title}</h3>
-              <p className="mt-2 max-w-xs text-sm leading-6 text-white/65">{text}</p>
+            <div key={title} className="border-t border-[#d7d5d3] py-5 sm:px-5 sm:first:pl-0 sm:last:pr-0 sm:[&:not(:first-child)]:border-l sm:[&:not(:first-child)]:pl-5 lg:py-6">
+              <Icon className="h-5 w-5 text-[#c86400]" strokeWidth={1.6} aria-hidden="true" />
+              <h3 className="mt-4 text-lg font-semibold text-[#252729]">{title}</h3>
+              <p className="mt-2 max-w-xs text-sm leading-6 text-[#626568]">{text}</p>
             </div>
           ))}
         </div>

@@ -16,23 +16,23 @@ const productUses = [
 
 export default function FeaturedProduct() {
   return (
-    <section className="section-padding bg-navy-950 relative overflow-hidden">
+    <section className="section-padding relative overflow-hidden bg-[#f7f5f2]">
       {/* Background accents */}
-      <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-navy-500/10 blur-[100px]" />
-      <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-navy-400/10 blur-[100px]" />
+      <div className="absolute -left-32 -top-32 h-80 w-80 rounded-full bg-[#f47b00]/[.07] blur-[100px]" />
+      <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-[#f47b00]/[.05] blur-[100px]" />
 
       <div className="container-custom relative">
         <div className="grid gap-14 lg:grid-cols-2">
           {/* Product info */}
           <div>
-            <span className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.15em] text-navy-400">
-              <span className="inline-block h-[3px] w-8 rounded-full bg-navy-400" />
+            <span className="inline-flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.15em] text-[#a94f00]">
+              <span className="inline-block h-[3px] w-8 rounded-full bg-[#f47b00]" />
               Producto Destacado
             </span>
-            <h2 className="mt-5 text-4xl font-extrabold text-white sm:text-5xl">
+            <h2 className="mt-5 text-4xl font-extrabold text-[#252729] sm:text-5xl">
               Espuma Acústica NFonoAB
             </h2>
-            <p className="mt-5 text-lg leading-relaxed text-slate-400">
+            <p className="mt-5 text-lg leading-relaxed text-slate-600">
               Acondicionamiento acústico para espacios donde el control de
               ruido y reverberación es crítico.
             </p>
@@ -43,7 +43,7 @@ export default function FeaturedProduct() {
                   <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
                     {item.label}
                   </p>
-                  <p className="mt-1 text-base font-semibold text-white">
+                  <p className="mt-1 text-base font-semibold text-[#343638]">
                     {item.value}
                   </p>
                 </div>
@@ -53,19 +53,19 @@ export default function FeaturedProduct() {
 
           {/* Applications */}
           <div className="flex flex-col justify-center">
-            <p className="text-lg font-bold text-white">
+            <p className="text-lg font-bold text-[#252729]">
               Aplicaciones recomendadas
             </p>
             <div className="mt-6 space-y-3">
               {productUses.map((item, i) => (
                 <div
                   key={item}
-                  className="flex items-center gap-4 rounded-xl border border-white/5 bg-white/[0.04] p-4 transition-colors hover:bg-white/[0.07]"
+                  className="flex items-center gap-4 border border-[#e4e0dc] bg-white p-4 transition-colors hover:border-[#f3bc8a] hover:bg-[#fffaf5]"
                 >
-                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-500/15 text-sm font-bold text-navy-400">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center bg-[#fff1e2] text-sm font-bold text-[#a94f00]">
                     {String(i + 1).padStart(2, "0")}
                   </div>
-                  <p className="text-slate-300">{item}</p>
+                  <p className="text-slate-700">{item}</p>
                 </div>
               ))}
             </div>

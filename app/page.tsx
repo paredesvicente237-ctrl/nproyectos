@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     siteName: companyInfo.shortName,
     images: [
       {
-        url: "/images/hero-soldadura-nproyectos-premium.webp",
-        width: 1672,
-        height: 941,
-        alt: "Proceso de soldadura industrial; imagen referencial",
+        url: "/images/nproyectos-brand-social.webp",
+        width: 1200,
+        height: 630,
+        alt: "Identidad NProyectos Ingeniería y Soluciones junto a una imagen referencial de soldadura industrial",
       },
     ],
   },
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: "Maestranza industrial y corte láser en Santiago | N Proyectos",
     description:
       "Fabricación metalmecánica, corte láser y plegado de planchas, soldadura MIG/TIG y soluciones acústicas para proyectos industriales en Santiago.",
-    images: ["/images/hero-soldadura-nproyectos-premium.webp"],
+    images: ["/images/nproyectos-brand-social.webp"],
   },
 };
 
@@ -110,7 +110,7 @@ export default function Home() {
         }}
       />
       <Navbar />
-      <main className="relative z-10">
+      <main className="npro-public relative z-10">
         <CommercialStory />
         <ProductSolutions />
         <Contact />

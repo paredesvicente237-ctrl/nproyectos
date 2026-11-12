@@ -111,7 +111,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         }}
       />
       <Navbar />
-      <main className="relative z-10">
+      <main className="npro-public relative z-10">
         <section className="bg-[#F5F5F2] px-5 pb-14 pt-28 sm:px-8 sm:pb-20 lg:px-10 lg:pb-24">
           <div className="container-custom">
             <nav aria-label="Migas de pan" className="mb-8 flex flex-wrap items-center gap-2 text-sm text-slate-500">
@@ -213,21 +213,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </section>
         )}
 
-        <section className="section-padding relative overflow-hidden bg-[#17191b] text-white">
+        <section className="section-padding relative overflow-hidden border-t border-[#e4e0dc] bg-[#f7f5f2] text-[#252729]">
           <div className="container-custom grid gap-7 lg:grid-cols-[1fr_auto] lg:items-center">
             <div>
-              <p className="text-sm font-semibold text-blue-200">{product.name} · {product.code}</p>
-              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl">Conversemos sobre tu proyecto</h2>
-              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-300">Comparte las medidas, condiciones de operación y aplicación que ya conozcas. El equipo podrá revisar los antecedentes para cotizar.</p>
+              <p className="text-sm font-semibold text-[#a94f00]">{product.name} · {product.code}</p>
+              <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#252729] sm:text-4xl">Conversemos sobre tu proyecto</h2>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">Comparte las medidas, condiciones de operación y aplicación que ya conozcas. El equipo podrá revisar los antecedentes para cotizar.</p>
               {product.id !== "pantalla-movil" && (
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">
-                  ¿Necesitas orientar la selección? Revisa el servicio de <Link href="/servicios/control-acustico-industrial" className="font-semibold text-blue-200 underline underline-offset-4 hover:text-white">control de ruido industrial</Link> y los antecedentes para evaluar tu instalación.
+                <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600">
+                  ¿Necesitas orientar la selección? Revisa el servicio de <Link href="/servicios/control-acustico-industrial" className="font-semibold text-[#a94f00] underline underline-offset-4 hover:text-[#7c3900]">control de ruido industrial</Link> y los antecedentes para evaluar tu instalación.
                 </p>
               )}
             </div>
             <div className="flex flex-wrap gap-3">
               <TrackedContactLink channel="whatsapp" href={whatsappUrl} className="btn-primary" target="_blank" rel="noopener noreferrer">Consultar por WhatsApp</TrackedContactLink>
-              <TrackedQuoteLink href="/#contacto" location="product_detail" serviceType={product.name} className="inline-flex min-h-11 items-center justify-center border border-white/50 px-5 py-3 text-sm font-semibold text-white hover:bg-white hover:text-[#17191b]">Formulario de contacto</TrackedQuoteLink>
+              <TrackedQuoteLink href="/#contacto" location="product_detail" serviceType={product.name} className="inline-flex min-h-11 items-center justify-center border border-[#c7c4c0] px-5 py-3 text-sm font-semibold text-[#343638] hover:border-[#f47b00] hover:bg-white">Formulario de contacto</TrackedQuoteLink>
             </div>
           </div>
         </section>

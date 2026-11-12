@@ -387,3 +387,136 @@
   .npa-launcher { bottom: calc(12px + env(safe-area-inset-bottom)); }
   .npa-header { min-height: 66px; padding-block: 9px; }
 }
+
+/* NProyectos identity system — public pages only. The private Cotizador VA
+   keeps its existing visual language and all of its business behavior. */
+:root {
+  --np-graphite: #252729;
+  --np-orange: #f47b00;
+  --np-paper: #ffffff;
+  --np-steel: #707579;
+  --np-rule: #d7d5d3;
+}
+
+.npro-site-header {
+  border-color: rgba(25, 26, 28, .12);
+  background: rgba(255, 255, 255, .97);
+  box-shadow: 0 6px 22px rgba(24, 25, 27, .055);
+}
+.npro-site-header a:not(.btn-primary) { color: #383a3c; }
+.npro-site-header a:not(.btn-primary):hover { color: #b75700; }
+.npro-site-header .btn-primary {
+  border-radius: 2px;
+  background: var(--np-orange);
+  color: var(--np-graphite);
+  box-shadow: none;
+}
+.npro-site-header .btn-primary:hover { background: #ff9220; }
+
+.npro-public {
+  --brand: var(--np-orange);
+  --paper: #ffffff;
+  --ink: var(--np-graphite);
+  --steel: var(--np-steel);
+  --rule: var(--np-rule);
+  color: #4a4b4c;
+}
+.npro-public h1,
+.npro-public h2,
+.npro-public h3,
+.npro-public h4 { color: var(--np-graphite); }
+.npro-public h1,
+.npro-public h2,
+.npro-public h3,
+.npro-public h4,
+.npro-public h5,
+.npro-public h6 {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-weight: 600;
+  letter-spacing: -.035em;
+}
+.npro-public .eyebrow { color: #a84f00; }
+.npro-public .eyebrow::before { background: var(--np-orange); }
+.npro-public .btn-primary {
+  border-radius: 2px;
+  background: var(--np-orange);
+  color: #17191b;
+  box-shadow: 0 5px 14px rgba(120, 58, 0, .14);
+}
+.npro-public .btn-primary:hover { background: #ff9220; color: #17191b; }
+.npro-public .btn-outline {
+  border-radius: 2px;
+  border-color: #aeb0b1;
+  color: #252628;
+}
+.npro-public .btn-outline:hover { border-color: #c45d00; color: #9b4a00; background: #fffaf4; }
+.npro-public [class*="text-blue-"] { color: #a94f00 !important; }
+.npro-public [class*="bg-blue-"] { background-color: var(--np-orange) !important; color: #17191b !important; }
+.npro-public [class*="border-blue-"] { border-color: var(--np-orange) !important; }
+.npro-public [class*="accent-blue-"] { accent-color: var(--np-orange) !important; }
+.npro-public [class~="bg-[#102b40]"],
+.npro-public [class~="bg-[#142737]"],
+.npro-public [class~="bg-[#172b3b]"],
+.npro-public [class~="bg-[#0b1d2b]"] { background-color: #f7f5f2; }
+.npro-public [class~="bg-[#f1f3f2]"],
+.npro-public [class~="bg-[#F5F5F2]"],
+.npro-public [class~="bg-slate-50"] { background-color: #f3f1ef; }
+.npro-public [class~="bg-[#f7f8f7]"] { background-color: #f8f7f5; }
+.npro-public [class~="bg-[#d9dcda]"],
+.npro-public [class~="bg-[#dedfdd]"] { background-color: #d5d3d1; }
+.npro-public [class~="text-blue-200"],
+.npro-public [class~="text-blue-300"],
+.npro-public [class~="text-blue-400"] { color: #ffad5b !important; }
+
+.npro-public .commercial-hero { background: #fff; color: var(--np-graphite); }
+.npro-public .commercial-hero h1 { color: var(--np-graphite); }
+.npro-public #verified-proof-title { color: var(--np-orange); }
+.npro-public .commercial-hero-media { background: #292a2c; }
+.npro-public .commercial-hero-media::after { opacity: .18; }
+.npro-public .commercial-hero .text-white\/75,
+.npro-public .commercial-hero .text-white\/72 { color: rgba(255,255,255,.77); }
+.npro-public #especialidades,
+.npro-public #soluciones,
+.npro-public #catalogo { scroll-margin-top: 5.5rem; }
+.npro-public #especialidades .bg-white,
+.npro-public #soluciones article,
+.npro-public #catalogo article { background-color: #fff; }
+.npro-public #contacto { background: #f7f5f2; }
+.npro-public #contacto .btn-primary { background: var(--np-orange); color: #17191b; }
+.npro-public #contacto .btn-primary:hover { background: #ff9220; }
+.npro-public .technical-grid { background-image: linear-gradient(rgba(244,123,0,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(244,123,0,.045) 1px, transparent 1px); }
+
+/* The assistant is rendered beside <main>, so scope its brand tokens by its own shell. */
+.npa-shell { --npa-blue: #c86400; border-color: #d5d1cd; background: #f6f4f2; }
+.npa-header { border-bottom-color: var(--np-orange); background: #fff; background-image: linear-gradient(110deg, #fff, #fffaf5); color: var(--np-graphite); }
+.npa-header [class*="text-white"] { color: var(--np-graphite) !important; }
+.npa-brand-mark { border-color: #f2a65d; background: linear-gradient(145deg, #ffad5b, #f47b00); color: #191a1c; box-shadow: 0 5px 15px rgba(244,123,0,.16); }
+.npa-hint { border-left-color: var(--np-orange); }
+.npa-hint-icon { border-color: #f1d0b0; background: #fff5ea; color: #a94f00; }
+.npa-hint-action,
+.npa-privacy a,
+.npa-composer-links button { color: #a94f00; }
+.npa-message-row-assistant::before { border-color: #e8c5a4; background: #fff4e8; color: #a94f00; }
+.npa-message-assistant { border-left-color: var(--np-orange); }
+.npa-message-user { border-color: rgba(255,255,255,.18); background: #343638; }
+.npa-suggestion:hover { background: #fff4e8; }
+.npa-input:focus,
+.npa-form-body input:not([type="checkbox"]):focus,
+.npa-form-body select:focus,
+.npa-form-body textarea:focus { border-color: #cf6a10; box-shadow: 0 0 0 3px rgba(244,123,0,.14); }
+.npa-send,
+.npa-form-footer button { background: linear-gradient(135deg, #f47b00, #dc6900); color: #17191b; box-shadow: 0 5px 14px rgba(120,58,0,.18); }
+.npa-send:not(:disabled):hover,
+.npa-form-footer button:hover { background: #ff9220; box-shadow: 0 8px 18px rgba(120,58,0,.2); }
+.npa-launcher { border-color: #edc29e; background: #fff; color: #252729; box-shadow: 0 9px 24px rgba(85,58,35,.12); }
+.npa-launcher:hover { border-color: #f47b00; background: #fffaf5; box-shadow: 0 12px 28px rgba(85,58,35,.16); }
+.npa-launcher-icon { color: #bd5b00; }
+.npa-launcher-arrow { color: #525456; }
+.npa-form-body { background-color: #f6f4f2; background-image: linear-gradient(rgba(120,90,65,.025) 1px, transparent 1px), linear-gradient(90deg, rgba(120,90,65,.025) 1px, transparent 1px); }
+.npa-consent input { accent-color: var(--np-orange); }
+
+@media (max-width: 639px) {
+  .npro-site-header .container-custom { height: 68px; }
+  .npro-public .commercial-hero { padding-top: 68px; }
+  .npro-public .commercial-hero h1 { max-width: 13ch; }
+}

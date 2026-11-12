@@ -147,7 +147,7 @@ export default function MaestranzaSantiagoPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
       <Navbar />
-      <main className="relative z-10">
+      <main className="npro-public relative z-10">
         <section className="relative isolate flex min-h-[560px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-10 pt-28 text-white sm:px-8 sm:pb-14 lg:min-h-[680px] lg:px-10">
           <Image src={siteAssets.goodWelding} alt="Proceso de soldadura de una estructura metálica" fill priority className="-z-10 object-cover object-center" sizes="100vw" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.88)_0%,rgba(15,17,18,.55)_54%,rgba(15,17,18,.12)_100%)]" />
@@ -235,14 +235,14 @@ export default function MaestranzaSantiagoPage() {
           </div>
         </section>
 
-        <section className="section-padding bg-[#17191b]">
+        <section className="section-padding border-t border-[#e4e0dc] bg-white">
           <div className="container-custom flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-blue-300">Cotización de maestranza</p>
-              <h2 className="mt-4 max-w-3xl text-3xl font-semibold text-white sm:text-4xl">Envíanos tus planos, medidas o fotografías.</h2>
-              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">Revisaremos el material, las cantidades, los procesos necesarios y el plazo para preparar una propuesta técnica.</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#a94f00]">Cotización de maestranza</p>
+              <h2 className="mt-4 max-w-3xl text-3xl font-semibold text-[#252729] sm:text-4xl">Envíanos tus planos, medidas o fotografías.</h2>
+              <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">Revisaremos el material, las cantidades, los procesos necesarios y el plazo para preparar una propuesta técnica.</p>
             </div>
-            <TrackedQuoteLink href="/#contacto" location="maestranza_footer" serviceType="fabricacion_metalmecanica" className="btn-white shrink-0">Cotizar proyecto <ArrowRight className="h-4 w-4" /></TrackedQuoteLink>
+            <TrackedQuoteLink href="/#contacto" location="maestranza_footer" serviceType="fabricacion_metalmecanica" className="btn-primary shrink-0">Cotizar proyecto <ArrowRight className="h-4 w-4" /></TrackedQuoteLink>
           </div>
         </section>
       </main>

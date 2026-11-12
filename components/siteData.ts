@@ -13,7 +13,7 @@ export const salesContact = {
 export const companyInfo = {
   legalName: "N Proyectos Ltda",
   shortName: "N Proyectos",
-  tagline: "Servicios y Proyectos en Aceros",
+  tagline: "Ingeniería y Soluciones",
   website: "https://www.nproyectos.cl",
   phoneDisplay: salesContact.phoneDisplay,
   phoneInternational: salesContact.phoneInternational,

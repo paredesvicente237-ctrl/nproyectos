@@ -97,14 +97,14 @@ export default function Contact() {
   };
 
   return (
-    <section id="contacto" className="section-padding bg-[#142737] text-white">
+    <section id="contacto" className="section-padding bg-[#f7f5f2] text-[#252729]">
       <div className="container-custom">
         <div className="max-w-3xl">
-          <span className="eyebrow !text-blue-200 before:!bg-blue-400">Contacto comercial</span>
-          <h2 className="section-title !text-white">
+          <span className="eyebrow !text-[#a94f00] before:!bg-[#f47b00]">Contacto comercial</span>
+          <h2 className="section-title !text-[#252729]">
             Cuéntanos qué necesitas fabricar.
           </h2>
-          <p className="section-copy !text-white/70">
+          <p className="section-copy !text-[#5b5e60]">
             Comparte la información que tengas. Revisaremos el requerimiento y te contactaremos para avanzar con la cotización.
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function Contact() {
         <div className="mt-12">
           <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
             {/* Form Container */}
-            <div className="relative overflow-hidden bg-white p-5 shadow-[0_18px_60px_rgba(4,19,30,.18)] sm:p-8 lg:p-10">
+            <div className="relative overflow-hidden border border-[#e4e0dc] bg-white p-5 shadow-[0_12px_36px_rgba(37,39,41,.08)] sm:p-8 lg:p-10">
               
               {/* Success Message Overlay */}
               {(feedback === "success" || feedback === "simulated") && (
@@ -244,44 +244,44 @@ export default function Contact() {
 
             {/* Contact info sidebar */}
             <div className="flex flex-col gap-3">
-              <div className="bg-[#252a2d] p-6 text-white sm:p-7">
-                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-blue-300">Contacto comercial</p>
+              <div className="border-t-4 border-[#f47b00] bg-white p-6 text-[#252729] shadow-sm sm:p-7">
+                <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-[#a94f00]">Contacto comercial</p>
                 <div className="mt-4 flex items-center gap-3">
-                  <span className="flex h-11 w-11 items-center justify-center border border-white/20 bg-white/10 text-lg font-semibold">A</span>
+                  <span className="flex h-11 w-11 items-center justify-center border border-[#f3c49b] bg-[#fff4e9] text-lg font-semibold text-[#a94f00]">A</span>
                   <div>
-                    <p className="text-lg font-semibold text-white">{salesContact.name}</p>
-                    <p className="text-xs text-slate-400">Ejecutivo de ventas</p>
+                    <p className="text-lg font-semibold text-[#252729]">{salesContact.name}</p>
+                    <p className="text-xs text-slate-500">Ejecutivo de ventas</p>
                   </div>
                 </div>
                 <div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                  <TrackedContactLink channel="whatsapp" href={salesContact.whatsappHref} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center border border-blue-400/40 bg-blue-600 px-3 text-xs font-semibold text-white hover:bg-blue-500">
+                  <TrackedContactLink channel="whatsapp" href={salesContact.whatsappHref} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center justify-center border border-[#f47b00] bg-[#f47b00] px-3 text-xs font-semibold text-[#252729] hover:bg-[#ff9220]">
                     WhatsApp
                   </TrackedContactLink>
-                  <TrackedContactLink channel="email" href={salesContact.emailHref} className="flex min-h-11 items-center justify-center border border-white/20 px-3 text-xs font-semibold text-white hover:bg-white/10">
+                  <TrackedContactLink channel="email" href={salesContact.emailHref} className="flex min-h-11 items-center justify-center border border-[#d7d5d3] px-3 text-xs font-semibold text-[#343638] hover:bg-[#f7f5f2]">
                     Enviar correo
                   </TrackedContactLink>
                 </div>
-                <div className="mt-4 space-y-1 text-sm text-slate-300">
-                  <TrackedContactLink channel="phone" href={salesContact.phoneHref} className="block hover:text-white">{salesContact.phoneDisplay}</TrackedContactLink>
-                  <TrackedContactLink channel="email" href={salesContact.emailHref} className="block break-all hover:text-white">{salesContact.email}</TrackedContactLink>
+                <div className="mt-4 space-y-1 text-sm text-slate-600">
+                  <TrackedContactLink channel="phone" href={salesContact.phoneHref} className="block hover:text-[#a94f00]">{salesContact.phoneDisplay}</TrackedContactLink>
+                  <TrackedContactLink channel="email" href={salesContact.emailHref} className="block break-all hover:text-[#a94f00]">{salesContact.email}</TrackedContactLink>
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 border border-white/15 bg-[#252a2d] p-5 text-white">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-blue-50 text-blue-700">
+              <div className="flex items-start gap-4 border border-[#e4e0dc] bg-white p-5 text-[#252729]">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-[#fff4e9] text-[#a94f00]">
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                   </svg>
                 </div>
                 <div>
-                  <p className="text-xs font-medium text-white/60">Dirección</p>
-                  <p className="mt-1 text-base font-semibold text-white">{companyInfo.address}</p>
+                  <p className="text-xs font-medium text-slate-500">Dirección</p>
+                  <p className="mt-1 text-base font-semibold text-[#252729]">{companyInfo.address}</p>
                 </div>
               </div>
 
               {/* Map */}
-              <div className="min-h-[220px] flex-1 overflow-hidden border border-white/15 bg-white">
+              <div className="min-h-[220px] flex-1 overflow-hidden border border-[#e4e0dc] bg-white">
                 <iframe
                   src={companyInfo.mapsEmbed}
                   title={`Mapa de ${companyInfo.shortName}`}

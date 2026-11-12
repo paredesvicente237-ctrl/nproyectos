@@ -120,7 +120,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
         }}
       />
       <Navbar />
-      <main className="relative z-10">
+      <main className="npro-public relative z-10">
         <section className="relative isolate flex min-h-[560px] flex-col justify-end overflow-hidden bg-[#17191b] px-5 pb-10 pt-28 text-white sm:px-8 sm:pb-14 lg:min-h-[680px] lg:px-10">
           <Image src={service.image} alt={service.imageAlt} fill priority className="-z-10 object-cover" sizes="100vw" />
           <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(15,17,18,.88)_0%,rgba(15,17,18,.55)_54%,rgba(15,17,18,.12)_100%)]" />
@@ -248,17 +248,17 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </section>
         )}
 
-        <section className="section-padding bg-[#17191b]">
+        <section className="section-padding bg-[#f7f5f2]">
           <div className="container-custom">
-            <span className="eyebrow !text-blue-300 before:!bg-blue-400">Cómo trabajamos</span>
-            <h2 className="section-title text-white">Del requerimiento a una solución fabricable.</h2>
+            <span className="eyebrow !text-[#a94f00] before:!bg-[#f47b00]">Cómo trabajamos</span>
+            <h2 className="section-title text-[#252729]">Del requerimiento a una solución fabricable.</h2>
             <div className="relative mt-12 grid gap-y-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
-              <div aria-hidden="true" className="absolute left-0 right-0 top-2 hidden h-px bg-white/20 lg:block" />
+              <div aria-hidden="true" className="absolute left-0 right-0 top-2 hidden h-px bg-[#e0dcd8] lg:block" />
               {service.process.map((step, index) => (
-                <article key={step.title} className="relative border-l border-white/20 px-5 lg:mt-0 lg:px-6 first:lg:pl-0">
-                  <span className="relative z-10 inline-flex h-5 w-5 items-center justify-center rounded-full border border-blue-300 bg-[#17191b] text-[10px] font-semibold text-blue-200">{index + 1}</span>
-                  <h3 className="mt-5 text-lg font-semibold text-white">{step.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-400">{step.text}</p>
+                <article key={step.title} className="relative border-l border-[#e0dcd8] px-5 lg:mt-0 lg:px-6 first:lg:pl-0">
+                  <span className="relative z-10 inline-flex h-5 w-5 items-center justify-center rounded-full border border-[#efc19a] bg-white text-[10px] font-semibold text-[#a94f00]">{index + 1}</span>
+                  <h3 className="mt-5 text-lg font-semibold text-[#252729]">{step.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-600">{step.text}</p>
                 </article>
               ))}
             </div>
@@ -291,11 +291,11 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
         </section>
 
-        <section className="section-padding bg-[#17191b]">
+        <section className="section-padding border-t border-[#e4e0dc] bg-white">
           <div className="container-custom flex flex-col gap-7 lg:flex-row lg:items-center lg:justify-between">
             <div>
-              <h2 className="text-3xl font-semibold text-white">¿Tienes planos, medidas o una idea?</h2>
-              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-300">
+              <h2 className="text-3xl font-semibold text-[#252729]">¿Tienes planos, medidas o una idea?</h2>
+              <p className="mt-3 max-w-2xl text-base leading-7 text-slate-600">
                 Cuéntanos qué necesitas fabricar y revisaremos los antecedentes para preparar una propuesta técnica.
               </p>
             </div>
