@@ -335,15 +335,6 @@
 .npa-form-footer button:hover { transform: translateY(-1px); box-shadow: 0 9px 18px rgba(23, 105, 194, .25); }
 .npa-form-footer > p { color: #718191; }
 
-.npa-completion { background: #f5f8fb; }
-.npa-completion-icon { border: 1px solid #c3d9ea; border-radius: 16px 5px 16px 5px; background: linear-gradient(145deg, #e4f2fc, #fff); box-shadow: 0 8px 20px rgba(18, 86, 140, .08); }
-.npa-completion h3 { color: #10283d; }
-.npa-completion > p { color: #5b6f80; line-height: 1.65; }
-.npa-quote-preview { border-color: #d2dee8; border-radius: 13px; background: #fff; box-shadow: 0 6px 18px rgba(16, 40, 61, .055); }
-.npa-quote-preview > p:first-child { color: #29475e; letter-spacing: .02em; }
-.npa-whatsapp-cta { border-radius: 11px; box-shadow: 0 7px 16px rgba(18, 140, 126, .18); transition: transform 160ms ease, box-shadow 160ms ease; }
-.npa-whatsapp-cta:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(18, 140, 126, .25); }
-
 @keyframes npa-panel-in {
   from { opacity: 0; transform: translateY(10px) scale(.985); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -385,7 +376,6 @@
   .npa-header { min-height: 76px; padding: 12px 14px; }
   .npa-log { padding-right: 13px; padding-left: 13px; }
   .npa-quick-actions { padding-left: 0; }
-  .npa-completion { padding: 24px 18px; }
 }
 
 @media (max-height: 600px) and (max-width: 767px) {

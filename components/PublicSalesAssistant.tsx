@@ -5,7 +5,6 @@ import { useChat } from "@ai-sdk/react";
 import {
   ArrowLeft,
   ArrowRight,
-  Check,
   ChevronDown,
   FileCheck2,
   MessageCircle,
@@ -177,7 +176,6 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
   const [lead, setLead] = useState<LeadForm>(EMPTY_LEAD);
   const [privacyConsent, setPrivacyConsent] = useState(false);
   const [website, setWebsite] = useState("");
-  const [whatsAppMessage, setWhatsAppMessage] = useState("");
   const [leadError, setLeadError] = useState("");
   const [isProactiveHintVisible, setIsProactiveHintVisible] = useState(false);
   const notificationAudioContextRef = useRef<AudioContext | null>(null);
@@ -307,8 +305,8 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
   }, [compactOnMobile]);
 
   useEffect(() => {
-    if (isOpen && !isLeadFormOpen && !whatsAppMessage) inputRef.current?.focus();
-  }, [isOpen, isLeadFormOpen, whatsAppMessage]);
+    if (isOpen && !isLeadFormOpen) inputRef.current?.focus();
+  }, [isOpen, isLeadFormOpen]);
 
   useEffect(() => {
     if (wasOpenRef.current && !isOpen) launcherRef.current?.focus();
@@ -382,7 +380,6 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
     });
     setPrivacyConsent(false);
     setLeadError("");
-    setWhatsAppMessage("");
     requestPreparedRef.current = false;
     setIsLeadFormOpen(true);
     if (initialService) {
@@ -403,7 +400,6 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
     setInput("");
     setLead(EMPTY_LEAD);
     setLeadError("");
-    setWhatsAppMessage("");
     setIsLeadFormOpen(false);
     userStartedRef.current = false;
     quoteIntentTrackedRef.current = false;
@@ -423,20 +419,27 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
     event.preventDefault();
     setLeadError("");
 
+    if (!lead.name.trim() || lead.projectSummary.trim().length < 5) {
+      setLeadError("Agrega tu nombre y una breve descripción del proyecto para continuar.");
+      return;
+    }
+
     if (!privacyConsent) {
       setLeadError("Confirma que autorizas continuar a WhatsApp con los datos de esta solicitud.");
       return;
     }
 
     requestPreparedRef.current = true;
-    setWhatsAppMessage(createWhatsAppQuoteMessage(lead, pathname));
-    setIsLeadFormOpen(false);
-  };
-
-  const returnToLeadForm = () => {
-    setWhatsAppMessage("");
-    setPrivacyConsent(false);
-    setIsLeadFormOpen(true);
+    const message = createWhatsAppQuoteMessage({
+      ...lead,
+      name: lead.name.trim(),
+      projectSummary: lead.projectSummary.trim(),
+    }, pathname);
+    trackGaEvent("assistant_whatsapp_opened", {
+      service_type: serviceTypeForText(lead.service) || serviceType,
+    });
+    const phone = salesContact.phoneInternational.replace(/\D/g, "");
+    window.location.assign(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`);
   };
 
   const handleChatSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -525,7 +528,7 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
               </div>
             </div>
             <div className="flex shrink-0 items-center gap-1">
-              {hasConversation && !isLeadFormOpen && !whatsAppMessage && (
+              {hasConversation && !isLeadFormOpen && (
                 <button type="button" onClick={clearConversation} className="flex h-9 w-9 items-center justify-center text-white/70 hover:bg-white/10 hover:text-white" aria-label="Terminar y borrar conversación" title="Terminar y borrar conversación">
                   <Trash2 className="h-4 w-4" aria-hidden="true" />
                 </button>
@@ -536,36 +539,7 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
             </div>
           </header>
 
-          {whatsAppMessage ? (
-            <div className="npa-completion flex min-h-0 flex-1 flex-col items-center justify-center overflow-y-auto px-6 py-8 text-center">
-              <span className="npa-completion-icon flex h-14 w-14 items-center justify-center border border-blue-200 bg-blue-50 text-blue-700">
-                <Check className="h-7 w-7" aria-hidden="true" />
-              </span>
-              <h3 className="mt-5 text-xl font-semibold text-slate-950">Solicitud preparada</h3>
-              <p className="mt-3 max-w-sm text-sm leading-6 text-slate-600">
-                N Proyectos aún no ha recibido nada. WhatsApp se abrirá con el resumen; revísalo allí y pulsa <strong>Enviar</strong> para compartirlo con Américo.
-              </p>
-              <div className="npa-quote-preview mt-4 max-h-44 w-full max-w-sm overflow-y-auto border border-slate-200 bg-white p-3 text-left text-xs leading-5 text-slate-700">
-                <p className="mb-1 font-semibold text-slate-900">Vista previa del mensaje</p>
-                <p className="whitespace-pre-wrap">{whatsAppMessage}</p>
-              </div>
-              <a
-                href={`https://wa.me/${salesContact.phoneInternational.replace(/\D/g, "")}?text=${encodeURIComponent(whatsAppMessage)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackGaEvent("assistant_whatsapp_opened", { service_type: serviceTypeForText(lead.service) || serviceType })}
-                className="npa-whatsapp-cta mt-5 inline-flex min-h-11 items-center justify-center gap-2 bg-[#128c7e] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0d756a]"
-              >
-                <MessageCircle className="h-4 w-4" aria-hidden="true" /> Abrir WhatsApp con mi solicitud
-              </a>
-              <button type="button" onClick={returnToLeadForm} className="mt-3 min-h-9 text-sm font-semibold text-blue-800 underline underline-offset-4 hover:text-blue-950">
-                Volver a revisar o editar
-              </button>
-              <button type="button" onClick={clearConversation} className="mt-2 min-h-9 text-xs text-slate-500 underline underline-offset-4 hover:text-slate-800">
-                Terminar y borrar esta solicitud preparada
-              </button>
-            </div>
-          ) : isLeadFormOpen ? (
+          {isLeadFormOpen ? (
             <form onSubmit={submitLead} className="npa-lead-form flex min-h-0 flex-1 flex-col">
               <div className="npa-form-nav flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3 sm:px-5">
                 <button type="button" onClick={() => setIsLeadFormOpen(false)} className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-slate-950">
@@ -614,7 +588,7 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
                 </div>
 
                 <div className="npa-field npa-field-summary">
-                  <label htmlFor="assistant-summary" className="mb-1 block text-xs font-semibold text-slate-700">Resumen que recibirá ventas *</label>
+                  <label htmlFor="assistant-summary" className="mb-1 block text-xs font-semibold text-slate-700">Resumen de tu solicitud *</label>
                   <textarea id="assistant-summary" rows={4} value={lead.projectSummary} onChange={(event) => updateLead("projectSummary", event.target.value)} maxLength={4500} minLength={5} required className="w-full resize-y border border-slate-300 bg-white px-3 py-2.5 text-sm leading-5 outline-none focus:border-blue-700 focus:ring-2 focus:ring-blue-100" placeholder="Describe en una o dos frases qué necesitas resolver." />
                 </div>
 
@@ -659,10 +633,10 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
 
               <div className="npa-form-footer shrink-0 border-t border-slate-200 bg-white px-4 py-3 sm:px-5">
                 <button type="submit" className="inline-flex min-h-11 w-full items-center justify-center gap-2 bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800">
-                  Revisar y preparar WhatsApp
+                  Confirmar y abrir WhatsApp
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </button>
-                <p className="mt-2 text-center text-[11px] leading-4 text-slate-500">No es una cotización definitiva. El mensaje no se enviará hasta que lo confirmes en WhatsApp.</p>
+                <p className="mt-2 text-center text-[11px] leading-4 text-slate-500">Revisa y edita el resumen antes de continuar. WhatsApp se abrirá con el mensaje; tendrás que pulsar “Enviar” para compartirlo.</p>
               </div>
             </form>
           ) : (
