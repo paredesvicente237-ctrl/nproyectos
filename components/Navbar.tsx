@@ -29,7 +29,7 @@ export default function Navbar({ appearance = "standard" }: NavbarProps) {
     <nav className={`npro-site-header fixed inset-x-0 top-0 z-50 border-b border-slate-200/90 bg-white/95 text-slate-700 backdrop-blur transition-[background-color,border-color,box-shadow] duration-300 ${appearance === "cinematic" ? "npro-site-header--cinematic" : ""} ${isHeroHeader ? "npro-site-header--at-hero" : ""} ${isScrolled ? "shadow-[0_8px_30px_rgba(15,35,55,0.08)]" : "shadow-none"}`}>
       <div className="container-custom flex h-[76px] items-center justify-between px-5 sm:px-8 lg:px-10">
         <Link href="/" className="flex items-center" aria-label={`Ir al inicio de ${companyInfo.shortName}`}>
-          <BrandLogo variant="light" priority className="w-[164px] sm:w-[196px]" />
+          <BrandLogo variant="light" onDark={isHeroHeader} priority className="w-[164px] sm:w-[196px]" />
         </Link>
 
         <div className="hidden items-center gap-3 xl:flex 2xl:gap-5">

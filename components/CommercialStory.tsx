@@ -76,8 +76,8 @@ export default function CommercialStory() {
     <>
       <section id="inicio" className="commercial-hero relative isolate min-h-[100svh] overflow-hidden bg-[#11181e] text-white">
         <Image
-          src="/images/hero-soldadura-nproyectos-clara.webp"
-          alt="Proceso de soldadura industrial, imagen referencial; no representa instalaciones ni trabajos específicos de N Proyectos"
+          src="/images/hero-soldadura-nproyectos-mejorada.webp"
+          alt="Imagen industrial ilustrativa de una persona soldando; no representa instalaciones ni trabajos específicos de N Proyectos"
           fill
           priority
           fetchPriority="high"
@@ -85,9 +85,6 @@ export default function CommercialStory() {
           sizes="100vw"
         />
         <div aria-hidden="true" className="commercial-hero-scrim absolute inset-0 -z-10" />
-        <p className="absolute right-4 top-[5.25rem] z-10 max-w-[11rem] border border-white/25 bg-[#11181e]/55 px-2.5 py-1.5 text-[9px] font-medium leading-4 text-white/80 backdrop-blur-sm sm:right-8 sm:top-24 sm:max-w-none sm:px-3 sm:text-[10px]">
-          Imagen referencial · no es un proyecto de N Proyectos
-        </p>
 
         <div className="container-custom relative flex min-h-[100svh] flex-col justify-between px-5 pb-20 pt-[8.25rem] sm:px-8 sm:pb-8 sm:pt-[10.5rem] lg:px-10 lg:pb-9 lg:pt-[11rem]">
           <div className="max-w-[980px]">
@@ -122,16 +119,19 @@ export default function CommercialStory() {
             </div>
           </div>
 
-          <div className="mt-8 flex flex-col gap-3 border-t border-white/25 pt-4 pr-14 text-xs text-white/75 sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:gap-5 sm:pt-5 sm:pr-0 sm:text-sm">
+          <div className="mt-8 flex flex-col gap-2 border-t border-white/25 pt-4 pr-14 text-xs text-white/75 sm:mt-12 sm:gap-3 sm:pt-5 sm:pr-0 sm:text-sm">
             <div className="flex flex-wrap gap-x-4 gap-y-1 font-semibold sm:gap-x-6">
               <span>Corte y plegado</span>
               <span>Soldadura MIG/TIG</span>
               <span>Fabricación a medida</span>
             </div>
-            <p className="flex items-center gap-2 text-white/65">
-              <MapPin className="h-4 w-4 shrink-0 text-[#f47b00]" aria-hidden="true" />
-              {companyInfo.locality}, Santiago
-            </p>
+            <div className="flex flex-col gap-1">
+              <p className="flex items-center gap-2 text-white/65">
+                <MapPin className="h-4 w-4 shrink-0 text-[#f47b00]" aria-hidden="true" />
+                {companyInfo.locality}, Santiago
+              </p>
+              <p className="w-fit pl-6 text-[9px] leading-4 text-white/45">Imagen ilustrativa · no representa un trabajo de N Proyectos</p>
+            </div>
           </div>
         </div>
       </section>
