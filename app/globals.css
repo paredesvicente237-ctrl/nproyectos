@@ -46,6 +46,18 @@
 
 .commercial-hero-image { animation: commercial-image-settle 800ms cubic-bezier(.2, .7, .2, 1) both; }
 
+.commercial-hero-scrim {
+  background:
+    linear-gradient(90deg, rgba(12, 18, 23, .97) 0%, rgba(12, 18, 23, .91) 27%, rgba(12, 18, 23, .63) 49%, rgba(12, 18, 23, .12) 78%, rgba(12, 18, 23, .08) 100%),
+    linear-gradient(0deg, rgba(9, 14, 18, .75) 0%, rgba(9, 14, 18, .14) 34%, transparent 72%);
+}
+
+@media (max-width: 639px) {
+  .commercial-hero-scrim {
+    background: linear-gradient(180deg, rgba(9, 14, 18, .42) 0%, rgba(9, 14, 18, .63) 31%, rgba(9, 14, 18, .86) 63%, rgba(9, 14, 18, .98) 100%);
+  }
+}
+
 @keyframes commercial-image-settle {
   from { opacity: .7; transform: scale(1.025); }
   to { opacity: 1; transform: scale(1); }
@@ -412,6 +424,13 @@
   box-shadow: none;
 }
 .npro-site-header .btn-primary:hover { background: #ff9220; }
+.npro-site-header--cinematic.npro-site-header--at-hero {
+  border-color: rgba(255, 255, 255, .13);
+  background: rgba(15, 22, 27, .46);
+  box-shadow: none;
+}
+.npro-site-header--cinematic.npro-site-header--at-hero a:not(.btn-primary) { color: rgba(255, 255, 255, .88); }
+.npro-site-header--cinematic.npro-site-header--at-hero a:not(.btn-primary):hover { color: #ffae5b; }
 
 .npro-public {
   --brand: var(--np-orange);
@@ -464,13 +483,7 @@
 .npro-public [class~="text-blue-300"],
 .npro-public [class~="text-blue-400"] { color: #ffad5b !important; }
 
-.npro-public .commercial-hero { background: #fff; color: var(--np-graphite); }
-.npro-public .commercial-hero h1 { color: var(--np-graphite); }
 .npro-public #verified-proof-title { color: var(--np-orange); }
-.npro-public .commercial-hero-media { background: #292a2c; }
-.npro-public .commercial-hero-media::after { opacity: .18; }
-.npro-public .commercial-hero .text-white\/75,
-.npro-public .commercial-hero .text-white\/72 { color: rgba(255,255,255,.77); }
 .npro-public #especialidades,
 .npro-public #soluciones,
 .npro-public #catalogo { scroll-margin-top: 5.5rem; }
@@ -513,6 +526,4 @@
 
 @media (max-width: 639px) {
   .npro-site-header .container-custom { height: 68px; }
-  .npro-public .commercial-hero { padding-top: 68px; }
-  .npro-public .commercial-hero h1 { max-width: 13ch; }
 }

@@ -74,66 +74,64 @@ export default function CommercialStory() {
 
   return (
     <>
-      <section id="inicio" className="commercial-hero relative overflow-hidden bg-white pt-[76px] text-[#252729]">
-        <div className="container-custom grid lg:min-h-[690px] lg:grid-cols-[.9fr_1.1fr]">
-          <div className="relative z-10 flex flex-col justify-center px-5 pb-8 pt-12 sm:px-8 sm:pt-16 lg:px-10 lg:py-16 lg:pr-12 xl:pr-16">
-            <p className="inline-flex items-center gap-3 text-[11px] font-bold tracking-[.18em] text-[#f47b00] sm:text-xs">
-              <span className="h-px w-8 bg-[#f47b00]" />
-              NPROYECTOS · INGENIERÍA Y SOLUCIONES
+      <section id="inicio" className="commercial-hero relative isolate min-h-[100svh] overflow-hidden bg-[#11181e] text-white">
+        <Image
+          src="/images/hero-soldadura-nproyectos-clara.webp"
+          alt="Proceso de soldadura industrial, imagen referencial; no representa instalaciones ni trabajos específicos de N Proyectos"
+          fill
+          priority
+          fetchPriority="high"
+          className="commercial-hero-image -z-20 object-cover object-[64%_center] max-sm:object-[72%_center]"
+          sizes="100vw"
+        />
+        <div aria-hidden="true" className="commercial-hero-scrim absolute inset-0 -z-10" />
+        <p className="absolute right-4 top-[5.25rem] z-10 max-w-[11rem] border border-white/25 bg-[#11181e]/55 px-2.5 py-1.5 text-[9px] font-medium leading-4 text-white/80 backdrop-blur-sm sm:right-8 sm:top-24 sm:max-w-none sm:px-3 sm:text-[10px]">
+          Imagen referencial · no es un proyecto de N Proyectos
+        </p>
+
+        <div className="container-custom relative flex min-h-[100svh] flex-col justify-between px-5 pb-20 pt-[8.25rem] sm:px-8 sm:pb-8 sm:pt-[10.5rem] lg:px-10 lg:pb-9 lg:pt-[11rem]">
+          <div className="max-w-[980px]">
+            <p className="mb-5 flex items-center gap-3 text-xs font-semibold text-white/75 sm:mb-7 sm:text-sm">
+              <span aria-hidden="true" className="h-[2px] w-8 bg-[#f47b00]" />
+              Ingeniería y fabricación para la industria
             </p>
-            <h1 className="mt-6 max-w-[680px] text-[clamp(2.5rem,10.5vw,3.1rem)] font-semibold leading-[.98] tracking-[-.035em] text-[#252729] sm:mt-8 sm:text-[clamp(3.4rem,8.5vw,6.5rem)] lg:text-[clamp(3.6rem,4.9vw,5.5rem)]">
-              <span className="block">Ingeniería y</span>
-              <span className="block">fabricación</span>
-              <span className="block">metalmecánica</span>
-              <span className="block text-[#f47b00]">para la industria.</span>
+            <h1 className="max-w-[12ch] font-heading text-[clamp(3.4rem,10vw,8.4rem)] font-semibold leading-[.82] tracking-[-.075em] text-white sm:max-w-[10.5ch] sm:text-[clamp(4.4rem,8.4vw,8.4rem)]">
+              <span className="block sm:hidden">Ingeniería</span>
+              <span className="block sm:hidden">que toma</span>
+              <span className="block text-[#f47b00] sm:hidden">forma.</span>
+              <span className="hidden sm:block">Ingeniería que</span>
+              <span className="hidden text-[#f47b00] sm:block">toma forma.</span>
             </h1>
-            <p className="mt-6 max-w-[570px] text-[15px] leading-7 text-[#5b5e60] sm:mt-7 sm:text-lg sm:leading-8">
-              Del plano a una solución fabricable. Integramos corte, plegado, armado y soldadura para resolver requerimientos industriales a medida.
+            <p className="mt-5 max-w-[36rem] text-[15px] leading-6 text-white/82 sm:mt-7 sm:text-lg sm:leading-8">
+              Corte, plegado, soldadura y fabricación metalmecánica a medida para la industria.
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center">
+            <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-5">
               <TrackedQuoteLink
                 href="/#contacto"
                 location="hero"
-                className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-[#f47b00] px-6 text-sm font-bold text-[#17191b] shadow-[0_8px_22px_rgba(0,0,0,.16)] transition-[transform,background-color,box-shadow] hover:-translate-y-0.5 hover:bg-[#ff941f] hover:shadow-[0_12px_28px_rgba(0,0,0,.22)] motion-reduce:transform-none motion-reduce:transition-none"
+                className="inline-flex min-h-[54px] items-center justify-center gap-3 bg-[#f47b00] px-6 text-sm font-bold text-[#17191b] shadow-[0_10px_28px_rgba(0,0,0,.26)] transition-[transform,background-color,box-shadow] hover:-translate-y-0.5 hover:bg-[#ff941f] hover:shadow-[0_14px_32px_rgba(0,0,0,.32)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white motion-reduce:transform-none motion-reduce:transition-none sm:w-fit"
               >
-                Solicitar cotización <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                Cotizar mi proyecto <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </TrackedQuoteLink>
               <Link
                 href="/#especialidades"
-                className="inline-flex min-h-[50px] items-center justify-center gap-2 px-3 text-sm font-semibold text-[#343638] transition-colors hover:text-[#b75700]"
+                className="inline-flex min-h-[48px] items-center justify-center gap-2 px-3 text-sm font-semibold text-white/90 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-white"
               >
-                Conocer nuestras capacidades <ArrowDownRight className="h-4 w-4" aria-hidden="true" />
+                Explorar capacidades <ArrowDownRight className="h-4 w-4" aria-hidden="true" />
               </Link>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-[#d7d5d3] pt-4 text-xs font-semibold text-[#505255] sm:mt-10 sm:gap-x-7 sm:pt-5 sm:text-sm">
-              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#f47b00]" /> Corte y plegado</span>
-              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#f47b00]" /> Soldadura MIG/TIG</span>
-              <span className="inline-flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-[#f47b00]" /> Fabricación a medida</span>
             </div>
           </div>
 
-          <div className="commercial-hero-media relative isolate min-h-[330px] overflow-hidden bg-[#192d3d] sm:min-h-[470px] lg:my-8 lg:min-h-[640px]">
-            <Image
-              src="/images/hero-soldadura-nproyectos-clara.webp"
-              alt="Proceso de soldadura industrial, imagen referencial; no representa instalaciones de N Proyectos"
-              fill
-              priority
-              fetchPriority="high"
-              className="commercial-hero-image -z-10 object-cover object-[58%_center]"
-              sizes="(max-width: 1023px) 100vw, 55vw"
-            />
-            <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#0d2030]/55 via-[#0d2030]/6 to-[#0d2030]/0" />
-            <div aria-hidden="true" className="absolute inset-y-0 left-0 hidden w-[16%] bg-gradient-to-r from-[#17191b] to-transparent lg:block" />
-            <div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 p-5 text-white sm:flex-row sm:items-end sm:justify-between sm:p-7 lg:p-9">
-              <div>
-                <p className="text-xs font-semibold text-white/70">De la definición a la fabricación</p>
-                <p className="mt-1 text-xl font-semibold tracking-[-.035em] sm:text-2xl">Una solución pensada para su uso.</p>
-              </div>
-              <div className="flex items-center gap-2 text-xs text-white/75 sm:pb-1">
-                <MapPin className="h-4 w-4" aria-hidden="true" /> {companyInfo.locality}, Santiago
-              </div>
+          <div className="mt-8 flex flex-col gap-3 border-t border-white/25 pt-4 pr-14 text-xs text-white/75 sm:mt-12 sm:flex-row sm:items-center sm:justify-between sm:gap-5 sm:pt-5 sm:pr-0 sm:text-sm">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 font-semibold sm:gap-x-6">
+              <span>Corte y plegado</span>
+              <span>Soldadura MIG/TIG</span>
+              <span>Fabricación a medida</span>
             </div>
-            <div aria-hidden="true" className="absolute bottom-5 right-5 hidden h-16 w-16 border-b border-r border-white/50 sm:block lg:bottom-8 lg:right-8 lg:h-24 lg:w-24" />
+            <p className="flex items-center gap-2 text-white/65">
+              <MapPin className="h-4 w-4 shrink-0 text-[#f47b00]" aria-hidden="true" />
+              {companyInfo.locality}, Santiago
+            </p>
           </div>
         </div>
       </section>

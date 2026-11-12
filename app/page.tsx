@@ -108,7 +108,7 @@ export default function Home() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <Navbar />
+      <Navbar appearance="cinematic" />
       <main className="npro-public relative z-10">
         <CommercialStory />
         <Contact />

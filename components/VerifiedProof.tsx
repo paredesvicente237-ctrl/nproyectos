@@ -37,28 +37,28 @@ const processGallery: {
 
 export default function VerifiedProof() {
   return (
-    <section id="equipamiento" className="scroll-mt-24 bg-white text-[#252729]" aria-labelledby="verified-proof-title">
+    <section id="equipamiento" className="scroll-mt-24 bg-[#141c22] text-white" aria-labelledby="verified-proof-title">
       <div className="container-custom grid px-5 sm:px-8 lg:grid-cols-[.82fr_1.18fr] lg:px-10">
         <div className="relative flex flex-col justify-start overflow-hidden py-10 sm:py-12 lg:pb-10 lg:pr-10 lg:pt-16">
-          <div aria-hidden="true" className="absolute -left-28 top-1/2 h-[25rem] w-[25rem] -translate-y-1/2 rounded-full border border-[#f47b00]/10" />
-          <div aria-hidden="true" className="absolute -left-16 top-1/2 h-[18rem] w-[18rem] -translate-y-1/2 rounded-full border border-[#f47b00]/10" />
-          <p className="relative inline-flex items-center gap-3 text-[10px] font-bold tracking-[.19em] text-[#a94f00] sm:text-xs">
+          <div aria-hidden="true" className="absolute -left-28 top-1/2 h-[25rem] w-[25rem] -translate-y-1/2 rounded-full border border-white/[.06]" />
+          <div aria-hidden="true" className="absolute -left-16 top-1/2 h-[18rem] w-[18rem] -translate-y-1/2 rounded-full border border-[#f47b00]/20" />
+          <p className="relative inline-flex items-center gap-3 text-[10px] font-bold tracking-[.19em] text-[#ffad5b] sm:text-xs">
             <span className="h-px w-8 bg-[#f47b00]" /> EXPERIENCIA INDUSTRIAL ACUMULADA
           </p>
           <h2 id="verified-proof-title" className="relative mt-5 font-heading text-[clamp(4rem,17vw,7.75rem)] font-semibold leading-[.82] tracking-[-.075em] text-[#f47b00] sm:mt-6 sm:text-[clamp(5.25rem,10vw,8.5rem)]">
             +5.000
           </h2>
-          <p className="relative mt-4 max-w-md text-[11px] font-bold leading-5 tracking-[.16em] text-[#55585a] sm:mt-5 sm:text-sm sm:tracking-[.2em]">
+          <p className="relative mt-4 max-w-md text-[11px] font-bold leading-5 tracking-[.16em] text-white/80 sm:mt-5 sm:text-sm sm:tracking-[.2em]">
             ÓRDENES DE TRABAJO REALIZADAS
           </p>
           <div aria-hidden="true" className="relative mt-6 h-px w-16 bg-[#f47b00] sm:mt-7" />
-          <p className="relative mt-5 max-w-lg text-sm leading-6 text-[#55585a] sm:mt-6 sm:text-base sm:leading-7">
+          <p className="relative mt-5 max-w-lg text-sm leading-6 text-white/75 sm:mt-6 sm:text-base sm:leading-7">
             Nuestra trayectoria se construye con miles de trabajos de fabricación, desarrollo y soluciones metalmecánicas para distintas necesidades industriales.
           </p>
-          <p className="relative mt-3 max-w-md text-[11px] leading-5 text-[#777a7c] sm:text-xs">
+          <p className="relative mt-3 max-w-md text-[11px] leading-5 text-white/55 sm:text-xs">
             Cifra acumulada de órdenes de trabajo; no equivale a 5.000 proyectos distintos.
           </p>
-          <p className="relative mt-5 text-sm font-semibold text-[#252729] sm:mt-6 sm:text-base">
+          <p className="relative mt-5 text-sm font-semibold text-white sm:mt-6 sm:text-base">
             MÁS DE 5.000 ÓRDENES DE TRABAJO REALIZADAS. TU PROYECTO PUEDE SER EL PRÓXIMO.
           </p>
           <TrackedQuoteLink
@@ -70,15 +70,15 @@ export default function VerifiedProof() {
           </TrackedQuoteLink>
         </div>
 
-        <div id="trabajos" className="border-t border-[#dedbd7] py-8 sm:py-10 lg:border-l lg:border-t-0 lg:py-14 lg:pl-10 xl:pl-14">
+        <div id="trabajos" className="border-t border-white/15 py-8 sm:py-10 lg:border-l lg:border-t-0 lg:py-14 lg:pl-10 xl:pl-14">
           <div>
             <div>
-              <p className="text-[10px] font-bold tracking-[.18em] text-[#a94f00] sm:text-xs">PROCESOS METALMECÁNICOS</p>
-              <h3 className="mt-2 max-w-3xl text-2xl font-semibold leading-[1.03] tracking-[-.045em] text-[#252729] sm:text-3xl lg:text-[2.35rem]">
+              <p className="text-[10px] font-bold tracking-[.18em] text-[#ffad5b] sm:text-xs">PROCESOS METALMECÁNICOS</p>
+              <h3 className="mt-2 max-w-3xl text-2xl font-semibold leading-[1.03] tracking-[-.045em] text-white sm:text-3xl lg:text-[2.35rem]">
                 Fabricación, conformado y unión.
               </h3>
             </div>
-            <p className="mt-2 max-w-xl text-xs leading-5 text-[#66696b] sm:text-sm sm:leading-6">
+            <p className="mt-2 max-w-xl text-xs leading-5 text-white/65 sm:text-sm sm:leading-6">
               Referencias visuales de procesos industriales relacionados con nuestras capacidades.
             </p>
           </div>
@@ -100,7 +100,7 @@ export default function VerifiedProof() {
               </figure>
             ))}
           </div>
-          <p className="mt-3 text-[10px] leading-4 text-[#777a7c] sm:mt-4 sm:text-xs sm:leading-5">
+          <p className="mt-3 text-[10px] leading-4 text-white/55 sm:mt-4 sm:text-xs sm:leading-5">
             Fotografías referenciales; no representan instalaciones ni trabajos específicos de clientes de N Proyectos.
           </p>
         </div>
