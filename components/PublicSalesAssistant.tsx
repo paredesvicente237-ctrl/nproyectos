@@ -736,7 +736,7 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
         ref={launcherRef}
         aria-label={isOpen ? "Minimizar asesor comercial" : "Abrir asesor comercial de IA de N Proyectos"}
         title={isOpen ? "Minimizar asesor comercial" : "Conversemos con el asesor comercial"}
-        className={`npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700${compactOnMobile ? " npa-launcher--compact-mobile" : ""}`}
+        className="npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
       >
         {isOpen ? <ChevronDown className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="npa-launcher-icon h-5 w-5" aria-hidden="true" />}
         {!isOpen && <span className="npa-launcher-label">Conversemos</span>}
