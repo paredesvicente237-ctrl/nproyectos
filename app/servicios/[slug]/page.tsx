@@ -209,6 +209,28 @@ export default async function ServicePage({ params }: ServicePageProps) {
           </div>
         </section>
 
+        {guidance?.applications && (
+          <section className="section-padding bg-white" aria-labelledby="service-applications-title">
+            <div className="container-custom">
+              <span className="eyebrow">Trabajos y materiales</span>
+              <h2 id="service-applications-title" className="section-title">Cómo aplicar {service.shortName.toLowerCase()} a tu proyecto</h2>
+              <div className="mt-8 grid gap-x-8 lg:grid-cols-3">
+                {guidance.applications.map((application) => (
+                  <article key={application.title} className="border-t border-slate-300 py-5">
+                    <h3 className="text-lg font-semibold text-slate-900">{application.title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-slate-600">{application.text}</p>
+                  </article>
+                ))}
+              </div>
+              {service.slug === "fabricacion-metalmecanica" && (
+                <p className="mt-5 max-w-3xl text-sm leading-6 text-slate-600">
+                  Para estructuras y soportes de equipos, revisa la información de <Link href="/servicios/estructuras-metalicas-industriales" className="font-semibold text-blue-700 underline underline-offset-4">fabricación de estructuras metálicas industriales</Link> y los antecedentes de uniones y fijaciones que conviene incluir en la solicitud.
+                </p>
+              )}
+            </div>
+          </section>
+        )}
+
         {guidance && (
           <section className="section-padding bg-slate-50" aria-labelledby="service-faq-title">
             <div className="container-custom">

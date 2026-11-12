@@ -120,6 +120,38 @@ export const services: Service[] = [
     ],
   },
   {
+    slug: "estructuras-metalicas-industriales",
+    name: "Estructuras metálicas industriales en Santiago",
+    shortName: "Estructuras metálicas",
+    eyebrow: "Estructuras y soportes según plano",
+    title: "Fabricación de estructuras metálicas industriales en Santiago",
+    description:
+      "Fabricación de estructuras metálicas y soportes industriales según plano en Santiago. Revisión de dimensiones, material, uniones y terminación para cotizar.",
+    summary:
+      "Fabricamos estructuras, soportes y conjuntos metálicos a partir de los antecedentes del proyecto. Revisamos dimensiones, material, uniones y terminación para coordinar corte, armado y soldadura. Comparte el uso previsto y los planos disponibles; las cargas, anclajes, condiciones de montaje y factibilidad deben revisarse antes de confirmar el alcance.",
+    image: siteAssets.goodWelding,
+    imageAlt: "Armado y soldadura de componentes metálicos, imagen referencial",
+    benefits: [
+      "Fabricación según planos y dimensiones del proyecto",
+      "Estructuras y soportes para aplicaciones industriales",
+      "Integración de corte, preparación, armado y soldadura",
+      "Revisión de material, uniones y terminación requerida",
+    ],
+    applications: [
+      "Estructuras metálicas industriales",
+      "Soportes y conjuntos para equipos",
+      "Componentes estructurales según plano",
+      "Conjuntos metálicos armados y soldados",
+    ],
+    materials: ["Acero carbono", "Acero inoxidable", "Acero galvanizado"],
+    process: [
+      { title: "Antecedentes", text: "Revisamos uso, planos, dimensiones generales, material, cantidad y ubicación del proyecto." },
+      { title: "Alcance", text: "Identificamos uniones, tolerancias, terminación y antecedentes técnicos que deben confirmarse antes de fabricar." },
+      { title: "Fabricación", text: "Coordinamos corte, preparación de piezas, armado y soldadura del conjunto acordado." },
+      { title: "Coordinación", text: "Acordamos condiciones de entrega y cualquier requerimiento de montaje según el alcance cotizado." },
+    ],
+  },
+  {
     slug: "control-acustico-industrial",
     name: "Control acústico industrial en Chile",
     shortName: "Control acústico industrial",

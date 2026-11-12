@@ -52,6 +52,8 @@ for (const [path, expected] of [
   ["/servicios/corte-plegado-planchas", "Corte de planchas y piezas plegadas según tu diseño"],
   ["/servicios/fabricacion-metalmecanica", "Fabricación metalmecánica desde una pieza hasta un conjunto"],
   ["/servicios/control-acustico-industrial", "Control de ruido según la fuente, el recinto y la ventilación"],
+  ["/servicios/soldadura-mig-tig", "Armado y soldadura industrial de piezas y conjuntos metálicos"],
+  ["/servicios/estructuras-metalicas-industriales", "Estructuras y soportes industriales con un alcance definido"],
   ["/maestranza-santiago", "fabricación metalmecánica según plano"],
 ]) {
   await check(`contenido comercial y canonical ${path}`, async () => {
@@ -61,6 +63,34 @@ for (const [path, expected] of [
     assert.doesNotMatch(html, /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i);
   });
 }
+
+await check("cobertura industrial enlazada y sin páginas de relleno", async () => {
+  const structurePath = "/servicios/estructuras-metalicas-industriales";
+  assert.ok(sitemapUrls.includes(structurePath));
+  for (const path of ["/", "/maestranza-santiago", "/servicios/fabricacion-metalmecanica"]) {
+    assert.ok(pageHtml.get(path)?.includes(`href="${structurePath}"`), `Falta enlace desde ${path}.`);
+  }
+  for (const [path, topic] of [
+    ["/servicios/corte-plegado-planchas", "Corte y plegado de acero inoxidable"],
+    ["/servicios/fabricacion-metalmecanica", "Gabinetes, bandejas y ductería metálica"],
+    ["/servicios/soldadura-mig-tig", "Conjuntos soldados en acero carbono"],
+  ]) assert.ok(pageHtml.get(path)?.includes(topic), `Falta información útil para ${topic}.`);
+  const servicePages = [...pageHtml.entries()].filter(([path]) => path.startsWith("/servicios/"));
+  assert.equal(servicePages.length, 5);
+  const titles = new Set();
+  for (const [, html] of servicePages) {
+    assert.equal([...html.matchAll(/<h1\b/gi)].length, 1);
+    const title = html.match(/<title>(.*?)<\/title>/)?.[1];
+    assert.ok(title);
+    titles.add(title);
+    assert.doesNotMatch(html, /<meta[^>]+name="keywords"/i);
+    const graph = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      .flatMap((match) => JSON.parse(match[1])["@graph"] ?? []);
+    assert.ok(graph.some((item) => item["@type"] === "Service"));
+  }
+  assert.equal(titles.size, 5);
+  assert.equal((await get("/servicios/servicio-inexistente-qa")).status, 404);
+});
 
 await check("siete fichas con metadatos y datos estructurados", async () => {
   const productPages = [...pageHtml.entries()].filter(([path]) => path.startsWith("/productos/"));

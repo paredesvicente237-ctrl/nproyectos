@@ -37,6 +37,12 @@ const serviceStories = [
     summary: "Paneles, silenciadores, cabinas y componentes para sistemas y recintos industriales.",
     marker: "03",
   },
+  {
+    slug: "estructuras-metalicas-industriales",
+    title: "Estructuras metálicas industriales",
+    summary: "Fabricación de estructuras y soportes según plano, con revisión de dimensiones, uniones y terminación.",
+    marker: "04",
+  },
 ];
 
 const processGallery = [
