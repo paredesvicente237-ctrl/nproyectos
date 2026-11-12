@@ -21,6 +21,12 @@ const dmSans = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(companyInfo.website),
+  // Versioned icon URLs help browsers such as Safari refresh the previous brand mark.
+  icons: {
+    icon: [{ url: "/icon.png?v=20261112", type: "image/png", sizes: "512x512" }],
+    shortcut: "/favicon.ico?v=20261112",
+    apple: [{ url: "/apple-icon.png?v=20261112", sizes: "180x180" }],
+  },
   title: {
     default: "Maestranza en Santiago y fabricación en acero | N Proyectos",
     template: "%s | N Proyectos",
