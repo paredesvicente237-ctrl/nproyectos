@@ -92,12 +92,9 @@ export default function CommercialStory() {
               <span aria-hidden="true" className="h-[2px] w-8 bg-[#f47b00]" />
               Ingeniería y fabricación para la industria
             </p>
-            <h1 className="max-w-[12ch] font-heading text-[clamp(3.4rem,10vw,8.4rem)] font-semibold leading-[.82] tracking-[-.075em] text-white sm:max-w-[10.5ch] sm:text-[clamp(4.4rem,8.4vw,8.4rem)]">
-              <span className="block sm:hidden">Ingeniería</span>
-              <span className="block sm:hidden">que toma</span>
-              <span className="block text-[#f47b00] sm:hidden">forma.</span>
-              <span className="hidden sm:block">Ingeniería que</span>
-              <span className="hidden text-[#f47b00] sm:block">toma forma.</span>
+            <h1 className="commercial-hero-title text-white">
+              Ingeniería que{" "}
+              <span className="block text-[#f47b00]">toma forma.</span>
             </h1>
             <p className="mt-5 max-w-[36rem] text-[15px] leading-6 text-white/82 sm:mt-7 sm:text-lg sm:leading-8">
               Corte, plegado, soldadura y fabricación metalmecánica a medida para la industria.

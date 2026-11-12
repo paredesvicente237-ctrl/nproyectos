@@ -451,6 +451,12 @@
   letter-spacing: -.035em;
 }
 .npro-public .eyebrow { color: #a84f00; }
+.commercial-hero .commercial-hero-title {
+  font-size: clamp(2.5rem, 1.7rem + 4.2vw, 5.5rem);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -.04em;
+}
 .npro-public .eyebrow::before { background: var(--np-orange); }
 .npro-public .btn-primary {
   border-radius: 2px;
