@@ -58,9 +58,9 @@ export const services: Service[] = [
     eyebrow: "Corte y conformado de planchas",
     title: "Corte láser y plegado de planchas en Santiago",
     description:
-      "Corte y plegado de planchas en Santiago: corte láser, guillotina y piezas plegadas según proyecto. Envía plano, material, espesor y cantidad para cotizar.",
+      "Servicio de corte y plegado de planchas en Santiago, incluido corte láser según proyecto. Cotiza piezas metálicas indicando material, espesor, plano y cantidad.",
     summary:
-      "Desarrollamos piezas metálicas a partir de planos, archivos de corte, muestras o medidas. Revisamos geometría, material, espesor y cantidad; cuando el proyecto lo requiere, integramos corte láser, guillotina y plegado para fabricar componentes según el diseño.",
+      "En N Proyectos recibimos consultas de corte láser y corte y plegado de planchas en Santiago. Desarrollamos piezas metálicas a partir de planos, archivos de corte, muestras o medidas. Revisamos material, espesor, geometría y cantidad para definir el proceso y evaluar cada requerimiento.",
     image: siteAssets.goodBending,
     imageAlt: "Plegado de una plancha metálica en una prensa industrial, imagen referencial",
     benefits: [

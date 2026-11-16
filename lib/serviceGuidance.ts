@@ -10,8 +10,8 @@ type ServiceGuidance = {
 // No machine capacity, tolerance, lead time or acoustic result is guaranteed here.
 export const serviceGuidance: Record<string, ServiceGuidance | undefined> = {
   "corte-plegado-planchas": {
-    heading: "Corte de planchas y piezas plegadas según tu diseño",
-    introduction: "Una pieza plana, un perfil plegado y un conjunto que después se soldará requieren antecedentes distintos. Revisamos el diseño para definir si corresponde corte láser, guillotina, plegado o una combinación de procesos. Atendemos consultas desde La Granja, Santiago; la factibilidad se confirma para cada material, espesor y geometría.",
+    heading: "Servicio de corte y plegado de planchas en Santiago",
+    introduction: "Si buscas un servicio de corte y plegado para piezas metálicas, puedes enviarnos un plano, archivo de corte o medidas. En N Proyectos revisamos cada requerimiento desde La Granja, Santiago. Según la geometría, el material y el espesor, la solicitud puede considerar corte láser, guillotina, plegado o una combinación de procesos; la factibilidad se confirma para cada proyecto.",
     checklist: [
       "Plano, archivo de corte o croquis con medidas y unidades.",
       "Material, espesor de la plancha y cantidad de piezas.",
@@ -20,12 +20,14 @@ export const serviceGuidance: Record<string, ServiceGuidance | undefined> = {
       "Comuna de entrega o retiro y fecha requerida, sujeta a confirmación.",
     ],
     applications: [
+      { title: "Corte láser de piezas metálicas", text: "Puedes consultar por piezas planas, recortes o perforaciones a partir de un plano o archivo de corte. Comparte el material, espesor, dimensiones y cantidad; revisaremos la geometría y la factibilidad antes de cotizar." },
       { title: "Corte y plegado de acero inoxidable", text: "Para cubiertas, mobiliario y componentes inoxidables, indica el material especificado, espesor, medidas y terminación. Revisamos el corte y los pliegues necesarios para obtener la forma solicitada, sin asumir una calidad de acero ni una capacidad de máquina no confirmadas." },
       { title: "Perfiles y canales en acero carbono o galvanizado", text: "Comparte el plano de la sección, largo, ángulos y cantidad. Esos antecedentes permiten evaluar el desarrollo de la plancha y la secuencia de plegado para perfiles y canales según diseño." },
       { title: "Bandejas, paneles y piezas según plano", text: "Si la pieza necesita perforaciones, recortes, pliegues o soldadura posterior, incluye el diseño completo. Así se puede revisar el proceso de corte y la relación entre las medidas de la pieza plana y del componente terminado." },
     ],
     faqs: [
-      { question: "¿Puedo cotizar corte y plegado en un mismo trabajo?", answer: "Sí. Revisamos ambos procesos para piezas como bandejas, canales, perfiles, paneles y gabinetes. Indica la geometría final y si el componente necesita armado o soldadura después del plegado." },
+      { question: "¿Cómo solicito una cotización de corte láser en Santiago?", answer: "Comparte el plano o archivo de corte y señala material, espesor y cantidad. Si solo tienes un croquis o medidas, envíalos para revisar qué información adicional se necesita. El precio y la factibilidad se confirman para cada solicitud." },
+      { question: "¿Qué incluye el servicio de corte y plegado?", answer: "Puedes solicitar ambos procesos para piezas como bandejas, canales, perfiles, paneles y gabinetes. Revisamos el diseño, material, espesor y cantidad; indica también si el componente necesita armado o soldadura después del plegado. El alcance y la factibilidad se confirman en la cotización." },
       { question: "¿Cuándo corresponde corte láser y cuándo guillotina?", answer: "La elección se revisa según la geometría, el material, el espesor y la cantidad. Enviar el plano permite evaluar qué proceso corresponde; no todos los trabajos requieren la misma solución de corte." },
       { question: "¿Puedo consultar si todavía no tengo un plano?", answer: "Puedes enviar un croquis, una muestra o fotografías con medidas. El equipo revisará si esos antecedentes bastan para cotizar o si se necesita desarrollar el diseño antes de fabricar." },
       { question: "¿Publican un precio por corte o un espesor máximo?", answer: "No hay una tarifa ni un espesor máximo universal publicado. Para confirmar factibilidad y valor necesitamos conocer material, espesor, geometría, cantidad y terminación. El plazo también se confirma en la cotización." },

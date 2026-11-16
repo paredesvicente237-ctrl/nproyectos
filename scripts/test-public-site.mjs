@@ -49,7 +49,7 @@ for (const path of routes) {
 }
 
 for (const [path, expected] of [
-  ["/servicios/corte-plegado-planchas", "Corte de planchas y piezas plegadas según tu diseño"],
+  ["/servicios/corte-plegado-planchas", "Servicio de corte y plegado de planchas en Santiago"],
   ["/servicios/fabricacion-metalmecanica", "Fabricación metalmecánica desde una pieza hasta un conjunto"],
   ["/servicios/control-acustico-industrial", "Control de ruido según la fuente, el recinto y la ventilación"],
   ["/servicios/soldadura-mig-tig", "Armado y soldadura industrial de piezas y conjuntos metálicos"],
