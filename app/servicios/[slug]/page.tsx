@@ -109,7 +109,16 @@ export default async function ServicePage({ params }: ServicePageProps) {
     ],
   };
 
-  const relatedServices = services.filter((item) => item.slug !== service.slug).slice(0, 3);
+  const relatedServiceSlugs: Record<string, string[]> = {
+    "corte-plegado-planchas": ["fabricacion-metalmecanica", "soldadura-mig-tig", "estructuras-metalicas-industriales"],
+    "fabricacion-metalmecanica": ["corte-plegado-planchas", "soldadura-mig-tig", "estructuras-metalicas-industriales"],
+    "soldadura-mig-tig": ["corte-plegado-planchas", "fabricacion-metalmecanica", "estructuras-metalicas-industriales"],
+    "estructuras-metalicas-industriales": ["fabricacion-metalmecanica", "corte-plegado-planchas", "soldadura-mig-tig"],
+    "control-acustico-industrial": ["fabricacion-metalmecanica", "corte-plegado-planchas", "soldadura-mig-tig"],
+  };
+  const relatedServices = (relatedServiceSlugs[service.slug] ?? [])
+    .map((relatedSlug) => servicesBySlug[relatedSlug])
+    .filter((item): item is (typeof services)[number] => Boolean(item));
 
   return (
     <>
