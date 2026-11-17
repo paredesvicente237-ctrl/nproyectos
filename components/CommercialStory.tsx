@@ -94,7 +94,7 @@ export default function CommercialStory() {
             </p>
             <h1 className="commercial-hero-title text-white">
               Ingeniería que{" "}
-              <span className="block text-[#f47b00]">toma forma.</span>
+              <span className="block text-[#f47b00]">da forma.</span>
             </h1>
             <p className="mt-5 max-w-[36rem] text-[15px] leading-6 text-white/82 sm:mt-7 sm:text-lg sm:leading-8">
               Corte, plegado, soldadura y fabricación metalmecánica a medida para la industria.
