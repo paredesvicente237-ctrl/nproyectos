@@ -14,14 +14,14 @@ const processGallery: {
 }[] = [
   {
     image: tallerCorte,
-    title: "Equipo de corte",
-    alt: "Equipo de corte de planchas fotografiado en el taller",
+    title: "Corte láser",
+    alt: "Equipo de corte láser de planchas en el taller",
     position: "object-[50%_center]",
   },
   {
     image: tallerDetalle,
-    title: "Detalle de maquinaria",
-    alt: "Detalle de componentes de maquinaria del taller",
+    title: "Corte con guillotina",
+    alt: "Detalle de una guillotina de corte del taller",
     position: "object-[50%_center]",
   },
   {
