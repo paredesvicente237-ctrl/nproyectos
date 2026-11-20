@@ -96,6 +96,19 @@ export default function VerifiedProof() {
                   className={`-z-10 object-cover transition-transform duration-700 group-hover:scale-[1.045] ${item.position}`}
                   sizes="(max-width: 639px) 44vw, (max-width: 1023px) 40vw, 28vw"
                 />
+                {index === 0 && (
+                  <video
+                    aria-hidden="true"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    preload="none"
+                    className="absolute inset-0 -z-10 h-full w-full object-cover motion-reduce:hidden"
+                  >
+                    <source src="/videos/equipo-corte-nproyectos.mp4" type="video/mp4" />
+                  </video>
+                )}
                 <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071521]/90 via-[#071521]/10 to-transparent" />
                 <figcaption className="absolute inset-x-0 bottom-0 p-2.5 text-sm font-semibold leading-5 text-white sm:p-4 sm:text-base sm:leading-6">
                   {item.title}
