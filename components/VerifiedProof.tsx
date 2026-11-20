@@ -1,6 +1,9 @@
 import Image, { type StaticImageData } from "next/image";
 import { ArrowRight } from "lucide-react";
-import { siteAssets } from "@/components/siteAssets";
+import tallerDetalle from "@/img/taller-nproyectos-454.webp";
+import tallerPlegado from "@/img/taller-nproyectos-455.webp";
+import tallerSoldadura from "@/img/taller-nproyectos-456.webp";
+import tallerCorte from "@/img/taller-nproyectos-457.webp";
 import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 
 const processGallery: {
@@ -10,28 +13,28 @@ const processGallery: {
   position: string;
 }[] = [
   {
-    image: siteAssets.goodGuillotine,
-    title: "Corte de planchas",
-    alt: "Imagen referencial de un proceso industrial de corte de planchas; no representa un trabajo específico de N Proyectos",
-    position: "object-[52%_center]",
+    image: tallerCorte,
+    title: "Equipo de corte",
+    alt: "Equipo de corte de planchas fotografiado en el taller",
+    position: "object-[50%_center]",
   },
   {
-    image: siteAssets.goodSparks,
-    title: "Corte y preparación",
-    alt: "Imagen referencial de corte y preparación de metal; no representa un trabajo específico de N Proyectos",
-    position: "object-[56%_center]",
+    image: tallerDetalle,
+    title: "Detalle de maquinaria",
+    alt: "Detalle de componentes de maquinaria del taller",
+    position: "object-[50%_center]",
   },
   {
-    image: siteAssets.goodBending,
-    title: "Plegado de planchas",
-    alt: "Imagen referencial de plegado de planchas; no representa un trabajo específico de N Proyectos",
-    position: "object-[54%_center]",
+    image: tallerPlegado,
+    title: "Equipo de plegado",
+    alt: "Detalle de una plegadora de planchas del taller",
+    position: "object-[50%_center]",
   },
   {
-    image: siteAssets.goodWelding,
-    title: "Armado y soldadura",
-    alt: "Imagen referencial de armado y soldadura industrial; no representa un trabajo específico de N Proyectos",
-    position: "object-[55%_center]",
+    image: tallerSoldadura,
+    title: "Protección para soldadura",
+    alt: "Máscara de protección para soldadura sobre una mesa de trabajo",
+    position: "object-[50%_center]",
   },
 ];
 
@@ -79,7 +82,7 @@ export default function VerifiedProof() {
               </h3>
             </div>
             <p className="mt-2 max-w-xl text-xs leading-5 text-white/65 sm:text-sm sm:leading-6">
-              Referencias visuales de procesos industriales relacionados con nuestras capacidades.
+              Una mirada a los equipos y herramientas que forman parte de nuestro trabajo.
             </p>
           </div>
 
@@ -100,9 +103,6 @@ export default function VerifiedProof() {
               </figure>
             ))}
           </div>
-          <p className="mt-3 text-[10px] leading-4 text-white/55 sm:mt-4 sm:text-xs sm:leading-5">
-            Fotografías referenciales; no representan instalaciones ni trabajos específicos de clientes de N Proyectos.
-          </p>
         </div>
       </div>
     </section>
