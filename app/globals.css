@@ -44,7 +44,7 @@
   mask-image: linear-gradient(90deg, transparent 8%, #000 72%);
 }
 
-.commercial-hero-image { animation: commercial-image-settle 800ms cubic-bezier(.2, .7, .2, 1) both; }
+.commercial-hero-image { animation: commercial-image-settle 4.8s cubic-bezier(.2, .7, .2, 1) both; }
 
 .commercial-hero-scrim {
   background:
@@ -59,7 +59,7 @@
 }
 
 @keyframes commercial-image-settle {
-  from { opacity: .7; transform: scale(1.025); }
+  from { opacity: .85; transform: scale(1.055) translateX(0.7%); }
   to { opacity: 1; transform: scale(1); }
 }
 
