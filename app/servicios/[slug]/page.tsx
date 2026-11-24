@@ -12,6 +12,8 @@ import { companyInfo } from "@/components/siteData";
 import { products } from "@/lib/productData";
 import { services, servicesBySlug } from "@/lib/serviceData";
 import { serviceGuidance } from "@/lib/serviceGuidance";
+import tallerCorte from "@/img/taller-nproyectos-457.webp";
+import tallerGuillotina from "@/img/taller-nproyectos-454.webp";
 
 type ServicePageProps = {
   params: Promise<{ slug: string }>;
@@ -217,6 +219,29 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </aside>
           </div>
         </section>
+
+        {service.slug === "corte-plegado-planchas" && (
+          <section className="bg-[#f7f5f2] px-5 py-12 sm:px-8 sm:py-16 lg:px-10" aria-labelledby="equipos-corte-title">
+            <div className="container-custom">
+              <span className="eyebrow">Nuestro taller</span>
+              <h2 id="equipos-corte-title" className="mt-3 text-3xl font-semibold tracking-tight text-slate-950">Equipos de corte en N Proyectos</h2>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Fotografías de nuestros equipos de corte láser y corte con guillotina en La Granja, Santiago. La elección del proceso depende del material y de las características de cada pieza.</p>
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                {[
+                  { src: tallerCorte, alt: "Equipo de corte láser de planchas en el taller de N Proyectos", caption: "Equipo de corte láser" },
+                  { src: tallerGuillotina, alt: "Detalle de guillotina para corte de planchas en el taller de N Proyectos", caption: "Equipo de corte con guillotina" },
+                ].map((photo) => (
+                  <figure key={photo.caption}>
+                    <div className="relative aspect-[4/3] overflow-hidden bg-slate-100 sm:aspect-[16/10]">
+                      <Image src={photo.src} alt={photo.alt} fill className="object-cover" sizes="(max-width: 640px) 100vw, 50vw" />
+                    </div>
+                    <figcaption className="mt-3 text-sm font-semibold text-slate-700">{photo.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {guidance?.applications && (
           <section className="section-padding bg-white" aria-labelledby="service-applications-title">
