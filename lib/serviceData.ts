@@ -1,4 +1,5 @@
 import { siteAssets } from "@/components/siteAssets";
+import tallerPlegado from "@/img/taller-nproyectos-455.webp";
 
 export type Service = {
   slug: string;
@@ -53,16 +54,16 @@ export const services: Service[] = [
   },
   {
     slug: "corte-plegado-planchas",
-    name: "Corte láser y plegado de planchas en Santiago",
+    name: "Corte láser en Santiago y plegado de planchas",
     shortName: "Corte láser y plegado",
     eyebrow: "Corte y conformado de planchas",
     title: "Corte láser y plegado de planchas en Santiago",
     description:
-      "Servicio de corte y plegado de planchas en Santiago, incluido corte láser según proyecto. Cotiza piezas metálicas indicando material, espesor, plano y cantidad.",
+      "Servicio de corte láser de planchas y piezas metálicas en Santiago. Solicita corte láser o corte y plegado según tu proyecto, material, espesor y cantidad.",
     summary:
-      "En N Proyectos recibimos consultas de corte láser y corte y plegado de planchas en Santiago. Desarrollamos piezas metálicas a partir de planos, archivos de corte, muestras o medidas. Revisamos material, espesor, geometría y cantidad para definir el proceso y evaluar cada requerimiento.",
-    image: siteAssets.goodBending,
-    imageAlt: "Plegado de una plancha metálica en una prensa industrial, imagen referencial",
+      "En N Proyectos puedes solicitar corte láser de planchas y piezas metálicas en Santiago, con o sin plegado posterior. Revisamos planos, archivos de corte, muestras o medidas, junto con el material, espesor, geometría y cantidad, para evaluar cada requerimiento.",
+    image: tallerPlegado,
+    imageAlt: "Equipo de plegado de planchas en el taller de N Proyectos en Santiago",
     benefits: [
       "Corte láser y corte con guillotina según geometría, material y requerimiento",
       "Plegado de perfiles, canales, bandejas y cubiertas",

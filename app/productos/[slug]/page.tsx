@@ -63,12 +63,21 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const whatsappUrl = `${companyInfo.whatsappHref.split("?")[0]}?text=${encodeURIComponent(
     `Hola Américo, quiero cotizar ${product.name} (${product.code}) con N Proyectos.`,
   )}`;
+  const relatedBySlug: Record<string, string[]> = {
+    "panel-acustico-industrial": ["splitter-acustico", "celosia-acustica", "panel-perforado"],
+    "splitter-acustico": ["celosia-acustica", "panel-acustico-industrial", "silenciador-escape-gases"],
+    "celosia-acustica": ["splitter-acustico", "panel-acustico-industrial", "panel-perforado"],
+    "silenciador-escape-gases": ["splitter-acustico", "panel-acustico-industrial", "celosia-acustica"],
+  };
   const sameCategoryProducts = products
     .filter((item) => item.id !== product.id && item.category === product.category)
     .slice(0, 3);
-  const relatedProducts = sameCategoryProducts.length > 0
-    ? sameCategoryProducts
-    : products.filter((item) => item.id !== product.id).slice(0, 3);
+  const selectedRelated = relatedBySlug[product.slug];
+  const relatedProducts = selectedRelated
+    ? selectedRelated.flatMap((relatedSlug) => products.filter((item) => item.slug === relatedSlug))
+    : sameCategoryProducts.length > 0
+      ? sameCategoryProducts
+      : products.filter((item) => item.id !== product.id).slice(0, 3);
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -199,7 +208,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="container-custom">
               <p className="eyebrow">Más soluciones</p>
               <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-950">
-                {sameCategoryProducts.length > 0 ? `Otros productos de ${product.category.toLowerCase()}` : "Más productos del catálogo"}
+                {selectedRelated ? "Soluciones acústicas relacionadas" : sameCategoryProducts.length > 0 ? `Otros productos de ${product.category.toLowerCase()}` : "Más productos del catálogo"}
               </h2>
               <div className="mt-7 grid gap-px bg-slate-300 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedProducts.map((related) => (
