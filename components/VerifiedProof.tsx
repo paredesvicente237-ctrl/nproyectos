@@ -106,7 +106,7 @@ export default function VerifiedProof() {
                     preload="none"
                     className="absolute inset-0 -z-10 h-full w-full object-cover motion-reduce:hidden"
                   >
-                    <source src="/videos/equipo-corte-nproyectos.mp4" type="video/mp4" />
+                    <source src="/videos/corte-laser-0524.mp4" type="video/mp4" />
                   </video>
                 )}
                 <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071521]/90 via-[#071521]/10 to-transparent" />
