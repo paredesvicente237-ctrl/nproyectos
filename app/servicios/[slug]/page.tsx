@@ -30,16 +30,19 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
 
   if (!service) return {};
 
+  const seoTitle = service.seoTitle ?? service.name;
+  const seoDescription = service.seoDescription ?? service.description;
+
   return {
-    title: service.name,
-    description: service.description,
+    title: seoTitle,
+    description: seoDescription,
     alternates: { canonical: `/servicios/${service.slug}` },
     openGraph: {
       type: "website",
       locale: "es_CL",
       url: `/servicios/${service.slug}`,
-      title: `${service.name} | ${companyInfo.shortName}`,
-      description: service.description,
+      title: `${seoTitle} | ${companyInfo.shortName}`,
+      description: seoDescription,
       siteName: companyInfo.shortName,
       images: [
         {
@@ -52,8 +55,8 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
     },
     twitter: {
       card: "summary_large_image",
-      title: `${service.name} | ${companyInfo.shortName}`,
-      description: service.description,
+      title: `${seoTitle} | ${companyInfo.shortName}`,
+      description: seoDescription,
       images: [service.image.src],
     },
   };

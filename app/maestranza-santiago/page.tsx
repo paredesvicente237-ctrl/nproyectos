@@ -12,9 +12,9 @@ import { companyInfo } from "@/components/siteData";
 import { services } from "@/lib/serviceData";
 
 export const metadata: Metadata = {
-  title: "Maestranza industrial en Santiago · La Granja",
+  title: "Maestranza industrial en Santiago",
   description:
-    "Maestranza en La Granja, Santiago: piezas según plano, estructuras, corte y plegado y soldadura MIG/TIG. Envía planos o medidas para cotizar tu proyecto.",
+    "Maestranza industrial en La Granja, Santiago. Fabricamos piezas y estructuras según plano, con corte y plegado, soldadura MIG/TIG. Envía tu proyecto para cotizar.",
   alternates: { canonical: "/maestranza-santiago" },
   openGraph: {
     type: "website",

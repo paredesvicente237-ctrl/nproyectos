@@ -8,6 +8,8 @@ export type Service = {
   eyebrow: string;
   title: string;
   description: string;
+  seoTitle?: string;
+  seoDescription?: string;
   summary: string;
   image: typeof siteAssets.goodBending;
   imageAlt: string;
@@ -26,6 +28,8 @@ export const services: Service[] = [
     title: "Fabricación metalmecánica para proyectos industriales",
     description:
       "Fabricación metalmecánica en Santiago, Chile: piezas según plano, soportes, estructuras y conjuntos soldados. Cotiza con planos, medidas, material y cantidad.",
+    seoDescription:
+      "Fabricación metalmecánica en Santiago para piezas y estructuras según plano o muestra. Integramos corte, plegado y soldadura. Envía antecedentes para cotizar.",
     summary:
       "Fabricamos piezas, soportes y estructuras metálicas para proyectos industriales a partir de planos, prototipos o requerimientos funcionales. Integramos revisión técnica, selección de materiales, corte, conformado, armado y soldadura para definir una solución fabricable.",
     image: siteAssets.goodSparks,
@@ -57,9 +61,12 @@ export const services: Service[] = [
     name: "Corte y plegado de planchas en Santiago",
     shortName: "Corte láser y plegado",
     eyebrow: "Corte y conformado de planchas",
-    title: "Corte y plegado de planchas en Santiago",
+    title: "Corte láser y plegado de planchas en Santiago",
     description:
       "Servicio de corte y plegado de planchas en Santiago. Evaluamos corte láser o con guillotina según la pieza, material, espesor y cantidad. Cotiza con plano o croquis.",
+    seoTitle: "Corte láser y plegado en Santiago",
+    seoDescription:
+      "Corte láser y plegado de planchas a medida en Santiago. Evaluamos guillotina según material y geometría; envía plano o croquis y cantidad para cotizar.",
     summary:
       "En N Proyectos puedes cotizar corte de planchas —láser o con guillotina— y plegado según tu proyecto. Revisamos planos, archivos de corte, muestras o medidas junto con el material, espesor, geometría y cantidad para evaluar cada requerimiento.",
     image: tallerPlegado,
