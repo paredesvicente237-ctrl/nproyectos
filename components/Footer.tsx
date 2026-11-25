@@ -15,6 +15,9 @@ export default function Footer() {
             <p className="mt-4 max-w-sm text-sm leading-6 text-slate-600">
               Ingeniería, fabricación y soluciones metalmecánicas para la industria.
             </p>
+            <Link href="/recursos-industriales" className="mt-4 inline-flex min-h-10 items-center text-sm font-semibold text-slate-700 underline decoration-slate-300 underline-offset-4 hover:text-[#a94f00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a94f00]">
+              Guías y recursos industriales
+            </Link>
           </div>
 
           <div>

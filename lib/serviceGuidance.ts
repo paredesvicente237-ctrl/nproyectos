@@ -15,14 +15,14 @@ export const serviceGuidance: Record<string, ServiceGuidance | undefined> = {
     checklist: [
       "Plano, archivo de corte o croquis con medidas y unidades.",
       "Material, espesor de la plancha y cantidad de piezas.",
-      "Para plegado: forma final, medidas de las caras y ángulos requeridos.",
+      "Para plegado: forma final y medidas disponibles de las caras. Un croquis o fotografía puede ayudar.",
       "Perforaciones, terminación, tolerancias indicadas en plano y procesos posteriores.",
       "Comuna de entrega o retiro y fecha requerida, sujeta a confirmación.",
     ],
     applications: [
       { title: "Corte láser de piezas metálicas", text: "Puedes consultar por piezas planas, recortes o perforaciones a partir de un plano o archivo de corte. Comparte el material, espesor, dimensiones y cantidad; revisaremos la geometría y la factibilidad antes de cotizar." },
       { title: "Corte y plegado de acero inoxidable", text: "Para cubiertas, mobiliario y componentes inoxidables, indica el material especificado, espesor, medidas y terminación. Revisamos el corte y los pliegues necesarios para obtener la forma solicitada, sin asumir una calidad de acero ni una capacidad de máquina no confirmadas." },
-      { title: "Perfiles y canales en acero carbono o galvanizado", text: "Comparte el plano de la sección, largo, ángulos y cantidad. Esos antecedentes permiten evaluar el desarrollo de la plancha y la secuencia de plegado para perfiles y canales según diseño." },
+      { title: "Perfiles y canales en acero carbono o galvanizado", text: "Comparte la sección o forma que buscas, el largo y la cantidad. Un croquis, muestra o fotografía puede ayudar a revisar el desarrollo de la plancha y la secuencia de plegado." },
       { title: "Bandejas, paneles y piezas según plano", text: "Si la pieza necesita perforaciones, recortes, pliegues o soldadura posterior, incluye el diseño completo. Así se puede revisar el proceso de corte y la relación entre las medidas de la pieza plana y del componente terminado." },
     ],
     faqs: [

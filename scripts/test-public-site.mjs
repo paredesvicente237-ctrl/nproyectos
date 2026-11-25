@@ -92,6 +92,42 @@ await check("cobertura industrial enlazada y sin páginas de relleno", async () 
   assert.equal((await get("/servicios/servicio-inexistente-qa")).status, 404);
 });
 
+await check("guías industriales enlazadas, únicas y rastreables", async () => {
+  const resourcePages = [...pageHtml.entries()].filter(([path]) => path === "/recursos-industriales" || path.startsWith("/recursos-industriales/"));
+  assert.equal(resourcePages.length, 10, "Debe estar el índice y las nueve guías prácticas.");
+  const titles = new Set();
+  for (const [path, html] of resourcePages) {
+    assert.ok(sitemapUrls.includes(path), `${path} debe estar en el sitemap.`);
+    assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, `${path} debe tener exactamente un H1.`);
+    assert.ok(html.includes(`href="https://www.nproyectos.cl${path}"`), `${path} debe tener canonical propio.`);
+    assert.doesNotMatch(html, /<meta[^>]*name="robots"[^>]*content="[^"]*noindex/i);
+    const title = html.match(/<title>(.*?)<\/title>/)?.[1];
+    assert.ok(title);
+    titles.add(title);
+    const graph = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
+      .flatMap((match) => {
+        const parsed = JSON.parse(match[1]);
+        return parsed["@graph"] ?? [parsed];
+      });
+    if (path === "/recursos-industriales") assert.ok(graph.some((item) => item["@type"] === "CollectionPage"));
+    else {
+      assert.ok(graph.some((item) => item["@type"] === "Article"));
+      assert.ok(graph.some((item) => item["@type"] === "BreadcrumbList"));
+      assert.match(html, /Cotizar mi proyecto/);
+      assert.match(html, /Servicio: /);
+    }
+  }
+  assert.equal(titles.size, 10, "Los títulos de recursos deben ser únicos.");
+  assert.ok(pageHtml.get("/")?.includes("/recursos-industriales"), "El pie global debe enlazar recursos desde todas las páginas.");
+  assert.equal((await get("/recursos-industriales/guia-inexistente-qa")).status, 404);
+});
+
+await check("video industrial no se descarga hasta entrar en la galería", async () => {
+  const html = pageHtml.get("/");
+  assert.ok(html?.includes('data-src="/videos/corte-laser-0524.mp4"'));
+  assert.ok(!html?.includes('<source src="/videos/corte-laser-0524.mp4"'));
+});
+
 await check("siete fichas con metadatos y datos estructurados", async () => {
   const productPages = [...pageHtml.entries()].filter(([path]) => path.startsWith("/productos/"));
   assert.equal(productPages.length, 7);

@@ -20,7 +20,7 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "fabricacion-metalmecanica",
-    name: "Fabricación metalmecánica en Chile",
+    name: "Fabricación metalmecánica en Santiago",
     shortName: "Fabricación metalmecánica",
     eyebrow: "Fabricación industrial",
     title: "Fabricación metalmecánica para proyectos industriales",
@@ -54,14 +54,14 @@ export const services: Service[] = [
   },
   {
     slug: "corte-plegado-planchas",
-    name: "Corte láser en Santiago y plegado de planchas",
+    name: "Corte y plegado de planchas en Santiago",
     shortName: "Corte láser y plegado",
     eyebrow: "Corte y conformado de planchas",
-    title: "Corte láser y plegado de planchas en Santiago",
+    title: "Corte y plegado de planchas en Santiago",
     description:
-      "Servicio de corte láser de planchas y piezas metálicas en Santiago. Solicita corte láser o corte y plegado según tu proyecto, material, espesor y cantidad.",
+      "Servicio de corte y plegado de planchas en Santiago. Evaluamos corte láser o con guillotina según la pieza, material, espesor y cantidad. Cotiza con plano o croquis.",
     summary:
-      "En N Proyectos puedes solicitar corte láser de planchas y piezas metálicas en Santiago, con o sin plegado posterior. Revisamos planos, archivos de corte, muestras o medidas, junto con el material, espesor, geometría y cantidad, para evaluar cada requerimiento.",
+      "En N Proyectos puedes cotizar corte de planchas —láser o con guillotina— y plegado según tu proyecto. Revisamos planos, archivos de corte, muestras o medidas junto con el material, espesor, geometría y cantidad para evaluar cada requerimiento.",
     image: tallerPlegado,
     imageAlt: "Equipo de plegado de planchas en el taller de N Proyectos en Santiago",
     benefits: [

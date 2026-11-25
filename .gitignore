@@ -1,6 +1,7 @@
 .next/
 node_modules/
 .vercel/
+.seo-private/
 .env.*
 !.env.example
 .env

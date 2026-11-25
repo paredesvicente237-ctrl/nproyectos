@@ -1,5 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import { ArrowRight } from "lucide-react";
+import LazyLoopVideo from "@/components/LazyLoopVideo";
 import tallerDetalle from "@/img/taller-nproyectos-454.webp";
 import tallerPlegado from "@/img/taller-nproyectos-455.webp";
 import tallerSoldadura from "@/img/taller-nproyectos-456.webp";
@@ -97,17 +98,10 @@ export default function VerifiedProof() {
                   sizes="(max-width: 639px) 44vw, (max-width: 1023px) 40vw, 28vw"
                 />
                 {index === 0 && (
-                  <video
-                    aria-hidden="true"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload="none"
+                  <LazyLoopVideo
+                    src="/videos/corte-laser-0524.mp4"
                     className="absolute inset-0 -z-10 h-full w-full object-cover motion-reduce:hidden"
-                  >
-                    <source src="/videos/corte-laser-0524.mp4" type="video/mp4" />
-                  </video>
+                  />
                 )}
                 <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-[#071521]/90 via-[#071521]/10 to-transparent" />
                 <figcaption className="absolute inset-x-0 bottom-0 p-2.5 text-sm font-semibold leading-5 text-white sm:p-4 sm:text-base sm:leading-6">

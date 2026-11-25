@@ -12,6 +12,7 @@ import { companyInfo } from "@/components/siteData";
 import { products } from "@/lib/productData";
 import { services, servicesBySlug } from "@/lib/serviceData";
 import { serviceGuidance } from "@/lib/serviceGuidance";
+import { industrialResources } from "@/lib/industrialResources";
 import tallerCorte from "@/img/taller-nproyectos-457.webp";
 import tallerGuillotina from "@/img/taller-nproyectos-454.webp";
 
@@ -121,6 +122,9 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const relatedServices = (relatedServiceSlugs[service.slug] ?? [])
     .map((relatedSlug) => servicesBySlug[relatedSlug])
     .filter((item): item is (typeof services)[number] => Boolean(item));
+  const relatedResources = industrialResources
+    .filter((resource) => resource.serviceSlug === service.slug)
+    .slice(0, 2);
 
   return (
     <>
@@ -237,6 +241,27 @@ export default async function ServicePage({ params }: ServicePageProps) {
                     </div>
                     <figcaption className="mt-3 text-sm font-semibold text-slate-700">{photo.caption}</figcaption>
                   </figure>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {relatedResources.length > 0 && (
+          <section className="border-t border-slate-200 bg-white px-5 py-10 sm:px-8 sm:py-12 lg:px-10" aria-labelledby="service-guides-title">
+            <div className="container-custom">
+              <p className="eyebrow">Información práctica</p>
+              <h2 id="service-guides-title" className="mt-3 text-2xl font-semibold tracking-tight text-[#252729]">Guías para preparar tu proyecto</h2>
+              <div className="mt-5 grid gap-x-8 sm:grid-cols-2">
+                {relatedResources.map((resource) => (
+                  <article key={resource.slug} className="border-t border-slate-200 py-4">
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      <Link href={`/recursos-industriales/${resource.slug}`} className="underline decoration-slate-300 underline-offset-4 hover:text-[#a94f00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#a94f00]">
+                        {resource.title}
+                      </Link>
+                    </h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{resource.summary}</p>
+                  </article>
                 ))}
               </div>
             </div>
