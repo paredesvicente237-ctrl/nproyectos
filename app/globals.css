@@ -305,6 +305,13 @@
 .npa-launcher-label { white-space: nowrap; color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .005em; }
 .npa-launcher-arrow { color: rgba(255, 255, 255, .82); transition: transform 160ms ease; }
 .npa-launcher:hover .npa-launcher-arrow { transform: translateX(2px); }
+.npa-launcher--proof-docked {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  z-index: 1;
+  flex: 0 0 auto;
+}
 
 .npa-form-nav { border-bottom-color: #dce4eb; background: #fafdff; }
 .npa-form-nav button { min-height: 38px; border-radius: 8px; padding: 0 8px; }
