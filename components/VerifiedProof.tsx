@@ -87,11 +87,6 @@ export default function VerifiedProof() {
             </p>
           </div>
 
-          <div
-            id="nproyectos-proof-assistant-slot"
-            className="mt-4 flex min-h-12 items-center justify-end sm:mt-5"
-          />
-
           <div className="mt-5 grid grid-cols-2 gap-2.5 sm:mt-7 sm:gap-3 lg:mt-8">
             {processGallery.map((item, index) => (
               <figure key={item.title} className={`group relative isolate overflow-hidden bg-[#1c3a50] ${index === 0 ? "aspect-[1.06/1]" : "aspect-[1.28/1]"}`}>

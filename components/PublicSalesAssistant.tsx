@@ -20,7 +20,6 @@ import {
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { salesContact } from "@/components/siteData";
 import { trackGaEvent } from "@/lib/analytics";
 
@@ -180,7 +179,6 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
   const [website, setWebsite] = useState("");
   const [leadError, setLeadError] = useState("");
   const [isProactiveHintVisible, setIsProactiveHintVisible] = useState(false);
-  const [proofLauncherDock, setProofLauncherDock] = useState<HTMLElement | null>(null);
   const notificationAudioContextRef = useRef<AudioContext | null>(null);
   const hintSoundPlayedRef = useRef(false);
   const chatSessionIdRef = useRef("");
@@ -200,24 +198,6 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
   });
   const serviceType = serviceTypeForPath(pathname, initialService);
   const hasConversation = messages.some((message) => message.role === "user");
-
-  useEffect(() => {
-    const gallery = document.getElementById("trabajos");
-    const dock = document.getElementById("nproyectos-proof-assistant-slot");
-
-    if (!gallery || !dock || !("IntersectionObserver" in window)) {
-      setProofLauncherDock(null);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setProofLauncherDock(entry.isIntersecting ? dock : null),
-      { threshold: 0 },
-    );
-
-    observer.observe(gallery);
-    return () => observer.disconnect();
-  }, [pathname]);
 
   useEffect(() => {
     let unlocked = false;
@@ -514,7 +494,7 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
       ref={launcherRef}
       aria-label={isOpen ? "Minimizar asesor comercial" : "Abrir asesor comercial de IA de N Proyectos"}
       title={isOpen ? "Minimizar asesor comercial" : "Conversemos con el asesor comercial"}
-      className={`npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700${proofLauncherDock ? " npa-launcher--proof-docked" : ""}`}
+      className="npa-launcher fixed z-[60] flex items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
     >
       {isOpen ? <ChevronDown className="h-5 w-5" aria-hidden="true" /> : <MessageCircle className="npa-launcher-icon h-5 w-5" aria-hidden="true" />}
       {!isOpen && <span className="npa-launcher-label">Conversemos</span>}
@@ -765,7 +745,7 @@ export default function PublicSalesAssistant({ initialService = "", compactOnMob
         </section>
       )}
 
-      {proofLauncherDock ? createPortal(launcher, proofLauncherDock) : launcher}
+      {launcher}
     </>
   );
 }
