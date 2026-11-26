@@ -12,9 +12,9 @@ import {
   Scissors,
   Wrench,
 } from "lucide-react";
-import { siteAssets } from "@/components/siteAssets";
 import TrackedQuoteLink from "@/components/TrackedQuoteLink";
 import VerifiedProof from "@/components/VerifiedProof";
+import LazyLoopVideo from "@/components/LazyLoopVideo";
 import ProductSolutions from "@/components/ProductSolutions";
 import { companyInfo } from "@/components/siteData";
 import { servicesBySlug } from "@/lib/serviceData";
@@ -136,7 +136,8 @@ export default function CommercialStory() {
 
           <article className="mt-9 grid overflow-hidden bg-white shadow-[0_18px_55px_rgba(17,42,62,.08)] lg:mt-12 lg:grid-cols-[1.08fr_.92fr]">
             <div className="group relative min-h-[260px] overflow-hidden bg-[#ccd3d4] sm:min-h-[390px] lg:min-h-[520px]">
-              <Image src={siteAssets.fotobuenax1} alt="Corte de una plancha metálica con láser, imagen referencial" fill className="object-cover transition-transform duration-700 group-hover:scale-[1.025]" sizes="(max-width: 1023px) 100vw, 56vw" />
+              <Image src="/images/corte-laser-0544-poster.jpg" alt="Equipo de corte láser trabajando sobre una plancha metálica" fill className="object-cover" sizes="(max-width: 1023px) 100vw, 56vw" />
+              <LazyLoopVideo src="/videos/corte-laser-0544.mp4" className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden" showPauseControl />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b1d2b]/75 via-transparent to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-5 text-white sm:p-7 lg:p-9">
                 <p className="text-xs font-semibold text-white/70">{cuttingService.eyebrow}</p>
