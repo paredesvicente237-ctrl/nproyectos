@@ -48,13 +48,14 @@
 
 .commercial-hero-scrim {
   background:
+    linear-gradient(0deg, #141c22 0%, rgba(20, 28, 34, .72) 8%, transparent 28%),
     linear-gradient(90deg, rgba(12, 18, 23, .97) 0%, rgba(12, 18, 23, .91) 27%, rgba(12, 18, 23, .63) 49%, rgba(12, 18, 23, .12) 78%, rgba(12, 18, 23, .08) 100%),
     linear-gradient(0deg, rgba(9, 14, 18, .75) 0%, rgba(9, 14, 18, .14) 34%, transparent 72%);
 }
 
 @media (max-width: 639px) {
   .commercial-hero-scrim {
-    background: linear-gradient(180deg, rgba(9, 14, 18, .42) 0%, rgba(9, 14, 18, .63) 31%, rgba(9, 14, 18, .86) 63%, rgba(9, 14, 18, .98) 100%);
+    background: linear-gradient(0deg, #141c22 0%, rgba(20, 28, 34, .94) 12%, transparent 38%), linear-gradient(180deg, rgba(9, 14, 18, .42) 0%, rgba(9, 14, 18, .63) 31%, rgba(9, 14, 18, .86) 63%, rgba(9, 14, 18, .95) 100%);
   }
 }
 

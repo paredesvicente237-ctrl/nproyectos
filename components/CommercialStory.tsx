@@ -74,17 +74,27 @@ export default function CommercialStory() {
 
   return (
     <>
-      <section id="inicio" className="commercial-hero relative isolate overflow-hidden bg-[#f2f1ee] text-[#17191b]">
-        <div className="commercial-hero-layout">
-          <div className="commercial-hero-copy">
-            <p className="commercial-hero-kicker"><span aria-hidden="true" />Ingeniería y fabricación para la industria</p>
-            <h1 className="commercial-hero-title">
-              Ingeniería que <span>da forma.</span>
+      <section id="inicio" className="commercial-hero relative isolate min-h-[100svh] overflow-hidden bg-[#141c22] text-white">
+        <Image
+          src="/images/hero-soldadura-nproyectos-mejorada.webp"
+          alt="Imagen industrial ilustrativa de una persona soldando; no representa instalaciones ni trabajos específicos de N Proyectos"
+          fill
+          priority
+          fetchPriority="high"
+          className="commercial-hero-image -z-20 object-cover object-[64%_center] max-sm:object-[72%_center]"
+          sizes="100vw"
+        />
+        <div aria-hidden="true" className="commercial-hero-scrim absolute inset-0 -z-10" />
+        <div className="container-custom relative flex min-h-[100svh] flex-col justify-between px-5 pb-20 pt-[8.25rem] sm:px-8 sm:pb-8 sm:pt-[10.5rem] lg:px-10 lg:pb-9 lg:pt-[11rem]">
+          <div className="max-w-[980px]">
+            <p className="mb-5 flex items-center gap-3 text-xs font-semibold text-white/75 sm:mb-7 sm:text-sm"><span aria-hidden="true" className="h-[2px] w-8 bg-[#f47b00]" />Ingeniería y fabricación para la industria</p>
+            <h1 className="commercial-hero-title text-white">
+              Ingeniería que <span className="block text-[#f47b00]">da forma.</span>
             </h1>
-            <p className="commercial-hero-description">
+            <p className="mt-5 max-w-[36rem] text-[15px] leading-6 text-white/82 sm:mt-7 sm:text-lg sm:leading-8">
               Corte, plegado, soldadura y fabricación metalmecánica a medida para la industria.
             </p>
-            <div className="commercial-hero-actions">
+            <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-5">
               <TrackedQuoteLink
                 href="/#contacto"
                 location="hero"
@@ -100,22 +110,10 @@ export default function CommercialStory() {
               </Link>
             </div>
           </div>
-          <figure className="commercial-hero-visual">
-            <Image
-              src="/images/hero-soldadura-nproyectos-mejorada.webp"
-              alt="Imagen industrial ilustrativa de una persona soldando; no representa instalaciones ni trabajos específicos de N Proyectos"
-              fill
-              priority
-              fetchPriority="high"
-              className="commercial-hero-image object-cover"
-              sizes="(min-width: 1024px) 62vw, 100vw"
-            />
-            <figcaption>Proceso de soldadura · imagen ilustrativa</figcaption>
-          </figure>
-          <div className="commercial-hero-foot">
-            <div className="commercial-hero-capabilities"><span>Corte y plegado</span><span>Soldadura MIG/TIG</span><span>Fabricación a medida</span></div>
-            <p><MapPin className="h-4 w-4" aria-hidden="true" />{companyInfo.locality}, Santiago</p>
-            <Link href="/#experiencia">Conoce nuestra trayectoria <ArrowDownRight className="h-4 w-4" aria-hidden="true" /></Link>
+          <div className="mt-8 flex flex-col gap-2 border-t border-white/25 pt-4 pr-14 text-xs text-white/75 sm:mt-12 sm:gap-3 sm:pt-5 sm:pr-0 sm:text-sm">
+            <div className="flex flex-wrap gap-x-4 gap-y-1 font-semibold sm:gap-x-6"><span>Corte y plegado</span><span>Soldadura MIG/TIG</span><span>Fabricación a medida</span></div>
+            <p className="flex items-center gap-2 text-white/65"><MapPin className="h-4 w-4 shrink-0 text-[#f47b00]" aria-hidden="true" />{companyInfo.locality}, Santiago</p>
+            <p className="pl-6 text-[9px] leading-4 text-white/55">Imagen ilustrativa · no representa un trabajo de N Proyectos</p>
           </div>
         </div>
       </section>
