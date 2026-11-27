@@ -64,6 +64,14 @@ for (const [path, expected] of [
   });
 }
 
+await check("corte y plegado comunica procesos y conserva metadatos propios", async () => {
+  const html = pageHtml.get("/servicios/corte-plegado-planchas");
+  assert.match(html, /<title>Corte y plegado en Santiago \| Corte láser \| N Proyectos<\/title>/);
+  assert.match(html, /<h1\b[^>]*>Corte y plegado de planchas en Santiago<\/h1>/);
+  assert.ok(html.includes("¿Puedo consultar solo por plegado de planchas?"));
+  assert.ok(html.includes("¿Puedo cotizar solo corte láser, sin plegado?"));
+});
+
 await check("cobertura industrial enlazada y sin páginas de relleno", async () => {
   const structurePath = "/servicios/estructuras-metalicas-industriales";
   assert.ok(sitemapUrls.includes(structurePath));

@@ -61,12 +61,12 @@ export const services: Service[] = [
     name: "Corte y plegado de planchas en Santiago",
     shortName: "Corte láser y plegado",
     eyebrow: "Corte y conformado de planchas",
-    title: "Corte láser y plegado de planchas en Santiago",
+    title: "Corte y plegado de planchas en Santiago",
     description:
       "Servicio de corte y plegado de planchas en Santiago. Evaluamos corte láser o con guillotina según la pieza, material, espesor y cantidad. Cotiza con plano o croquis.",
-    seoTitle: "Corte láser y plegado en Santiago",
+    seoTitle: "Corte y plegado en Santiago | Corte láser",
     seoDescription:
-      "Corte láser y plegado de planchas a medida en Santiago. Evaluamos guillotina según material y geometría; envía plano o croquis y cantidad para cotizar.",
+      "Servicio de corte y plegado de planchas en Santiago. Consulta por corte láser, guillotina o plegado según tu proyecto y solicita una cotización.",
     summary:
       "En N Proyectos puedes cotizar corte de planchas —láser o con guillotina— y plegado según tu proyecto. Revisamos planos, archivos de corte, muestras o medidas junto con el material, espesor, geometría y cantidad para evaluar cada requerimiento.",
     image: tallerPlegado,
