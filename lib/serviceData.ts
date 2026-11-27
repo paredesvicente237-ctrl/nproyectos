@@ -29,7 +29,7 @@ export const services: Service[] = [
     description:
       "Fabricación metalmecánica en Santiago, Chile: piezas según plano, soportes, estructuras y conjuntos soldados. Cotiza con planos, medidas, material y cantidad.",
     seoDescription:
-      "Fabricación metalmecánica en Santiago para piezas y estructuras según plano o muestra. Integramos corte, plegado y soldadura. Envía antecedentes para cotizar.",
+      "Fabricación metalmecánica en Santiago para piezas en acero inoxidable y otros metales. Integramos corte, plegado y soldadura según proyecto.",
     summary:
       "Fabricamos piezas, soportes y estructuras metálicas para proyectos industriales a partir de planos, prototipos o requerimientos funcionales. Integramos revisión técnica, selección de materiales, corte, conformado, armado y soldadura para definir una solución fabricable.",
     image: siteAssets.goodSparks,
@@ -66,9 +66,9 @@ export const services: Service[] = [
       "Servicio de corte y plegado de planchas en Santiago. Evaluamos corte láser o con guillotina según la pieza, material, espesor y cantidad. Cotiza con plano o croquis.",
     seoTitle: "Corte y plegado en Santiago | Corte láser",
     seoDescription:
-      "Servicio de corte y plegado de planchas en Santiago. Consulta por corte láser, guillotina o plegado según tu proyecto y solicita una cotización.",
+      "Corte y plegado de planchas en Santiago, incluyendo acero inoxidable. Consulta por corte láser, guillotina o plegado y solicita una cotización.",
     summary:
-      "En N Proyectos puedes cotizar corte de planchas —láser o con guillotina— y plegado según tu proyecto. Revisamos planos, archivos de corte, muestras o medidas junto con el material, espesor, geometría y cantidad para evaluar cada requerimiento.",
+      "En N Proyectos puedes cotizar corte de planchas —láser o con guillotina— y plegado según tu proyecto, también en acero inoxidable. Revisamos planos, archivos de corte, muestras o medidas junto con el material, espesor, geometría y cantidad para evaluar cada requerimiento.",
     image: tallerPlegado,
     imageAlt: "Equipo de plegado de planchas en el taller de N Proyectos en Santiago",
     benefits: [

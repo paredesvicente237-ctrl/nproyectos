@@ -23,13 +23,13 @@ const serviceStories = [
   {
     slug: "fabricacion-metalmecanica",
     title: "Fabricación metalmecánica",
-    summary: "Piezas, equipos, ductos y estructuras desarrollados según planos o requerimientos funcionales.",
+    summary: "Piezas, equipos y ductos en acero inoxidable y otros metales, desarrollados según planos o requerimientos.",
     marker: "01",
   },
   {
     slug: "soldadura-mig-tig",
     title: "Armado y soldadura MIG/TIG",
-    summary: "Uniones y conjuntos metálicos integrados a la fabricación del proyecto.",
+    summary: "Uniones y conjuntos metálicos, también en acero inoxidable, integrados a la fabricación del proyecto.",
     marker: "02",
   },
   {
@@ -92,7 +92,7 @@ export default function CommercialStory() {
               Ingeniería que <span className="block text-[#f47b00]">da forma.</span>
             </h1>
             <p className="mt-5 max-w-[36rem] text-[15px] leading-6 text-white/82 sm:mt-7 sm:text-lg sm:leading-8">
-              Corte, plegado, soldadura y fabricación metalmecánica a medida para la industria.
+              Corte, plegado, soldadura y fabricación metalmecánica a medida, también en acero inoxidable.
             </p>
             <div className="mt-6 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:items-center sm:gap-5">
               <TrackedQuoteLink
@@ -163,6 +163,20 @@ export default function CommercialStory() {
               </div>
             </div>
           </article>
+
+          <div className="mt-8 grid gap-4 border-t border-[#ccd4d6] pt-7 sm:mt-10 lg:grid-cols-[.85fr_1.15fr] lg:gap-10">
+            <div>
+              <p className="text-xs font-bold tracking-[.16em] text-[#a94f00]">MATERIALES PARA LA INDUSTRIA</p>
+              <h3 className="mt-3 text-2xl font-semibold tracking-[-.035em] text-[#17232c] sm:text-3xl">Trabajamos acero inoxidable.</h3>
+            </div>
+            <div>
+              <p className="max-w-2xl text-sm leading-6 text-[#59666e] sm:text-base sm:leading-7">Fabricamos cubiertas, mobiliario, ductos y componentes a medida. Según el proyecto, revisamos las necesidades de corte, plegado, armado y soldadura, junto con el material y la terminación solicitada.</p>
+              <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+                <Link href="/servicios/fabricacion-metalmecanica" className="inline-flex items-center gap-2 text-sm font-semibold text-[#a94f00] underline underline-offset-4 hover:text-[#7c3900]">Fabricación en acero inoxidable <ArrowUpRight className="h-4 w-4" aria-hidden="true" /></Link>
+                <TrackedQuoteLink href="/#contacto" location="stainless_steel" serviceType="fabricacion_metalmecanica" className="inline-flex items-center gap-2 text-sm font-semibold text-[#252729] underline underline-offset-4 hover:text-[#a94f00]">Cotizar mi proyecto <ArrowRight className="h-4 w-4" aria-hidden="true" /></TrackedQuoteLink>
+              </div>
+            </div>
+          </div>
 
           <div className="mt-7 border-y border-[#ccd4d6]">
             {serviceStories.map((story) => {

@@ -72,6 +72,15 @@ await check("corte y plegado comunica procesos y conserva metadatos propios", as
   assert.ok(html.includes("¿Puedo cotizar solo corte láser, sin plegado?"));
 });
 
+await check("acero inoxidable destacado en portada y servicios", async () => {
+  const home = pageHtml.get("/");
+  assert.ok(home?.includes("Trabajamos acero inoxidable."));
+  assert.ok(home.includes('href="/servicios/fabricacion-metalmecanica"'));
+  for (const path of ["/servicios/fabricacion-metalmecanica", "/servicios/corte-plegado-planchas", "/servicios/soldadura-mig-tig"]) {
+    assert.ok(pageHtml.get(path)?.toLowerCase().includes("acero inoxidable"), `Falta acero inoxidable en ${path}.`);
+  }
+});
+
 await check("cobertura industrial enlazada y sin páginas de relleno", async () => {
   const structurePath = "/servicios/estructuras-metalicas-industriales";
   assert.ok(sitemapUrls.includes(structurePath));
